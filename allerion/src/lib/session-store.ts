@@ -13,6 +13,39 @@ export interface SessionMeasurement {
   slope_deg?: number;
 }
 
+export interface SessionMaterials {
+  roof?: string;
+  facade?: string;
+  foundation?: string;
+}
+
+export interface SessionEstimate {
+  total: number;
+  material: number;
+  labor: number;
+  equipment: number;
+  currency: "USD";
+  rows: Array<{
+    id: string;
+    uniformat_code: string;
+    classification: string;
+    description: string;
+    unit: string;
+    quantity: number;
+    rate_total: number;
+    rate_material: number;
+    rate_labor: number;
+    rate_equipment: number;
+    cost_total: number;
+    cost_material: number;
+    cost_labor: number;
+    cost_equipment: number;
+    source: "live" | "default";
+    citation?: string;
+  }>;
+  computed_at: number;
+}
+
 export interface Session {
   id: string;
   address?: string;
@@ -22,6 +55,12 @@ export interface Session {
   lastFootprint?: Point3D[];
   lastFootprintHeightAvg?: number;
   lastBuildingHeight?: number;
+  /** Source of the geometry: 'measured' (user clicks), 'osm' (auto), or 'default' (fallback square). */
+  geometry_source?: "measured" | "osm" | "default";
+  /** OSM building tags if auto-takeoff was used. */
+  osm_id?: number;
+  materials?: SessionMaterials;
+  lastEstimate?: SessionEstimate;
   createdAt: number;
 }
 

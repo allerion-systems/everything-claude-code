@@ -40,6 +40,15 @@ export async function flyToBuilding(
   const altitude = args.altitude_m ?? 200;
   const sessionId = crypto.randomUUID();
 
+  // Seed the session so downstream tools (auto_takeoff, estimate_costs)
+  // can find the lat/lon and address without re-geocoding.
+  const { sessionStore } = await import("../lib/session-store.js");
+  const session = sessionStore.get(sessionId);
+  session.lat = geo.lat;
+  session.lon = geo.lon;
+  session.address = geo.normalized_address;
+  sessionStore.set(sessionId, session);
+
   const base = env.PUBLIC_VIEWER_URL ?? "http://localhost:8787";
   const url = new URL(`${base}/viewer.html`);
   url.searchParams.set("session", sessionId);

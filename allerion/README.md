@@ -63,7 +63,44 @@ Add to Claude Desktop / Cursor / VS Code MCP config:
 | `geocode` | `{ address }` | `{ lat, lon, normalized_address }` |
 | `fly_to_building` | `{ address, provider? }` | Interactive Cesium MCP App centered on the building |
 | `measure` | `{ session_id, points[] }` | `{ distance_m, area_m2, vertical_m, slope_deg }` |
-| `export_ifc` | `{ session_id }` | `{ download_url, ifc_text }` |
+| `auto_takeoff` | `{ session_id, address?, roof_material?, facade_material? }` | Autonomously pulls footprint + height from OpenStreetMap, no clicks required |
+| `estimate_costs` | `{ session_id, rate_overrides? }` | 5D cost breakdown (material / labor / equipment) per element + totals, live rates from open DDC CWICR API |
+| `open_5d_dashboard` | `{ session_id }` | Bexel-style 5D Estimation dashboard as an MCP App (Cesium viewer + totals + table + doughnuts) |
+| `export_ifc` | `{ session_id }` | IFC2X3 STEP file text inline |
+
+## Autonomous flow
+
+The "reverse Bexel" loop runs without clicks. In Claude / ChatGPT / VS Code:
+
+```
+User: estimate the building at 1600 Pennsylvania Ave
+
+Claude calls:
+  1. fly_to_building(address="1600 Pennsylvania Ave NW, Washington DC")
+       -> session_id, opens viewer
+  2. auto_takeoff(session_id=...)
+       -> pulls footprint + 4 stories from OSM Buildings,
+          flags missing materials in next_steps
+  3. (optionally) looks at the viewer screenshot itself and calls
+     auto_takeoff again with roof_material="metal" facade_material="limestone"
+  4. estimate_costs(session_id=...)
+       -> hits DDC CWICR live API for each element,
+          falls back to Allerion defaults when no match,
+          returns full 5D breakdown
+  5. open_5d_dashboard(session_id=...)
+       -> renders the Bexel-style dashboard inline in chat
+```
+
+## Cost data source
+
+5D rates come from the open-source [DDC CWICR construction cost
+database](https://github.com/datadrivenconstruction/OpenConstructionEstimate-DDC-CWICR)
+via their free no-auth REST API at `buildcalculator.io/api/v1/search` (55K+
+items, 30 regions, CC-BY-4.0 data licence). Where the API has no
+unit-matching result, Allerion falls back to a small hand-curated default rate
+table (`src/lib/cost-library.ts`) marked clearly in the dashboard "source"
+column. Users can plug in their own RSMeans-style book via the
+`rate_overrides` param on `estimate_costs`.
 
 ## Provider selection
 
@@ -88,7 +125,9 @@ It is not enough for structural engineering or detailed architectural drawings.
 
 ## Roadmap
 
-- **v0** (this scaffold): geocode, fly-to, measure, IFC export
-- **v0.1**: Pitched roof detection from mesh, polygon snapping to building edges
-- **v0.2**: Hosted SaaS + Stripe metering per measurement
-- **v1.0**: Allerion Flightpath (drone planner), Allerion Climate (overlays)
+- **v0**: geocode, fly-to, measure, IFC export
+- **v0.0.2** (this PR): auto_takeoff, estimate_costs, open_5d_dashboard - the Bexel-style 5D Estimation dashboard end-to-end
+- **v0.1**: Clash detection, pitched roof detection from mesh, polygon snapping to building edges, IFC import via web-ifc
+- **v0.2**: 4D scheduling (Gantt + animated construction sequence), Earned Value Analysis, Cash Flow dashboards
+- **v0.3**: Hosted SaaS + Stripe metering per estimate
+- **v1.0**: Allerion Flightpath (drone planner), Allerion Climate (overlays), Allerion Fleet (multi-site)
