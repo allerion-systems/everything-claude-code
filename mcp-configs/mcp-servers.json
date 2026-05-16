@@ -142,6 +142,20 @@
         "CONFLUENCE_API_TOKEN": "YOUR_CONFLUENCE_TOKEN_HERE"
       },
       "description": "Confluence Cloud integration — search pages, retrieve content, explore spaces"
+    },
+    "allerion": {
+      "command": "node",
+      "args": ["${ALLERION_PATH:-./allerion/dist/server.js}"],
+      "env": {
+        "MAPBOX_TOKEN": "YOUR_MAPBOX_TOKEN_HERE",
+        "GOOGLE_MAPS_API_KEY": "YOUR_GOOGLE_MAPS_KEY_HERE_OR_LEAVE_BLANK"
+      },
+      "description": "Allerion 5D Estimation — address to Bexel-style 5D dashboard with autonomous OSM takeoff, live cost API pricing, IFC export. Build with: cd allerion && npm install && npm run build"
+    },
+    "allerion-http": {
+      "type": "http",
+      "url": "http://localhost:8788/mcp",
+      "description": "Allerion (Streamable HTTP) — same tools as `allerion`, for Claude Apps / marketplace / remote deploy. Boot with: cd allerion && npm run start:http"
     }
   },
   "_comments": {

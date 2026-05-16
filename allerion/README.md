@@ -36,10 +36,21 @@ cd allerion
 npm install
 cp .env.example .env
 # fill in MAPBOX_TOKEN (geocode) and optionally GOOGLE_MAPS_API_KEY (3D Tiles)
-npm run dev
+npm run build
 ```
 
-Add to Claude Desktop / Cursor / VS Code MCP config:
+### Run modes
+
+```bash
+npm run start            # stdio (local MCP clients: Claude Desktop, Cursor, VS Code)
+npm run start:http       # Streamable HTTP on :8788/mcp (Claude Apps / marketplace / remote)
+npm run start:viewer     # Static viewer + 5D dashboard server on :8787
+npm run start:all        # http + viewer (typical hosted deployment)
+```
+
+Or use the single CLI: `node dist/cli.js {stdio|http|viewer|all}`.
+
+### Local (stdio) — Claude Desktop, Cursor, VS Code MCP
 
 ```json
 {
@@ -55,6 +66,44 @@ Add to Claude Desktop / Cursor / VS Code MCP config:
   }
 }
 ```
+
+### Remote (HTTP) — Claude Apps / hosted
+
+```json
+{
+  "mcpServers": {
+    "allerion": {
+      "type": "http",
+      "url": "https://your-host.example.com/mcp"
+    }
+  }
+}
+```
+
+Health check: `GET /healthz` returns `{ok, name, version, sessions}`.
+
+### Claude Code plugin
+
+This directory is a self-contained Claude Code plugin
+(`allerion/.claude-plugin/plugin.json`). When this repo is published to the
+Claude Code marketplace it installs the MCP server plus the bundled
+`allerion-estimator` subagent, `/allerion` slash command, and `allerion-5d`
+skill at the repo root. After install:
+
+```
+/allerion 1600 Pennsylvania Ave NW, Washington DC
+```
+
+triggers the full autonomous pipeline. The `allerion-estimator` subagent can
+also be invoked directly when a task matches its description.
+
+### MCP capabilities exposed
+
+| Capability | Surface |
+|---|---|
+| **Tools** | `geocode`, `fly_to_building`, `measure`, `auto_takeoff`, `estimate_costs`, `open_5d_dashboard`, `export_ifc` (with `readOnlyHint` / `openWorldHint` / `idempotentHint` annotations) |
+| **Prompts** | `estimate-from-address`, `compare-buildings`, `audit-takeoff` |
+| **Resources** | `allerion://cost-library/defaults`, `allerion://docs/getting-started`, `allerion://sessions/{id}` (template) |
 
 ## Available tools
 
