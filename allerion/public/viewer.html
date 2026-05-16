@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Allerion Measure</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="https://cesium.com/downloads/cesiumjs/releases/1.121/Build/Cesium/Widgets/widgets.css" />
+  <script src="https://cesium.com/downloads/cesiumjs/releases/1.121/Build/Cesium/Cesium.js"></script>
+  <style>
+    html, body, #cesiumContainer { width: 100%; height: 100%; margin: 0; padding: 0; overflow: hidden; background: #000; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: #eee; }
+    #ui {
+      position: absolute; top: 12px; left: 12px; z-index: 10;
+      background: rgba(15, 15, 18, 0.92); padding: 14px 16px; border-radius: 10px;
+      box-shadow: 0 8px 24px rgba(0,0,0,.45); min-width: 280px; max-width: 320px;
+      border: 1px solid #2a2a30;
+    }
+    #ui h1 { font-size: 13px; font-weight: 600; margin: 0 0 4px 0; letter-spacing: .3px; color: #d6d6dc; }
+    #ui .addr { font-size: 11px; color: #888; margin-bottom: 10px; line-height: 1.35; }
+    .btn-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+    button {
+      background: #1f1f24; color: #e8e8ec; border: 1px solid #353540; padding: 7px 10px;
+      border-radius: 6px; font-size: 11px; cursor: pointer; font-weight: 500;
+    }
+    button:hover { background: #2a2a30; }
+    button.active { background: #3a6df0; border-color: #3a6df0; color: white; }
+    #results { font-size: 11px; line-height: 1.5; max-height: 240px; overflow-y: auto; }
+    .result-row { padding: 6px 0; border-top: 1px solid #2a2a30; }
+    .result-row:first-child { border-top: 0; }
+    .result-row .mode { color: #888; font-size: 10px; text-transform: uppercase; letter-spacing: .5px; }
+    .result-row .val { color: #f0f0f5; font-weight: 600; }
+    #hint { font-size: 10px; color: #666; margin-top: 8px; font-style: italic; }
+    .pill { display: inline-block; padding: 2px 6px; border-radius: 4px; background: #2a2a30; font-size: 9px; color: #aaa; margin-right: 4px; }
+  </style>
+</head>
+<body>
+  <div id="cesiumContainer"></div>
+  <div id="ui">
+    <h1>Allerion Measure</h1>
+    <div class="addr" id="addr">Loading…</div>
+    <div class="btn-row">
+      <button data-mode="polyline">Distance</button>
+      <button data-mode="polygon">Footprint</button>
+      <button data-mode="vertical">Height</button>
+      <button data-mode="pitch">Roof pitch</button>
+    </div>
+    <div class="btn-row">
+      <button id="clear">Clear</button>
+      <button id="export">Export IFC</button>
+    </div>
+    <div id="results"></div>
+    <div id="hint">Click a mode, then click points on the building. Right-click to finish a polygon.</div>
+  </div>
+  <script type="module" src="./viewer.js"></script>
+</body>
+</html>
