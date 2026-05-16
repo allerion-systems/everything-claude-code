@@ -4,6 +4,8 @@ A portfolio of vertical MCP Apps that render interactive 3D / measurement UIs in
 
 The first product, **Allerion Measure**, turns a street address into a measurable 3D building model and exports it as IFC (LOD1), glTF, or a measurements PDF — directly inside a chat conversation.
 
+> **Official site**: [`./site/`](./site/) — single-page marketing site with a live in-browser cost calculator. Deploy to Vercel / Netlify / Cloudflare Pages from `./site/`.
+
 ## Why this is possible now
 
 The Model Context Protocol shipped the **MCP Apps** extension on 2026-01-26, jointly authored by Anthropic, OpenAI, and community maintainers. MCP Apps let a single tool return interactive HTML/JS that renders inside any MCP-compatible chat surface. One codebase, three distribution channels.

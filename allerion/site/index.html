@@ -1,0 +1,465 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Allerion · Open 5D construction estimating for AI agents</title>
+  <meta name="description" content="Allerion turns a street address into a measurable 3D model and a Bexel-style cost dashboard, inline in Claude, ChatGPT, and VS Code. MIT-licensed. MCP-first. No enterprise license." />
+  <meta name="theme-color" content="#0a0a0d" />
+
+  <meta property="og:title" content="Allerion · Open 5D construction estimating for AI agents" />
+  <meta property="og:description" content="An open alternative to Bexel Manager, Procore, and the rest of the AEC enterprise stack. Built for AI agents, distributed as MCP." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="./og.svg" />
+
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="nav" id="nav">
+    <a class="brand" href="/" aria-label="Allerion home">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 32 32" width="26" height="26"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff5fa7"/><stop offset="1" stop-color="#5fdfff"/></linearGradient></defs><path d="M4 26 L16 6 L28 26 Z" fill="none" stroke="url(#lg)" stroke-width="2" stroke-linejoin="round"/><path d="M10 26 L16 14 L22 26" fill="none" stroke="#7df57d" stroke-width="1.5" stroke-linejoin="round"/></svg>
+      </span>
+      <span class="brand-name">Allerion</span>
+    </a>
+    <nav class="nav-links">
+      <a href="#loop">How it works</a>
+      <a href="#features">Features</a>
+      <a href="#try">Try it</a>
+      <a href="#compare">vs. Bexel</a>
+      <a href="#install">Install</a>
+      <a href="#roadmap">Roadmap</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="btn btn-ghost" href="https://github.com/jalleeeee/everything-claude-code/tree/main/allerion" target="_blank" rel="noopener">GitHub</a>
+      <a class="btn btn-primary" href="#install">Install</a>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <div class="eyebrow">
+            <span class="dot"></span>
+            <span>v0.0.3 · Open source · MIT licensed</span>
+          </div>
+          <h1>Open 5D construction estimating, <span class="grad">built for AI agents.</span></h1>
+          <p class="lede">
+            Allerion turns a street address into a measurable 3D model and a
+            Bexel-style cost dashboard — inline in Claude, ChatGPT, and VS Code.
+            MIT-licensed. MCP-first. Zero enterprise contracts.
+          </p>
+          <div class="hero-ctas">
+            <a class="btn btn-primary btn-lg" href="#install">Install for Claude</a>
+            <a class="btn btn-ghost btn-lg" href="#try">See it run →</a>
+          </div>
+          <div class="hero-badges" aria-label="Built on open standards">
+            <span class="badge">Cesium</span>
+            <span class="badge">OpenStreetMap</span>
+            <span class="badge">IFC2X3</span>
+            <span class="badge">MCP</span>
+            <span class="badge">DDC CWICR</span>
+            <span class="badge">CC-BY-4.0 cost data</span>
+          </div>
+        </div>
+
+        <div class="hero-visual" aria-hidden="true">
+          <div class="iso-scene">
+            <div class="iso-grid"></div>
+            <div class="iso-building">
+              <div class="face top"></div>
+              <div class="face front"></div>
+              <div class="face right"></div>
+              <div class="face left"></div>
+              <div class="face back"></div>
+              <div class="face bottom"></div>
+            </div>
+            <div class="iso-ticker">
+              <div class="tick"><span class="lbl">Material</span><span class="val mat">$1.42M</span></div>
+              <div class="tick"><span class="lbl">Labor</span><span class="val lab">$1.91M</span></div>
+              <div class="tick"><span class="lbl">Equipment</span><span class="val equ">$0.18M</span></div>
+              <div class="tick big"><span class="lbl">Total</span><span class="val tot">$3.51M</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROBLEM -->
+    <section class="problem">
+      <div class="container narrow">
+        <h2 class="section-h">AEC software is overdue for an unbundling.</h2>
+        <p class="section-p">
+          Bexel Manager, Procore, AutoDesk Construction Cloud, Trimble Connect —
+          every part of construction estimating sits behind a five-figure per-seat
+          license, a closed Power BI template, or a sales call. None of them speak
+          to AI agents. None of them are open.
+        </p>
+        <p class="section-p">
+          The pieces to do this in the open already exist. Cesium for 3D. IFC for
+          building data. OpenStreetMap for geometry. DDC CWICR for cost rates. The
+          Model Context Protocol for putting it all in front of an LLM. Allerion is
+          what happens when you connect them.
+        </p>
+      </div>
+    </section>
+
+    <!-- THE LOOP -->
+    <section class="loop" id="loop">
+      <div class="container">
+        <div class="section-head">
+          <span class="kicker">The autonomous loop</span>
+          <h2 class="section-h">From an address to a 5D dashboard. No clicks.</h2>
+        </div>
+
+        <div class="loop-chat">
+          <div class="msg user">
+            <span class="who">You</span>
+            <span class="body">Estimate the building at 350 5th Ave, New York.</span>
+          </div>
+          <div class="msg agent">
+            <span class="who">Claude · allerion-estimator</span>
+            <ol class="steps">
+              <li><code>fly_to_building</code> · geocode + open Cesium viewer</li>
+              <li><span class="ai">Sees</span> the viewer, identifies limestone facade + flat membrane roof</li>
+              <li><code>auto_takeoff</code> · pulls footprint from OpenStreetMap, height from <code>building:levels</code></li>
+              <li><code>estimate_costs</code> · prices each element against live DDC CWICR API</li>
+              <li><code>open_5d_dashboard</code> · renders the Bexel-style dashboard inline</li>
+            </ol>
+            <div class="result">
+              <div class="r-row"><span>Total</span><b>$3.51M</b></div>
+              <div class="r-row"><span>Per ft²</span><b>$372</b></div>
+              <div class="r-row"><span>Top driver</span><b>B-Shell · Exterior walls</b></div>
+              <div class="r-row"><span>Confidence</span><b>4 of 5 elements priced from live API</b></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="features" id="features">
+      <div class="container">
+        <div class="section-head">
+          <span class="kicker">What you get</span>
+          <h2 class="section-h">One MCP server. Every part of the loop.</h2>
+        </div>
+
+        <div class="grid grid-3">
+          <article class="card">
+            <svg class="ic" viewBox="0 0 32 32"><circle cx="16" cy="16" r="11" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M5 16h22M16 5c4 3 4 19 0 22M16 5c-4 3-4 19 0 22" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+            <h3>3D viewer, your choice of tiles</h3>
+            <p>Google Photorealistic 3D Tiles where available, OpenStreetMap Buildings everywhere else. Same Cesium scene either way.</p>
+          </article>
+
+          <article class="card">
+            <svg class="ic" viewBox="0 0 32 32"><path d="M6 26 L14 18 L19 22 L26 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><circle cx="26" cy="12" r="2" fill="currentColor"/></svg>
+            <h3>Autonomous OSM takeoff</h3>
+            <p>Footprint + levels + materials pulled straight from OpenStreetMap tags. The agent fills in what OSM is missing from the viewer screenshot.</p>
+          </article>
+
+          <article class="card">
+            <svg class="ic" viewBox="0 0 32 32"><rect x="5" y="9" width="22" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M5 14h22M11 9v-3M21 9v-3" stroke="currentColor" stroke-width="1.5"/></svg>
+            <h3>Live cost API · 55K items</h3>
+            <p>Open DDC CWICR database (CC-BY-4.0) for material, labor, equipment per unit. Strict unit matching so you never get road-sign rates for concrete.</p>
+          </article>
+
+          <article class="card">
+            <svg class="ic" viewBox="0 0 32 32"><path d="M4 16 L16 6 L28 16 L28 28 L4 28 Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M12 28 L12 18 L20 18 L20 28" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+            <h3>Bexel-style 5D dashboard</h3>
+            <p>Totals cards, Cesium viewer color-coded by classification, per-element cost table, three doughnut charts. Rendered inline in chat as an MCP App.</p>
+          </article>
+
+          <article class="card">
+            <svg class="ic" viewBox="0 0 32 32"><rect x="6" y="4" width="20" height="24" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M10 11h12M10 16h12M10 21h8" stroke="currentColor" stroke-width="1.5"/></svg>
+            <h3>Real IFC2X3 export</h3>
+            <p>A valid STEP file with <code>IfcBuilding</code> → <code>IfcBuildingStorey</code> → perimeter <code>IfcWallStandardCase</code> + flat <code>IfcSlab</code>. Loads in BIMvision, BIMcollab Zoom, Revit.</p>
+          </article>
+
+          <article class="card">
+            <svg class="ic" viewBox="0 0 32 32"><circle cx="16" cy="16" r="11" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M16 9v14M11 11l10 10M11 21l10-10" stroke="currentColor" stroke-width="1.5"/></svg>
+            <h3>MCP-first, agent-ready</h3>
+            <p>Seven tools, three prompts, three resource URIs, tool annotations. Stdio for local. Streamable HTTP for marketplace. Both share one handler.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- TRY IT — LIVE COST CALCULATOR -->
+    <section class="try" id="try">
+      <div class="container">
+        <div class="section-head">
+          <span class="kicker">Try it now</span>
+          <h2 class="section-h">A 5D estimate, in your browser, in real time.</h2>
+          <p class="section-p" style="text-align:center">
+            Pulls from the same default rate book the MCP server uses. No login. No server call.
+            Plug in real dimensions and see the breakdown.
+          </p>
+        </div>
+
+        <div class="calc">
+          <div class="calc-inputs">
+            <label>
+              <span>Footprint length <i>(m)</i></span>
+              <input type="number" id="inLen" value="20" min="1" max="500" step="0.5" />
+            </label>
+            <label>
+              <span>Footprint width <i>(m)</i></span>
+              <input type="number" id="inWid" value="15" min="1" max="500" step="0.5" />
+            </label>
+            <label>
+              <span>Stories</span>
+              <input type="number" id="inStories" value="3" min="1" max="100" step="1" />
+            </label>
+            <label>
+              <span>Story height <i>(m)</i></span>
+              <input type="number" id="inSh" value="3" min="2" max="10" step="0.1" />
+            </label>
+          </div>
+
+          <div class="calc-output">
+            <div class="calc-totals">
+              <div class="card-stat material"><span class="lbl">Material</span><span class="val" id="outMaterial">—</span></div>
+              <div class="card-stat labor"><span class="lbl">Labor</span><span class="val" id="outLabor">—</span></div>
+              <div class="card-stat equip"><span class="lbl">Equipment</span><span class="val" id="outEquip">—</span></div>
+              <div class="card-stat total"><span class="lbl">Total</span><span class="val" id="outTotal">—</span></div>
+            </div>
+            <div class="calc-bar" aria-hidden="true">
+              <span class="seg mat" id="segMat"></span>
+              <span class="seg lab" id="segLab"></span>
+              <span class="seg equ" id="segEqu"></span>
+            </div>
+            <div class="calc-meta">
+              <div><span class="muted">Gross floor area</span> <b id="outGfa">—</b></div>
+              <div><span class="muted">$ per ft²</span> <b id="outPerSf">—</b></div>
+              <div><span class="muted">Dominant element</span> <b id="outDom">—</b></div>
+            </div>
+            <details class="calc-details">
+              <summary>Per-element breakdown</summary>
+              <table class="mini-tbl">
+                <thead><tr><th>Element</th><th>Qty</th><th>Unit</th><th>$/unit</th><th>Total</th></tr></thead>
+                <tbody id="rowsBody"></tbody>
+              </table>
+              <p class="muted small">
+                Rates: Allerion default book v0 (rough US 2026). Override per UniFormat code via
+                <code>estimate_costs(rate_overrides: { ... })</code>. Real installs hit the live
+                DDC CWICR API for ~⅔ of elements.
+              </p>
+            </details>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMPARE -->
+    <section class="compare" id="compare">
+      <div class="container">
+        <div class="section-head">
+          <span class="kicker">Reality check</span>
+          <h2 class="section-h">Allerion vs. the AEC enterprise stack</h2>
+        </div>
+        <div class="tbl-wrap">
+          <table class="compare-tbl">
+            <thead>
+              <tr>
+                <th></th>
+                <th class="us">Allerion</th>
+                <th>Bexel Manager</th>
+                <th>Procore</th>
+                <th>RSMeans Online</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>License</td><td class="us"><b>MIT, free</b></td><td>~$8k+ /seat/yr</td><td>SaaS, per-user</td><td>~$1.2k /seat/yr</td></tr>
+              <tr><td>Self-hostable</td><td class="us yes">Yes</td><td class="no">No</td><td class="no">No</td><td class="no">No</td></tr>
+              <tr><td>AI-agent native (MCP)</td><td class="us yes">Yes</td><td class="no">No</td><td class="partial">Limited</td><td class="no">No</td></tr>
+              <tr><td>Cesium 3D viewer</td><td class="us yes">Yes</td><td class="no">Proprietary</td><td class="no">No</td><td class="no">No</td></tr>
+              <tr><td>IFC import / export</td><td class="us partial">Export (import v0.1)</td><td class="yes">Both</td><td class="no">No</td><td class="no">No</td></tr>
+              <tr><td>5D dashboard</td><td class="us yes">Open HTML</td><td class="partial">Power BI templates</td><td class="no">No</td><td class="no">No</td></tr>
+              <tr><td>Cost data source</td><td class="us">Open DDC CWICR + your book</td><td>Vendor curated</td><td>n/a</td><td>RSMeans (licensed)</td></tr>
+              <tr><td>Hosted SaaS</td><td>v0.3 roadmap</td><td class="yes">Yes</td><td class="yes">Yes</td><td class="yes">Yes</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="caveat">
+          We're not pretending Allerion replaces Bexel feature-for-feature today. We do LOD1
+          measurable geometry, not detailed BIM. The play is open standards + AI-agent ergonomics —
+          and that's a moat the enterprise vendors structurally can't build.
+        </p>
+      </div>
+    </section>
+
+    <!-- INSTALL -->
+    <section class="install" id="install">
+      <div class="container">
+        <div class="section-head">
+          <span class="kicker">Install</span>
+          <h2 class="section-h">Two minutes from clone to first estimate.</h2>
+        </div>
+
+        <div class="install-grid">
+          <article class="install-card">
+            <h3>Claude Desktop / Cursor / VS Code MCP</h3>
+            <p>Drop this into your MCP config (`~/Library/Application Support/Claude/claude_desktop_config.json` on macOS).</p>
+<pre><code>{
+  "mcpServers": {
+    "allerion": {
+      "command": "node",
+      "args": ["/absolute/path/to/allerion/dist/server.js"],
+      "env": {
+        "MAPBOX_TOKEN": "..."
+      }
+    }
+  }
+}</code></pre>
+          </article>
+
+          <article class="install-card">
+            <h3>Build locally</h3>
+            <p>One npm install, one npm run build, you're done.</p>
+<pre><code>git clone https://github.com/jalleeeee/everything-claude-code
+cd everything-claude-code/allerion
+npm install
+cp .env.example .env  # fill in MAPBOX_TOKEN
+npm run build
+npm start             # stdio for local clients
+# or:
+npm run start:http    # Streamable HTTP on :8788/mcp
+npm run start:all     # http + static viewer</code></pre>
+          </article>
+
+          <article class="install-card">
+            <h3>As a Claude Code plugin</h3>
+            <p>
+              <code>allerion/.claude-plugin/plugin.json</code> bundles the MCP server
+              plus the <code>allerion-estimator</code> subagent, the <code>/allerion</code>
+              slash command, and the <code>allerion-5d</code> skill. Once the parent repo is
+              published to a Claude Code marketplace, install it as a single plugin.
+            </p>
+<pre><code># inside Claude Code, once published
+/plugin install everything-claude-code
+/allerion 1600 Pennsylvania Ave NW</code></pre>
+          </article>
+
+          <article class="install-card">
+            <h3>Remote (Claude Apps / hosted)</h3>
+            <p>Point at any URL serving the Streamable HTTP transport.</p>
+<pre><code>{
+  "mcpServers": {
+    "allerion": {
+      "type": "http",
+      "url": "https://allerion.example.com/mcp"
+    }
+  }
+}</code></pre>
+            <p class="muted small">Health check: <code>GET /healthz</code> returns <code>{ok, version, sessions}</code>.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ROADMAP -->
+    <section class="roadmap" id="roadmap">
+      <div class="container">
+        <div class="section-head">
+          <span class="kicker">Where this goes</span>
+          <h2 class="section-h">One MCP server today. A portfolio of vertical apps next.</h2>
+        </div>
+
+        <ol class="timeline">
+          <li class="step done">
+            <span class="ver">v0</span>
+            <h3>Allerion Measure + 5D Estimation</h3>
+            <p>Address → viewer → autonomous takeoff → live cost API → Bexel-style dashboard → IFC2X3 export. <b>Shipped.</b></p>
+          </li>
+          <li class="step next">
+            <span class="ver">v0.1</span>
+            <h3>IFC import + clash detection</h3>
+            <p>Bring your own Revit/ArchiCAD IFC via web-ifc. Multi-discipline clash overlay. Pitched roof detection from the photogrammetry mesh.</p>
+          </li>
+          <li class="step">
+            <span class="ver">v0.2</span>
+            <h3>4D scheduling + Earned Value</h3>
+            <p>Gantt with construction-sequence animation. Earned Value, Cash Flow, Payment Certificate dashboards — the rest of the Bexel template gallery, open-sourced.</p>
+          </li>
+          <li class="step">
+            <span class="ver">v0.3</span>
+            <h3>Hosted SaaS + team workspaces</h3>
+            <p>Run your own cost book. Share sessions with collaborators. Stripe metering per estimate. Free tier stays generous.</p>
+          </li>
+          <li class="step">
+            <span class="ver">v1.0</span>
+            <h3>The Allerion portfolio</h3>
+            <p><b>Flightpath</b> · drone mission planning. <b>Climate</b> · environmental overlays. <b>Fleet</b> · multi-site reporting. <b>Tour</b> · real-estate walkthroughs. All MCP-first.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="final-cta">
+      <div class="container narrow">
+        <h2 class="section-h">Stop renting your stack from your competitors.</h2>
+        <p class="section-p">
+          Allerion is open from address parsing to IFC export. Fork it, host it, plug your own
+          cost book in, build the vertical your industry actually needs.
+        </p>
+        <div class="hero-ctas" style="justify-content:center">
+          <a class="btn btn-primary btn-lg" href="https://github.com/jalleeeee/everything-claude-code/tree/main/allerion" target="_blank" rel="noopener">View source on GitHub</a>
+          <a class="btn btn-ghost btn-lg" href="#install">Install</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="container">
+      <div class="foot-row">
+        <div class="foot-brand">
+          <a class="brand" href="/" aria-label="Allerion home">
+            <span class="brand-mark" aria-hidden="true">
+              <svg viewBox="0 0 32 32" width="22" height="22"><defs><linearGradient id="lg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff5fa7"/><stop offset="1" stop-color="#5fdfff"/></linearGradient></defs><path d="M4 26 L16 6 L28 26 Z" fill="none" stroke="url(#lg2)" stroke-width="2" stroke-linejoin="round"/><path d="M10 26 L16 14 L22 26" fill="none" stroke="#7df57d" stroke-width="1.5" stroke-linejoin="round"/></svg>
+            </span>
+            <span class="brand-name">Allerion</span>
+          </a>
+          <p class="muted small">Open 5D estimating for AI agents. MIT-licensed.</p>
+        </div>
+        <div class="foot-cols">
+          <div>
+            <h4>Product</h4>
+            <a href="#features">Features</a>
+            <a href="#try">Try it</a>
+            <a href="#install">Install</a>
+            <a href="#roadmap">Roadmap</a>
+          </div>
+          <div>
+            <h4>Source</h4>
+            <a href="https://github.com/jalleeeee/everything-claude-code/tree/main/allerion" target="_blank" rel="noopener">GitHub</a>
+            <a href="https://github.com/jalleeeee/everything-claude-code/blob/main/allerion/README.md" target="_blank" rel="noopener">Docs</a>
+            <a href="https://github.com/jalleeeee/everything-claude-code/blob/main/LICENSE" target="_blank" rel="noopener">MIT License</a>
+          </div>
+          <div>
+            <h4>Standing on</h4>
+            <a href="https://cesium.com/" target="_blank" rel="noopener">Cesium</a>
+            <a href="https://www.openstreetmap.org/" target="_blank" rel="noopener">OpenStreetMap</a>
+            <a href="https://github.com/datadrivenconstruction/OpenConstructionEstimate-DDC-CWICR" target="_blank" rel="noopener">DDC CWICR</a>
+            <a href="https://modelcontextprotocol.io/" target="_blank" rel="noopener">MCP</a>
+          </div>
+        </div>
+      </div>
+      <div class="foot-fine">
+        <span>© 2026 Allerion contributors</span>
+        <span>v0.0.3</span>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="./main.js"></script>
+</body>
+</html>
