@@ -494,6 +494,27 @@
       "defaultInstall": false,
       "cost": "medium",
       "stability": "stable"
+    },
+    {
+      "id": "residential-construction-domain",
+      "kind": "skills",
+      "description": "Residential construction and home improvement domain skills (deck design, estimating).",
+      "paths": [
+        "skills/deck-design-estimator"
+      ],
+      "targets": [
+        "claude",
+        "cursor",
+        "antigravity",
+        "codex",
+        "opencode"
+      ],
+      "dependencies": [
+        "platform-configs"
+      ],
+      "defaultInstall": false,
+      "cost": "medium",
+      "stability": "stable"
     }
   ]
 }
