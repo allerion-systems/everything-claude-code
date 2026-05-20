@@ -36,6 +36,12 @@ export async function handleMcp(request, env, cors) {
 
   const { id = null, method, params = {} } = req;
 
+  // JSON-RPC notifications (no id) get no response. Includes
+  // MCP "notifications/initialized" sent right after initialize.
+  if (id === null && typeof method === 'string' && method.startsWith('notifications/')) {
+    return new Response(null, { status: 204, headers: cors });
+  }
+
   try {
     switch (method) {
       case 'initialize':

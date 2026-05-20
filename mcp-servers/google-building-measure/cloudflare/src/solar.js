@@ -40,12 +40,12 @@ export function summarizeInsights(insights) {
     };
   });
 
-  const totalRoofAreaM2 = solar.wholeRoofStats?.areaMeters2 ?? roofSegments.reduce((a, s) => a + s.areaSquareMeters / M2_TO_FT2, 0);
+  const totalRoofAreaM2 = solar.wholeRoofStats?.areaMeters2 ?? roofSegments.reduce((a, s) => a + s.areaSquareMeters, 0);
   const totalRoofAreaFt2 = totalRoofAreaM2 * M2_TO_FT2;
 
   const gutterLinealFeet = roofSegments.reduce((sum, s) => {
     const aspect = 2;
-    const widthM = Math.sqrt((s.areaSquareMeters / M2_TO_FT2) / aspect);
+    const widthM = Math.sqrt(s.areaSquareMeters / aspect);
     const lengthM = widthM * aspect;
     return sum + (2 * lengthM * M_TO_FT);
   }, 0);
