@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Building Measure — Roofr-style report from any address</title>
+<style>
+  :root { color-scheme: light dark; --bg: #fafafa; --fg: #111; --card: #fff; --border: #e0e0e0; --muted: #666; --primary: #1e7afc; --error: #b71c1c; --error-bg: #ffebee; --success: #1b5e20; --success-bg: #e8f5e9; --warn: #6b5300; --warn-bg: #fff8e1; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #0c0c0d; --fg: #eee; --card: #1c1c1e; --border: #333; --muted: #999; --error-bg: #4a1a1a; --success-bg: #1a3a1f; --warn-bg: #3a2e10; } }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { font: 15px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", sans-serif; max-width: 1080px; margin: 0 auto; padding: 20px 18px 80px; background: var(--bg); color: var(--fg); }
+  header { display: flex; align-items: baseline; gap: 14px; margin-bottom: 8px; flex-wrap: wrap; }
+  h1 { font-size: 24px; margin: 0; }
+  .lede { color: var(--muted); margin: 0 0 18px; font-size: 14px; }
+  .header-actions { margin-left: auto; display: flex; gap: 6px; }
+  button { padding: 10px 18px; font-size: 14px; font-weight: 600; background: var(--primary); color: white; border: 0; border-radius: 8px; cursor: pointer; }
+  button:disabled { background: #888; cursor: wait; }
+  button.secondary { background: transparent; color: var(--muted); border: 1px solid var(--border); }
+  button.danger { background: transparent; color: var(--error); border: 1px solid var(--border); }
+  input[type=text], input[type=password] { padding: 11px 13px; font-size: 14px; border: 1px solid var(--border); border-radius: 8px; background: var(--card); color: var(--fg); width: 100%; font-family: inherit; }
+  label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+  .hint { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .form-row { display: flex; gap: 8px; flex-wrap: wrap; }
+  .form-row input[type=text] { flex: 1; min-width: 240px; }
+  .options { font-size: 13px; color: var(--muted); margin: 12px 0 0; }
+  .options label { display: inline; margin-right: 14px; cursor: pointer; font-weight: 400; }
+  .alert { margin: 14px 0; padding: 11px 14px; border-radius: 8px; font-size: 14px; }
+  .alert.warn { background: var(--warn-bg); color: var(--warn); }
+  .alert.error { background: var(--error-bg); color: var(--error); }
+  .alert.success { background: var(--success-bg); color: var(--success); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin: 14px 0; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px; }
+  .card.metric .label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; font-weight: 600; }
+  .card.metric .value { font-size: 22px; font-weight: 700; line-height: 1.2; }
+  .card.metric .unit { font-size: 13px; color: var(--muted); font-weight: 400; margin-left: 3px; }
+  h2 { font-size: 16px; margin: 26px 0 10px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  th, td { padding: 7px 10px; text-align: left; border-bottom: 1px solid var(--border); }
+  th { font-weight: 600; color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  pre { background: var(--card); border: 1px solid var(--border); padding: 12px; border-radius: 8px; overflow: auto; font-size: 12px; max-height: 360px; line-height: 1.4; }
+  .progress { display: flex; flex-direction: column; gap: 6px; margin: 14px 0; }
+  .progress .step { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--muted); }
+  .progress .step.done { color: var(--success); }
+  .progress .step.active { color: var(--fg); font-weight: 600; }
+  .progress .step .icon { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--border); display: inline-block; }
+  .progress .step.done .icon { background: var(--success); border-color: var(--success); }
+  .progress .step.active .icon { border-color: var(--primary); border-top-color: transparent; animation: spin 0.8s linear infinite; }
+  .progress .step.error .icon { background: var(--error); border-color: var(--error); }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .settings-panel { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 18px; margin-bottom: 16px; }
+  .settings-panel h2 { margin-top: 0; border: 0; padding: 0; }
+  .settings-row { margin-bottom: 14px; }
+  .actions { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; }
+  .footer { margin-top: 50px; font-size: 12px; color: var(--muted); text-align: center; }
+  .preview-img { max-width: 100%; border: 1px solid var(--border); border-radius: 8px; margin: 10px 0; }
+  details { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; margin: 10px 0; }
+  details summary { cursor: pointer; font-weight: 600; font-size: 13px; }
+  details[open] summary { margin-bottom: 8px; }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 11px; font-weight: 600; background: var(--success-bg); color: var(--success); margin-left: 6px; }
+  .tag.warn { background: var(--warn-bg); color: var(--warn); }
+  a { color: var(--primary); }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🏠 Building Measure</h1>
+  <div class="header-actions">
+    <button class="secondary" id="settingsBtn">⚙️ Keys</button>
+  </div>
+</header>
+<p class="lede">Type a U.S. address. Get a Roofr-style roof, gutter, wall, and openings report in ~60 seconds. Runs entirely in your browser — keys stay local.</p>
+
+<!-- ── Settings / API Key panel ────────────────────────────────────────── -->
+<div id="settings" class="settings-panel" hidden>
+  <h2>API keys (stored only in your browser's local storage)</h2>
+  <div class="settings-row">
+    <label for="mapsKey">Google Cloud API key</label>
+    <input type="password" id="mapsKey" placeholder="AIza...">
+    <div class="hint">Get one at <a href="https://console.cloud.google.com/apis/credentials" target="_blank">console.cloud.google.com/apis/credentials</a>. Required APIs: Geocoding · Maps Static · Street View Static · Solar · Aerial View. Make sure key application restrictions are set to <b>None</b> (or include this page's URL in HTTP referrer restrictions).</div>
+  </div>
+  <div class="settings-row">
+    <label for="geminiKey">Gemini API key (free)</label>
+    <input type="password" id="geminiKey" placeholder="AIza...">
+    <div class="hint">Get one for free at <a href="https://aistudio.google.com/apikey" target="_blank">aistudio.google.com/apikey</a>. Free tier: 15 req/min, 1M tokens/day.</div>
+  </div>
+  <div class="actions">
+    <button id="saveKeysBtn">Save keys</button>
+    <button class="secondary" id="cancelKeysBtn">Cancel</button>
+    <button class="danger" id="forgetKeysBtn" style="margin-left:auto">🗑️ Forget all keys</button>
+  </div>
+  <div id="keysAlert"></div>
+</div>
+
+<!-- ── Main form ────────────────────────────────────────────────────────── -->
+<div id="main">
+  <form id="form" onsubmit="return false">
+    <label for="address">Address</label>
+    <div class="form-row">
+      <input type="text" id="address" placeholder="5396 Georgetown Greenville Road, Greenville IN 47124" autocomplete="off" required>
+      <button id="go">Generate report</button>
+    </div>
+    <div class="options">
+      <label><input type="checkbox" id="skipStreet"> Skip Street View (faster, no window/door count)</label>
+      <label><input type="checkbox" id="skipAerial"> Skip 3D Aerial View video</label>
+    </div>
+  </form>
+
+  <div id="progress" class="progress" hidden></div>
+  <div id="alerts"></div>
+  <div id="report"></div>
+</div>
+
+<div class="footer">
+  Single-file web app · No server · Keys never leave your browser ·
+  <a href="#" id="aboutLink">how it works</a>
+</div>
+
+<script>
+// ─────────────────────────────────────────────────────────────────────────
+// Storage helpers
+// ─────────────────────────────────────────────────────────────────────────
+const LS_KEY = 'buildingMeasureKeys';
+function loadKeys() {
+  try { return JSON.parse(localStorage.getItem(LS_KEY) || '{}'); } catch { return {}; }
+}
+function saveKeys(maps, gemini) {
+  localStorage.setItem(LS_KEY, JSON.stringify({ mapsKey: maps, geminiKey: gemini, savedAt: Date.now() }));
+}
+function forgetKeys() { localStorage.removeItem(LS_KEY); }
+
+// ─────────────────────────────────────────────────────────────────────────
+// Google Maps APIs
+// ─────────────────────────────────────────────────────────────────────────
+async function geocodeAddress(address, key) {
+  const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${key}`;
+  const r = await fetch(url);
+  if (!r.ok) throw new Error(`Geocoding HTTP ${r.status}`);
+  const d = await r.json();
+  if (d.status !== 'OK' || !d.results?.length) throw new Error(`Geocode failed: ${d.status}${d.error_message?' — '+d.error_message:''}`);
+  return { formattedAddress: d.results[0].formatted_address, lat: d.results[0].geometry.location.lat, lng: d.results[0].geometry.location.lng };
+}
+
+async function fetchImageAsBase64(url) {
+  const r = await fetch(url);
+  if (!r.ok) throw new Error(`Image fetch HTTP ${r.status}`);
+  const blob = await r.blob();
+  return new Promise((resolve, reject) => {
+    const fr = new FileReader();
+    fr.onload = () => resolve({ mimeType: blob.type || 'image/png', base64: fr.result.split(',')[1], url });
+    fr.onerror = reject;
+    fr.readAsDataURL(blob);
+  });
+}
+
+async function captureSatelliteImage(lat, lng, key, zoom = 20) {
+  const url = `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lng}&zoom=${zoom}&size=640x640&scale=2&maptype=satellite&key=${key}`;
+  return fetchImageAsBase64(url);
+}
+
+async function captureStreetView(lat, lng, heading, key) {
+  const url = `https://maps.googleapis.com/maps/api/streetview?location=${lat},${lng}&size=640x640&heading=${heading}&pitch=10&fov=80&key=${key}`;
+  return fetchImageAsBase64(url);
+}
+
+async function getBuildingInsights(lat, lng, key) {
+  const url = `https://solar.googleapis.com/v1/buildingInsights:findClosest?location.latitude=${lat}&location.longitude=${lng}&requiredQuality=HIGH&key=${key}`;
+  const r = await fetch(url);
+  if (!r.ok) {
+    const txt = await r.text();
+    throw new Error(`Solar API ${r.status}: ${txt.slice(0, 200)}`);
+  }
+  return r.json();
+}
+
+async function lookupAerialView(address, key) {
+  const url = `https://aerialview.googleapis.com/v1/videos:lookupVideo?address=${encodeURIComponent(address)}&key=${key}`;
+  const r = await fetch(url);
+  if (r.status === 404) return { covered: false };
+  if (!r.ok) {
+    const txt = await r.text();
+    throw new Error(`Aerial View ${r.status}: ${txt.slice(0, 200)}`);
+  }
+  const d = await r.json();
+  return { covered: true, state: d.state, videoId: d.videoId, videoUrls: { highDef: d.uris?.HIGH_DEF?.landscapeUri, standardDef: d.uris?.STANDARD_DEF?.landscapeUri }};
+}
+
+// ─────────────────────────────────────────────────────────────────────────
+// Gemini Flash vision (free)
+// ─────────────────────────────────────────────────────────────────────────
+async function gemini(prompt, base64, mimeType, key, model = 'gemini-2.0-flash') {
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`;
+  const body = { contents: [{ parts: [{ inline_data: { mime_type: mimeType, data: base64 } }, { text: prompt }] }], generationConfig: { maxOutputTokens: 4096, temperature: 0.1 } };
+  const r = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+  if (!r.ok) {
+    const txt = await r.text();
+    throw new Error(`Gemini ${r.status}: ${txt.slice(0, 200)}`);
+  }
+  const d = await r.json();
+  return d?.candidates?.[0]?.content?.parts?.[0]?.text ?? '';
+}
+
+function tryParseJson(text) {
+  const cleaned = text.replace(/^```(?:json)?\s*/i, '').replace(/```\s*$/i, '').trim();
+  try { return { ok: true, data: JSON.parse(cleaned) }; }
+  catch { return { ok: false, raw: text }; }
+}
+
+const EDGE_PROMPT = `You are a professional roofing estimator performing a satellite aerial measurement.
+EDGE TYPE DEFINITIONS:
+- EAVE: bottom horizontal edge where gutters attach (lowest edge of each plane).
+- RIDGE: top horizontal peak where two opposing planes meet.
+- HIP: diagonal edge where two planes slope DOWN and OUT to a corner.
+- VALLEY: diagonal edge where two planes meet INWARD (a V or trough).
+- RAKE: sloped end edge of a gable (slanted side of triangular end).
+- WALL FLASHING: where a roof plane butts against a vertical wall.
+- STEP FLASHING: where roof meets wall in stair-step pattern (dormers, chimneys).
+SCALE REFERENCES: car=15ft long, single garage door=9ft wide, door=3ft wide.
+TASK: identify every plane and edge. Estimate TOTAL lineal feet per edge type. Count facets. Identify predominant pitch. Count downspouts.
+Return ONLY this JSON (no markdown, no prose):
+{"facets":<int>,"eaves_ft":<num>,"ridges_ft":<num>,"hips_ft":<num>,"valleys_ft":<num>,"rakes_ft":<num>,"wall_flashing_ft":<num>,"step_flashing_ft":<num>,"transitions_ft":<num>,"parapet_wall_ft":<num>,"predominant_pitch":"<e.g. 6/12>","downspouts_visible":<int>,"confidence":"high|medium|low","scale_reference_used":"<string>"}`;
+
+const COMPONENTS_PROMPT = `Analyze this aerial image. Return ONLY JSON:
+{"roof":{"shape":"<gable|hip|gambrel|mansard|shed|flat|complex>","material_guess":"<asphalt shingle|metal|tile|flat membrane|unknown>","color_guess":"<string>"},"gutters":{"visible":<bool>,"approximate_runs":<int>},"downspouts":{"visible":<bool>,"count":<int>},"walls":{"siding_guess":"<string>","stories_guess":<int>},"chimneys":<int>,"skylights":<int>,"dormers":<int>}`;
+
+const OPENINGS_PROMPT = `Building takeoff for ONE facade visible in this image. Count only what's on this side. Return ONLY JSON:
+{"windows":<int>,"doors":<int>,"garage_doors":<int>,"other_openings":<int>,"stories_visible":<int>,"wall_material_guess":"<brick|vinyl siding|wood siding|stucco|fiber cement|unknown>"}`;
+
+// ─────────────────────────────────────────────────────────────────────────
+// Materials & report assembly
+// ─────────────────────────────────────────────────────────────────────────
+const M2_TO_FT2 = 10.7639, M_TO_FT = 3.28084;
+
+function ftIn(totalFt) {
+  if (totalFt == null) return '—';
+  const ft = Math.floor(totalFt);
+  const inches = Math.round((totalFt - ft) * 12);
+  return `${ft}ft ${inches}in`;
+}
+
+function degToPitch(deg) {
+  if (deg == null) return 'unknown';
+  return `${Math.round(12 * Math.tan(deg * Math.PI / 180))}/12`;
+}
+
+function summarizeSolar(raw) {
+  const sol = raw?.solarPotential;
+  if (!sol) return { error: 'Building not covered by Solar API.' };
+  const segs = (sol.roofSegmentStats || []).map((s, i) => {
+    const m2 = s.stats?.areaMeters2 ?? 0;
+    return { index: i, pitchDegrees: s.pitchDegrees ?? 0, azimuthDegrees: s.azimuthDegrees ?? null, areaSquareMeters: m2, areaSquareFeet: Math.round(m2 * M2_TO_FT2 * 10) / 10 };
+  });
+  const totalM2 = sol.wholeRoofStats?.areaMeters2 ?? segs.reduce((a, s) => a + s.areaSquareMeters, 0);
+  const footM2 = sol.buildingStats?.areaMeters2 ?? totalM2;
+  const footPerimFt = 4 * Math.sqrt(footM2) * M_TO_FT;
+  return {
+    imageryQuality: raw.imageryQuality,
+    imageryDate: raw.imageryDate,
+    totalRoofAreaSqft: Math.round(totalM2 * M2_TO_FT2 * 10) / 10,
+    segments: segs,
+    footprintSqft: Math.round(footM2 * M2_TO_FT2 * 10) / 10,
+    footprintPerimeterFt: Math.round(footPerimFt * 10) / 10,
+  };
+}
+
+function pitchBreakdown(segments) {
+  const map = {};
+  for (const s of segments) {
+    const p = degToPitch(s.pitchDegrees);
+    if (!map[p]) map[p] = { pitch: p, areaSquareFeet: 0, facets: 0 };
+    map[p].areaSquareFeet += s.areaSquareFeet;
+    map[p].facets += 1;
+  }
+  return Object.values(map).sort((a, b) => b.areaSquareFeet - a.areaSquareFeet);
+}
+
+function calculateMaterials(m) {
+  const SQFT_PER_BUNDLE = 33.3, STARTER_LF_PER_BUNDLE = 105, ICEWATER_SQFT_PER_ROLL = 75, SYN_PER_ROLL = 1000, RIDGE_LF_PER_BUNDLE = 25, DRIP_PER_PIECE = 10;
+  const eavesRakes = (m.eavesFt || 0) + (m.rakesFt || 0);
+  const hipsRidges = (m.hipsFt || 0) + (m.ridgesFt || 0);
+  const iceWater = (m.eavesFt || 0) + (m.valleysFt || 0) + (m.wallFlashingFt || 0) + (m.stepFlashingFt || 0);
+  const waste = [0, 0.10, 0.12, 0.15, 0.17, 0.20, 0.22].map(p => {
+    const g = Math.ceil(m.totalSqft * (1 + p));
+    return { wastePercent: Math.round(p*100), grossSquareFeet: g, squares: Math.round(g/100*10)/10, shingleBundles: Math.ceil(g / SQFT_PER_BUNDLE) };
+  });
+  return {
+    waste,
+    starter: { coverageLf: Math.round(eavesRakes*10)/10, bundles: Math.ceil(eavesRakes / STARTER_LF_PER_BUNDLE) },
+    iceAndWater: { coverageLf: Math.round(iceWater*10)/10, rolls: Math.ceil((iceWater * 3) / ICEWATER_SQFT_PER_ROLL) },
+    syntheticUnderlayment: { totalSqft: m.totalSqft, rolls: Math.ceil(m.totalSqft / SYN_PER_ROLL) },
+    ridgeCaps: { coverageLf: Math.round(hipsRidges*10)/10, bundles: Math.ceil(hipsRidges / RIDGE_LF_PER_BUNDLE) },
+    dripEdge: { coverageLf: Math.round(eavesRakes*10)/10, pieces10ft: Math.ceil(eavesRakes / DRIP_PER_PIECE) },
+    valleyMetal: { coverageLf: Math.round((m.valleysFt||0)*10)/10, pieces10ft: Math.ceil((m.valleysFt||0) / 10) },
+  };
+}
+
+// ─────────────────────────────────────────────────────────────────────────
+// Orchestration
+// ─────────────────────────────────────────────────────────────────────────
+const STEPS = [
+  { id: 'geocode', label: 'Geocoding address...' },
+  { id: 'solar', label: 'Querying Google Solar API for roof segments...' },
+  { id: 'satellite', label: 'Capturing satellite image...' },
+  { id: 'edge', label: 'Analyzing roof edges with Gemini Flash vision...' },
+  { id: 'components', label: 'Identifying components (roof shape, gutters, downspouts)...' },
+  { id: 'aerial', label: 'Looking up 3D Aerial View video...' },
+  { id: 'streetview', label: 'Sweeping 4 Street View facades + counting openings...' },
+  { id: 'assemble', label: 'Assembling Roofr-style report...' },
+];
+
+function renderProgress(activeId, doneIds = [], errorId = null) {
+  const box = document.getElementById('progress');
+  box.hidden = false;
+  box.innerHTML = STEPS.map(s => {
+    const cls = errorId === s.id ? 'error' : doneIds.includes(s.id) ? 'done' : activeId === s.id ? 'active' : '';
+    return `<div class="step ${cls}"><span class="icon"></span>${s.label}</div>`;
+  }).join('');
+}
+
+async function runMeasurement(address, opts) {
+  const keys = loadKeys();
+  if (!keys.mapsKey || !keys.geminiKey) {
+    showAlert('Set your API keys in ⚙️ Keys before running.', 'error');
+    return;
+  }
+  const done = [];
+  const reportDiv = document.getElementById('report');
+  reportDiv.innerHTML = '';
+  document.getElementById('alerts').innerHTML = '';
+
+  try {
+    // 1. Geocode
+    renderProgress('geocode', done);
+    const geo = await geocodeAddress(address, keys.mapsKey);
+    done.push('geocode');
+
+    // 2. Solar API (graceful failure)
+    renderProgress('solar', done);
+    let solar = null, solarError = null;
+    try { solar = summarizeSolar(await getBuildingInsights(geo.lat, geo.lng, keys.mapsKey)); }
+    catch (e) { solarError = e.message; }
+    done.push('solar');
+
+    // 3. Satellite image
+    renderProgress('satellite', done);
+    const satImg = await captureSatelliteImage(geo.lat, geo.lng, keys.mapsKey);
+    done.push('satellite');
+
+    // 4. Roof edges (vision)
+    renderProgress('edge', done);
+    const edgeRaw = await gemini(EDGE_PROMPT, satImg.base64, satImg.mimeType, keys.geminiKey);
+    const edge = tryParseJson(edgeRaw);
+    done.push('edge');
+
+    // 5. Components (vision)
+    renderProgress('components', done);
+    const compRaw = await gemini(COMPONENTS_PROMPT, satImg.base64, satImg.mimeType, keys.geminiKey);
+    const components = tryParseJson(compRaw);
+    done.push('components');
+
+    // 6. Aerial View (optional)
+    let aerial = null;
+    if (!opts.skipAerial) {
+      renderProgress('aerial', done);
+      try { aerial = await lookupAerialView(geo.formattedAddress, keys.mapsKey); }
+      catch (e) { aerial = { covered: false, error: e.message }; }
+    }
+    done.push('aerial');
+
+    // 7. Street View sweep (optional)
+    const sides = [];
+    if (!opts.skipStreet) {
+      renderProgress('streetview', done);
+      for (const heading of [0, 90, 180, 270]) {
+        try {
+          const img = await captureStreetView(geo.lat, geo.lng, heading, keys.mapsKey);
+          const txt = await gemini(OPENINGS_PROMPT, img.base64, img.mimeType, keys.geminiKey);
+          sides.push({ heading, sourceUrl: img.url, openings: tryParseJson(txt) });
+        } catch (e) {
+          sides.push({ heading, error: e.message });
+        }
+      }
+    }
+    done.push('streetview');
+
+    // 8. Assemble report
+    renderProgress('assemble', done);
+    const v = edge.ok ? edge.data : null;
+    const c = components.ok ? components.data : null;
+    const totalSqft = solar?.totalRoofAreaSqft || null;
+    const segments = solar?.segments || [];
+    const pitches = pitchBreakdown(segments);
+    let materials = null;
+    if (totalSqft && v?.eaves_ft != null) {
+      materials = calculateMaterials({
+        totalSqft,
+        eavesFt: v.eaves_ft, rakesFt: v.rakes_ft, hipsFt: v.hips_ft,
+        ridgesFt: v.ridges_ft, valleysFt: v.valleys_ft,
+        wallFlashingFt: v.wall_flashing_ft, stepFlashingFt: v.step_flashing_ft,
+      });
+    }
+    const openingTotals = { windows: 0, doors: 0, garage_doors: 0, other_openings: 0 };
+    for (const s of sides) if (s.openings?.ok && s.openings.data) {
+      for (const k of Object.keys(openingTotals)) openingTotals[k] += Number(s.openings.data[k] || 0);
+    }
+    done.push('assemble');
+    renderProgress(null, done);
+
+    const report = {
+      address: { input: address, resolved: geo.formattedAddress, lat: geo.lat, lng: geo.lng },
+      summary: { totalRoofAreaSqft: totalSqft, totalFacets: v?.facets ?? segments.length ?? null, predominantPitch: v?.predominant_pitch ?? (segments[0] ? degToPitch(segments[0].pitchDegrees) : null), imageryQuality: solar?.imageryQuality, imageryDate: solar?.imageryDate },
+      lengths: v ? {
+        eaves: { ft: v.eaves_ft, formatted: ftIn(v.eaves_ft), note: 'Gutter line' },
+        ridges: { ft: v.ridges_ft, formatted: ftIn(v.ridges_ft) },
+        hips: { ft: v.hips_ft, formatted: ftIn(v.hips_ft) },
+        valleys: { ft: v.valleys_ft, formatted: ftIn(v.valleys_ft) },
+        rakes: { ft: v.rakes_ft, formatted: ftIn(v.rakes_ft) },
+        wallFlashing: { ft: v.wall_flashing_ft, formatted: ftIn(v.wall_flashing_ft) },
+        stepFlashing: { ft: v.step_flashing_ft, formatted: ftIn(v.step_flashing_ft) },
+        hipsAndRidges: { ft: (v.hips_ft||0)+(v.ridges_ft||0), formatted: ftIn((v.hips_ft||0)+(v.ridges_ft||0)) },
+        eavesAndRakes: { ft: (v.eaves_ft||0)+(v.rakes_ft||0), formatted: ftIn((v.eaves_ft||0)+(v.rakes_ft||0)) },
+      } : null,
+      pitchBreakdown: pitches,
+      components: c,
+      openings: { totals: openingTotals, perSide: sides },
+      footprint: solar ? { areaSquareFeet: solar.footprintSqft, approxPerimeterFeet: solar.footprintPerimeterFt } : null,
+      aerialView: aerial,
+      materials,
+      satelliteImage: satImg.url,
+      dataQuality: {
+        edgeAnalysisConfidence: v?.confidence ?? 'none',
+        scaleReference: v?.scale_reference_used,
+        solarApiCovered: !!solar && !solar.error,
+        warnings: [
+          solarError ? `Solar API: ${solarError}` : null,
+          !v ? 'Vision edge analysis failed.' : null,
+          !totalSqft ? 'No total roof area — materials unavailable.' : null,
+          v?.confidence === 'low' ? 'Vision confidence LOW — verify in person.' : null,
+        ].filter(Boolean),
+      },
+    };
+    renderReport(report);
+  } catch (err) {
+    showAlert(`Error: ${err.message}`, 'error');
+    renderProgress(null, done, STEPS.find(s => !done.includes(s.id))?.id);
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────
+// Rendering
+// ─────────────────────────────────────────────────────────────────────────
+function showAlert(msg, type = 'warn') {
+  document.getElementById('alerts').innerHTML = `<div class="alert ${type}">${msg}</div>`;
+}
+
+function metricCard(label, value, unit) {
+  if (value === null || value === undefined || value === '') value = '—';
+  return `<div class="card metric"><div class="label">${label}</div><div class="value">${value}${unit ? `<span class="unit"> ${unit}</span>` : ''}</div></div>`;
+}
+
+function renderReport(d) {
+  const r = document.getElementById('report');
+  const s = d.summary || {};
+  const len = d.lengths;
+  const m = d.materials;
+
+  let html = `<div style="margin: 18px 0 6px"><span class="tag">Report ready</span> ${d.address.resolved}</div>`;
+  html += `<div class="grid">`;
+  html += metricCard('Total roof area', s.totalRoofAreaSqft, 'sqft');
+  html += metricCard('Total facets', s.totalFacets);
+  html += metricCard('Predominant pitch', s.predominantPitch);
+  html += metricCard('Vision confidence', d.dataQuality?.edgeAnalysisConfidence ?? '—');
+  html += `</div>`;
+
+  // Satellite preview
+  if (d.satelliteImage) {
+    html += `<details><summary>Satellite image used for analysis</summary><img class="preview-img" src="${d.satelliteImage}" alt="satellite"></details>`;
+  }
+
+  if (len) {
+    html += `<h2>Lineal feet — per edge type</h2>
+      <table><thead><tr><th>Edge</th><th>Length</th><th class="num">Decimal ft</th></tr></thead><tbody>`;
+    for (const [k, label] of [['eaves','Eaves (gutter line)'],['ridges','Ridges'],['hips','Hips'],['valleys','Valleys'],['rakes','Rakes'],['wallFlashing','Wall flashing'],['stepFlashing','Step flashing'],['hipsAndRidges','Hips + Ridges'],['eavesAndRakes','Eaves + Rakes (drip edge)']]) {
+      const v = len[k]; if (!v) continue;
+      html += `<tr><td>${label}</td><td>${v.formatted}</td><td class="num">${v.ft ?? '—'}</td></tr>`;
+    }
+    html += `</tbody></table>`;
+  }
+
+  if (d.pitchBreakdown?.length) {
+    html += `<h2>Pitch breakdown (from Solar API)</h2>
+      <table><thead><tr><th>Pitch</th><th class="num">Area (sqft)</th><th class="num">Facets</th></tr></thead><tbody>`;
+    for (const p of d.pitchBreakdown) html += `<tr><td>${p.pitch}</td><td class="num">${Math.round(p.areaSquareFeet)}</td><td class="num">${p.facets}</td></tr>`;
+    html += `</tbody></table>`;
+  }
+
+  if (m) {
+    html += `<h2>Materials needed</h2>
+      <table><thead><tr><th>Item</th><th>Coverage</th><th class="num">Quantity</th></tr></thead><tbody>`;
+    const w15 = m.waste.find(x => x.wastePercent === 15);
+    if (w15) html += `<tr><td>Shingles (15% waste)</td><td>${w15.grossSquareFeet} sqft = ${w15.squares} sq</td><td class="num">${w15.shingleBundles} bundles</td></tr>`;
+    html += `<tr><td>Starter strip</td><td>${m.starter.coverageLf} lf</td><td class="num">${m.starter.bundles} bundles</td></tr>`;
+    html += `<tr><td>Ice &amp; water shield</td><td>${m.iceAndWater.coverageLf} lf</td><td class="num">${m.iceAndWater.rolls} rolls</td></tr>`;
+    html += `<tr><td>Synthetic underlayment</td><td>${m.syntheticUnderlayment.totalSqft} sqft</td><td class="num">${m.syntheticUnderlayment.rolls} rolls</td></tr>`;
+    html += `<tr><td>Ridge caps</td><td>${m.ridgeCaps.coverageLf} lf</td><td class="num">${m.ridgeCaps.bundles} bundles</td></tr>`;
+    html += `<tr><td>Drip edge (10ft)</td><td>${m.dripEdge.coverageLf} lf</td><td class="num">${m.dripEdge.pieces10ft} pieces</td></tr>`;
+    html += `<tr><td>Valley metal (10ft)</td><td>${m.valleyMetal.coverageLf} lf</td><td class="num">${m.valleyMetal.pieces10ft} pieces</td></tr>`;
+    html += `</tbody></table>`;
+
+    html += `<h2>Shingle bundles at every waste %</h2>
+      <table><thead><tr><th class="num">Waste</th><th class="num">Gross sqft</th><th class="num">Squares</th><th class="num">Bundles</th></tr></thead><tbody>`;
+    for (const w of m.waste) html += `<tr><td class="num">${w.wastePercent}%</td><td class="num">${w.grossSquareFeet}</td><td class="num">${w.squares}</td><td class="num">${w.shingleBundles}</td></tr>`;
+    html += `</tbody></table>`;
+  }
+
+  if (d.openings) {
+    const o = d.openings.totals;
+    html += `<h2>Openings (Street View, 4 facades)</h2><div class="grid">`;
+    html += metricCard('Windows', o.windows);
+    html += metricCard('Doors', o.doors);
+    html += metricCard('Garage doors', o.garage_doors);
+    html += metricCard('Other openings', o.other_openings);
+    html += `</div>`;
+  }
+
+  if (d.components?.ok) {
+    const c = d.components.data;
+    html += `<h2>Components</h2><table><tbody>`;
+    if (c.roof?.shape) html += `<tr><td>Roof shape</td><td>${c.roof.shape}</td></tr>`;
+    if (c.roof?.material_guess) html += `<tr><td>Roof material</td><td>${c.roof.material_guess}</td></tr>`;
+    if (c.walls?.siding_guess) html += `<tr><td>Wall siding</td><td>${c.walls.siding_guess}</td></tr>`;
+    if (c.walls?.stories_guess != null) html += `<tr><td>Stories</td><td>${c.walls.stories_guess}</td></tr>`;
+    if (c.gutters?.visible != null) html += `<tr><td>Gutters visible</td><td>${c.gutters.visible ? 'Yes' : 'No'}</td></tr>`;
+    if (c.downspouts?.count != null) html += `<tr><td>Downspouts</td><td>${c.downspouts.count}</td></tr>`;
+    if (c.chimneys != null) html += `<tr><td>Chimneys</td><td>${c.chimneys}</td></tr>`;
+    if (c.skylights != null) html += `<tr><td>Skylights</td><td>${c.skylights}</td></tr>`;
+    if (c.dormers != null) html += `<tr><td>Dormers</td><td>${c.dormers}</td></tr>`;
+    html += `</tbody></table>`;
+  }
+
+  if (d.aerialView?.covered && d.aerialView.videoUrls?.highDef) {
+    html += `<h2>3D Aerial fly-around</h2><p><a href="${d.aerialView.videoUrls.highDef}" target="_blank">▶ Open HD fly-around video</a></p>`;
+  } else if (d.aerialView?.covered === false) {
+    html += `<h2>3D Aerial fly-around</h2><p style="color:var(--muted)">Aerial View not available for this address.</p>`;
+  }
+
+  if (d.dataQuality?.warnings?.length) {
+    html += `<h2>Warnings</h2><ul>${d.dataQuality.warnings.map(w => `<li>${w}</li>`).join('')}</ul>`;
+  }
+
+  html += `<details style="margin-top:24px"><summary>Full JSON (copy for spreadsheet / API integration)</summary><pre>${escapeHtml(JSON.stringify(d, null, 2))}</pre></details>`;
+
+  r.innerHTML = html;
+}
+
+function escapeHtml(s) { return s.replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])); }
+
+// ─────────────────────────────────────────────────────────────────────────
+// Settings panel
+// ─────────────────────────────────────────────────────────────────────────
+function openSettings() {
+  const k = loadKeys();
+  document.getElementById('mapsKey').value = k.mapsKey || '';
+  document.getElementById('geminiKey').value = k.geminiKey || '';
+  document.getElementById('settings').hidden = false;
+  document.getElementById('main').hidden = true;
+}
+function closeSettings() {
+  document.getElementById('settings').hidden = true;
+  document.getElementById('main').hidden = false;
+}
+
+document.getElementById('settingsBtn').onclick = openSettings;
+document.getElementById('cancelKeysBtn').onclick = closeSettings;
+document.getElementById('saveKeysBtn').onclick = () => {
+  const m = document.getElementById('mapsKey').value.trim();
+  const g = document.getElementById('geminiKey').value.trim();
+  if (!m || !g) {
+    document.getElementById('keysAlert').innerHTML = `<div class="alert error">Both keys are required.</div>`;
+    return;
+  }
+  if (!m.startsWith('AIza') || !g.startsWith('AIza')) {
+    document.getElementById('keysAlert').innerHTML = `<div class="alert warn">Keys usually start with "AIza..." — double-check you pasted the right ones. Saving anyway.</div>`;
+  }
+  saveKeys(m, g);
+  closeSettings();
+  showAlert('Keys saved. Try a measurement below.', 'success');
+};
+document.getElementById('forgetKeysBtn').onclick = () => {
+  if (confirm('Forget your API keys from this browser?')) {
+    forgetKeys();
+    document.getElementById('mapsKey').value = '';
+    document.getElementById('geminiKey').value = '';
+    document.getElementById('keysAlert').innerHTML = `<div class="alert success">Keys cleared from browser.</div>`;
+  }
+};
+
+document.getElementById('go').onclick = () => {
+  const addr = document.getElementById('address').value.trim();
+  if (!addr) return;
+  const btn = document.getElementById('go');
+  btn.disabled = true; btn.textContent = 'Working...';
+  runMeasurement(addr, {
+    skipStreet: document.getElementById('skipStreet').checked,
+    skipAerial: document.getElementById('skipAerial').checked,
+  }).finally(() => { btn.disabled = false; btn.textContent = 'Generate report'; });
+};
+document.getElementById('address').addEventListener('keypress', e => { if (e.key === 'Enter') { e.preventDefault(); document.getElementById('go').click(); }});
+
+document.getElementById('aboutLink').onclick = e => {
+  e.preventDefault();
+  alert(`This page is a single HTML file that runs entirely in your browser.\n\nIt calls Google Maps APIs (Geocoding, Static Maps, Street View, Solar, Aerial View) and Google Gemini Flash vision directly from your browser. Your API keys are stored only in this browser's localStorage and never sent to anyone except Google.\n\nNo server. No deployment. No tracking.`);
+};
+
+// On first load, show settings if no keys yet
+if (!loadKeys().mapsKey) { openSettings(); }
+</script>
+</body>
+</html>
