@@ -1,7 +1,7 @@
 {
   "name": "google-building-measure-mcp",
-  "version": "0.1.0",
-  "description": "MCP server that measures roof, gutters, walls, and openings of any building using Google Solar API, Google Static Maps, and a vision model.",
+  "version": "0.2.0",
+  "description": "MCP server that generates Roofr-style building takeoffs from any address: roof sqft, facet count, lineal feet per edge type (eaves/ridges/hips/valleys/rakes/flashings), pitch breakdown, and full material calculator.",
   "type": "module",
   "main": "src/index.js",
   "bin": {

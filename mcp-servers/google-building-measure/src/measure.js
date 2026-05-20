@@ -1,85 +1,89 @@
-// One-shot measurement: address in → full building takeoff out.
+// Full building measurement orchestrator.
 
 import { geocodeAddress, captureSatelliteImage, captureStreetView } from './maps.js';
 import { getBuildingInsights, summarizeInsights } from './solar.js';
-import { countOpenings, identifyComponents } from './vision.js';
-
-const M_TO_FT = 3.28084;
+import { lookupAerialView } from './aerialView.js';
+import { analyzeRoofEdges, countOpenings, identifyComponents } from './vision.js';
+import { assembleReport } from './report.js';
 
 export async function measureBuilding({ address, googleApiKey, options = {} }) {
-  const { headings = [0, 90, 180, 270], assumedStoryHeightFt = 10 } = options;
+  const {
+    headings = [0, 90, 180, 270],
+    skipAerialView = false,
+    skipStreetView = false,
+  } = options;
 
   const geo = await geocodeAddress(address, googleApiKey);
   const { lat, lng } = geo.location;
 
-  // Solar API — roof / gutters / footprint.
-  let solar;
+  // ── Solar API ─────────────────────────────────────────────────────────────
+  let solarSummary = null;
   try {
     const raw = await getBuildingInsights({ lat, lng, apiKey: googleApiKey });
-    solar = summarizeInsights(raw);
+    solarSummary = summarizeInsights(raw);
   } catch (err) {
-    solar = { error: err.message };
+    solarSummary = { error: err.message };
   }
 
-  // Satellite image + roof shape inspection.
-  let satellite, satelliteAnalysis;
+  // ── Satellite image → roof edge + component analysis ─────────────────────
+  let edgeAnalysis = null;
+  let componentAnalysis = null;
   try {
-    satellite = await captureSatelliteImage({ lat, lng, apiKey: googleApiKey });
-    satelliteAnalysis = await identifyComponents({ base64: satellite.base64, mimeType: satellite.mimeType });
+    const img = await captureSatelliteImage({ lat, lng, zoom: 20, apiKey: googleApiKey });
+    [edgeAnalysis, componentAnalysis] = await Promise.all([
+      analyzeRoofEdges({ base64: img.base64, mimeType: img.mimeType }),
+      identifyComponents({ base64: img.base64, mimeType: img.mimeType }),
+    ]);
   } catch (err) {
-    satelliteAnalysis = { ok: false, error: err.message };
+    edgeAnalysis = { ok: false, error: err.message };
+    componentAnalysis = { ok: false, error: err.message };
   }
 
-  // Street View sweep — one image per heading, count openings.
-  const sides = [];
-  for (const heading of headings) {
+  // ── Aerial View ───────────────────────────────────────────────────────────
+  let aerialView = null;
+  if (!skipAerialView) {
     try {
-      const img = await captureStreetView({ lat, lng, heading, apiKey: googleApiKey });
-      const openings = await countOpenings({ base64: img.base64, mimeType: img.mimeType });
-      sides.push({ heading, sourceUrl: img.url, openings });
+      aerialView = await lookupAerialView(geo.formattedAddress, googleApiKey);
     } catch (err) {
-      sides.push({ heading, error: err.message });
+      aerialView = { covered: false, error: err.message };
     }
   }
 
-  // Aggregate opening counts across the four facades.
-  const totals = { windows: 0, doors: 0, garage_doors: 0, other_openings: 0 };
-  for (const side of sides) {
-    if (side.openings?.ok && side.openings.data) {
-      for (const k of Object.keys(totals)) totals[k] += Number(side.openings.data[k] || 0);
+  // ── Street View sweep → opening counts ───────────────────────────────────
+  const perSide = [];
+  if (!skipStreetView) {
+    for (const heading of headings) {
+      try {
+        const img = await captureStreetView({ lat, lng, heading, apiKey: googleApiKey });
+        const openings = await countOpenings({ base64: img.base64, mimeType: img.mimeType });
+        perSide.push({ heading, openings });
+      } catch (err) {
+        perSide.push({ heading, error: err.message });
+      }
     }
   }
 
-  // Wall square footage estimate: footprint perimeter * assumed story height * stories.
-  const stories = satelliteAnalysis?.ok ? Number(satelliteAnalysis.data?.walls?.stories_guess || 1) : 1;
-  const perimeterFt = solar?.footprint?.approxPerimeterFeet ?? null;
-  const wallSqFt = perimeterFt ? Math.round(perimeterFt * assumedStoryHeightFt * stories) : null;
-
-  return {
-    address: { input: address, resolved: geo.formattedAddress, lat, lng, placeId: geo.placeId },
-    roof: solar?.roof ?? { error: solar?.error },
-    gutters: solar?.gutters ?? null,
-    footprint: solar?.footprint ?? null,
-    walls: {
-      estimatedSquareFeet: wallSqFt,
-      assumedStoryHeightFeet: assumedStoryHeightFt,
-      assumedStories: stories,
-      method: 'footprint perimeter × story height × stories (does not subtract openings)',
-    },
-    openings: {
-      totals,
-      perSide: sides,
-    },
-    componentsFromSatellite: satelliteAnalysis,
-    imagery: {
-      satellite: satellite ? { sourceUrl: satellite.url } : null,
-    },
-    notes: [
-      solar?.error ? `Solar API: ${solar.error}` : null,
-      perimeterFt ? null : 'Footprint perimeter unavailable — wall area not estimated.',
-    ].filter(Boolean),
-  };
+  // ── Assemble Roofr-style report ───────────────────────────────────────────
+  return assembleReport({
+    address,
+    geo,
+    solarSummary,
+    edgeAnalysis,
+    componentAnalysis,
+    aerialView,
+    openings: { perSide },
+  });
 }
 
-// Re-exported helpers for thin tool wrappers.
-export { geocodeAddress, captureSatelliteImage, captureStreetView, getBuildingInsights, summarizeInsights, countOpenings, identifyComponents, M_TO_FT };
+// Re-export helpers for thin tool wrappers.
+export {
+  geocodeAddress,
+  captureSatelliteImage,
+  captureStreetView,
+  getBuildingInsights,
+  summarizeInsights,
+  analyzeRoofEdges,
+  countOpenings,
+  identifyComponents,
+  lookupAerialView,
+};
