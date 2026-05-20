@@ -73,7 +73,8 @@
         "agentic-patterns",
         "devops-infra",
         "supply-chain-domain",
-        "document-processing"
+        "document-processing",
+        "residential-construction-domain"
       ]
     }
   }

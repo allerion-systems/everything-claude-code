@@ -410,6 +410,14 @@
       "modules": [
         "research-apis"
       ]
+    },
+    {
+      "id": "skill:deck-design-estimator",
+      "family": "skill",
+      "description": "Photo-first deck design and contractor-grade material/labor estimator.",
+      "modules": [
+        "residential-construction-domain"
+      ]
     }
   ]
 }
