@@ -1,0 +1,14 @@
+name = "google-building-measure"
+main = "src/worker.js"
+compatibility_date = "2025-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+# After clicking "Deploy to Cloudflare", set these in:
+#   Cloudflare Dashboard → Workers & Pages → google-building-measure → Settings → Variables
+#
+#   GOOGLE_MAPS_API_KEY   (your Google Cloud API key)
+#   GEMINI_API_KEY        (your free Gemini key from aistudio.google.com)
+#
+# Or via CLI:
+#   wrangler secret put GOOGLE_MAPS_API_KEY
+#   wrangler secret put GEMINI_API_KEY

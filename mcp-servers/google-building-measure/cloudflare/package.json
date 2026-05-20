@@ -1,0 +1,14 @@
+{
+  "name": "google-building-measure-worker",
+  "version": "0.3.0",
+  "description": "Cloudflare Worker — building takeoff (roof, gutters, walls, openings, materials) from any address using Google Solar + Aerial View + Static Maps + Street View + Gemini vision.",
+  "type": "module",
+  "main": "src/worker.js",
+  "scripts": {
+    "deploy": "wrangler deploy",
+    "dev": "wrangler dev"
+  },
+  "devDependencies": {
+    "wrangler": "^3.90.0"
+  }
+}
