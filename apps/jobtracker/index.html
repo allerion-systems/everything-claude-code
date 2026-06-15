@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#0f172a" />
+<title>R&B Jobs — Project Tracker</title>
+<style>
+  :root{
+    --bg:#0f172a; --panel:#1e293b; --panel2:#273548; --line:#334155;
+    --text:#e2e8f0; --muted:#94a3b8; --accent:#f59e0b; --accent2:#38bdf8;
+    --green:#22c55e; --red:#ef4444; --amber:#f59e0b; --blue:#3b82f6;
+    --radius:14px; --shadow:0 6px 24px rgba(0,0,0,.35);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--bg); color:var(--text);
+    font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--accent2);text-decoration:none}
+  a:hover{text-decoration:underline}
+  button{font-family:inherit;cursor:pointer}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 16px 80px}
+
+  /* Header */
+  header{
+    position:sticky;top:0;z-index:20;background:rgba(15,23,42,.92);
+    backdrop-filter:blur(8px);border-bottom:1px solid var(--line);
+  }
+  .head-inner{max-width:1180px;margin:0 auto;padding:12px 16px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.3px}
+  .brand .logo{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--accent),#b45309);
+    display:grid;place-items:center;color:#1a1207;font-weight:900}
+  .brand small{display:block;font-weight:500;color:var(--muted);font-size:11px;letter-spacing:.5px}
+  .head-spacer{flex:1}
+  .today{color:var(--muted);font-size:13px;text-align:right}
+  .tabs{display:flex;gap:6px;flex-wrap:wrap;padding:0 16px 10px;max-width:1180px;margin:0 auto}
+  .tab{background:transparent;color:var(--muted);border:1px solid transparent;border-radius:999px;
+    padding:7px 15px;font-weight:600;font-size:13.5px}
+  .tab.active{background:var(--panel);color:var(--text);border-color:var(--line)}
+  .tab:hover{color:var(--text)}
+
+  /* Stats */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0}
+  .stat{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px}
+  .stat .n{font-size:26px;font-weight:800;line-height:1.1}
+  .stat .l{color:var(--muted);font-size:12px;margin-top:3px;text-transform:uppercase;letter-spacing:.6px}
+  .stat .sub{font-size:12px;color:var(--muted);margin-top:5px}
+
+  /* Section heads */
+  .sec-head{display:flex;align-items:center;gap:10px;margin:26px 0 12px}
+  .sec-head h2{font-size:16px;margin:0;letter-spacing:.3px}
+  .sec-head .count{color:var(--muted);font-size:13px}
+  .sec-head .grow{flex:1}
+
+  /* Job cards */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:14px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    padding:16px;cursor:pointer;transition:.15s;position:relative;overflow:hidden}
+  .card:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .card .stripe{position:absolute;left:0;top:0;bottom:0;width:5px}
+  .card h3{margin:0 0 2px;font-size:16.5px;padding-left:6px}
+  .card .gc{color:var(--muted);font-size:12.5px;padding-left:6px;margin-bottom:12px}
+  .row{display:flex;justify-content:space-between;gap:8px;font-size:13px;padding:3px 0 3px 6px}
+  .row .k{color:var(--muted)}
+  .row .v{font-weight:600;text-align:right}
+  .pill{display:inline-block;padding:3px 10px;border-radius:999px;font-size:11.5px;font-weight:700;letter-spacing:.3px}
+  .badges{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0 0;padding-left:6px}
+  .chip{background:var(--panel2);border:1px solid var(--line);border-radius:7px;padding:3px 8px;font-size:11px;color:var(--muted)}
+  .next{margin-top:12px;padding:10px 12px;background:var(--panel2);border-radius:10px;font-size:13px;border-left:3px solid var(--accent)}
+  .next .lab{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.5px}
+  .taskbar{margin-top:12px;padding-left:6px}
+  .taskbar .tt{font-size:12px;color:var(--muted);display:flex;justify-content:space-between;margin-bottom:5px}
+  .bar{height:6px;background:var(--panel2);border-radius:99px;overflow:hidden}
+  .bar > i{display:block;height:100%;background:var(--green)}
+
+  .due-soon{color:var(--amber)!important}
+  .due-over{color:var(--red)!important}
+
+  /* Week / timeline */
+  .timeline{display:flex;flex-direction:column;gap:10px}
+  .tl{display:flex;gap:14px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 16px;align-items:center}
+  .tl .date{min-width:64px;text-align:center}
+  .tl .date .d{font-size:22px;font-weight:800;line-height:1}
+  .tl .date .m{font-size:11px;color:var(--muted);text-transform:uppercase}
+  .tl .date .wd{font-size:11px;color:var(--accent);text-transform:uppercase;font-weight:700}
+  .tl .body{flex:1}
+  .tl .body .t{font-weight:600}
+  .tl .body .s{color:var(--muted);font-size:12.5px}
+  .tl .tag{font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;white-space:nowrap}
+
+  /* Tasks list */
+  .tasklist{display:flex;flex-direction:column;gap:8px}
+  .task{display:flex;gap:12px;align-items:flex-start;background:var(--panel);border:1px solid var(--line);
+    border-radius:11px;padding:11px 14px}
+  .task.done{opacity:.5}
+  .task.done .tlabel{text-decoration:line-through}
+  .cbx{width:21px;height:21px;border-radius:6px;border:2px solid var(--line);background:transparent;
+    flex-shrink:0;margin-top:1px;display:grid;place-items:center;color:#0f172a;font-weight:900;font-size:13px}
+  .cbx.on{background:var(--green);border-color:var(--green)}
+  .task .meta{flex:1}
+  .task .tlabel{font-weight:600}
+  .task .tsub{font-size:12px;color:var(--muted);margin-top:2px;display:flex;gap:10px;flex-wrap:wrap}
+  .jobdot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:middle}
+  .del{background:transparent;border:none;color:var(--muted);font-size:16px;padding:2px 6px;border-radius:6px}
+  .del:hover{color:var(--red);background:var(--panel2)}
+
+  /* Modal */
+  .overlay{position:fixed;inset:0;background:rgba(2,6,23,.7);backdrop-filter:blur(3px);z-index:50;
+    display:none;align-items:flex-start;justify-content:center;padding:24px 14px;overflow:auto}
+  .overlay.open{display:flex}
+  .modal{background:var(--panel);border:1px solid var(--line);border-radius:18px;max-width:760px;width:100%;
+    box-shadow:var(--shadow);overflow:hidden}
+  .modal .mhead{padding:20px 22px 16px;border-bottom:1px solid var(--line);position:relative}
+  .modal .mhead h2{margin:0 0 4px;font-size:21px}
+  .modal .mhead .mgc{color:var(--muted);font-size:13.5px}
+  .modal .x{position:absolute;right:16px;top:16px;background:var(--panel2);border:1px solid var(--line);
+    color:var(--text);width:34px;height:34px;border-radius:9px;font-size:18px}
+  .mbody{padding:18px 22px 24px;max-height:70vh;overflow:auto}
+  .mgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px}
+  .field{background:var(--panel2);border-radius:10px;padding:10px 12px}
+  .field .fl{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+  .field .fv{font-weight:600;margin-top:2px}
+  .block{margin:18px 0}
+  .block h4{margin:0 0 9px;font-size:13px;text-transform:uppercase;letter-spacing:.6px;color:var(--accent);
+    display:flex;align-items:center;gap:8px}
+  .contact{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px dashed var(--line);font-size:13.5px}
+  .contact:last-child{border:none}
+  .contact .cn{font-weight:600}
+  .contact .cr{color:var(--muted);font-size:12px}
+  .contact .cc{text-align:right;font-size:12.5px}
+  .notes{white-space:pre-wrap;background:var(--panel2);border-radius:10px;padding:12px 14px;font-size:13.5px;line-height:1.6}
+  .doclist{display:flex;flex-direction:column;gap:6px}
+  .doc{display:flex;align-items:center;gap:8px;font-size:13px;background:var(--panel2);padding:8px 11px;border-radius:8px}
+  .doc .ic{color:var(--accent)}
+  textarea,input,select{background:var(--bg);border:1px solid var(--line);color:var(--text);border-radius:9px;
+    padding:9px 11px;font-family:inherit;font-size:14px;width:100%}
+  textarea:focus,input:focus,select:focus{outline:none;border-color:var(--accent)}
+  .btn{background:var(--accent);color:#1a1207;border:none;border-radius:9px;padding:9px 16px;font-weight:700}
+  .btn.ghost{background:var(--panel2);color:var(--text);border:1px solid var(--line)}
+  .btn.sm{padding:6px 12px;font-size:13px}
+  .addrow{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+  .addrow input,.addrow select{flex:1;min-width:120px;width:auto}
+
+  .empty{color:var(--muted);text-align:center;padding:40px;border:1px dashed var(--line);border-radius:12px}
+  .toolbar{display:flex;gap:8px;flex-wrap:wrap}
+  footer{color:var(--muted);font-size:12px;text-align:center;padding:30px 0 10px;border-top:1px solid var(--line);margin-top:40px}
+
+  @media(max-width:680px){
+    .stats{grid-template-columns:repeat(2,1fr)}
+    .mgrid{grid-template-columns:1fr}
+    .today{display:none}
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="head-inner">
+    <div class="brand">
+      <div class="logo">R&amp;B</div>
+      <div>R&amp;B Job Tracker<small>R&amp;B ROOFING &amp; REMODELING · COMMERCIAL</small></div>
+    </div>
+    <div class="head-spacer"></div>
+    <div class="today" id="today"></div>
+    <button class="btn sm" onclick="openJob('new')">+ Add Job</button>
+    <button class="btn ghost sm" onclick="exportData()" title="Download a backup of all your data">⤓ Backup</button>
+    <button class="btn ghost sm" onclick="document.getElementById('imp').click()" title="Restore from a backup file">↺ Restore</button>
+    <input id="imp" type="file" accept="application/json" style="display:none" onchange="importData(event)" />
+  </div>
+  <div class="tabs" id="tabs">
+    <button class="tab active" data-view="dash">Dashboard</button>
+    <button class="tab" data-view="week">This Week</button>
+    <button class="tab" data-view="tasks">All Tasks</button>
+    <button class="tab" data-view="pipeline">Pipeline / Bids</button>
+  </div>
+</header>
+
+<div class="wrap">
+  <div id="view"></div>
+</div>
+
+<!-- Job detail modal -->
+<div class="overlay" id="overlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal" id="modal"></div>
+</div>
+
+<footer>
+  Built for Joey Allee · R&amp;B Roofing &amp; Remodeling · Your data is saved in this browser. Use <b>⤓ Backup</b> regularly to keep a copy.
+</footer>
+
+<script>
+/* ---------- SEED DATA (pulled from your Outlook, June 2026) ---------- */
+const SEED = {
+  jobs: [
+    {
+      id:"lee-st-golf",
+      name:"Lee Street Golf Facility",
+      client:"University of Louisville",
+      gc:"Buffalo Construction, Inc.",
+      location:"Louisville, KY",
+      status:"active",
+      value:57638.44,
+      scope:"SC Roofing & RTU/Roof screens, canopies, fiber-cement siding, and windows. Metal roof = PAC-150 (PAC-CLAD).",
+      solicitation:"IB_1102433 — Lee St. Golf Facility Exterior Improvements",
+      nextMilestone:"Lee St production meeting (weekly, Fri 11:00a ET)",
+      nextDate:"2026-06-19",
+      contacts:[
+        {n:"Hailey Baumann",r:"Buffalo Construction (GC) — Lee St PM",c:"hailey.baumann@buffaloconstruction.com"},
+        {n:"Nicole Shoaf",r:"RoofScreen — Sales / quotes",c:"nshoaf@roofscreen.com · 831-421-9230 x130"},
+        {n:"Cole Powers",r:"RoofScreen — Estimator",c:"cpowers@roofscreen.com · x117"},
+        {n:"Brian Blank / Chas Jones",r:"Buffalo Construction — Lee St team",c:"@buffaloconstruction.com"}
+      ],
+      dates:[
+        {l:"Subcontract executed (DocuSign)",d:"2026-06-05"},
+        {l:"RoofScreen revised quote received",d:"2026-06-15"},
+        {l:"Next production meeting",d:"2026-06-19"}
+      ],
+      docs:[
+        {n:"Lee St Golf Facility_Subs BQ_260312 REV2.pdf (RoofScreen quote)"},
+        {n:"RoofScreen SC3 PDS.pdf"},
+        {n:"RoofScreen Square Base RotoLock PDS.pdf"},
+        {n:"Exhibit A — Drawings & Specs (2520 UL Golf Facility)"},
+        {n:"PAC-150 panel: pac-clad.com/products/metal-roofing/pac-150"}
+      ],
+      notes:"ROOF SCREEN — avoiding the full ~$29K RoofScreen package.\n"+
+        "• Got Nicole Shoaf (RoofScreen) on the phone 6/15. She sent a REVISED, material-supplier-only quote: SC3 frames + square base supports @ 5' OC (max 4' frame height), KY PE-stamped engineering, freight, 6% KY tax, 20-yr warranty.\n"+
+        "• WE supply the panels + trims (PAC-150 / 7.2 Rib), so those are excluded from RoofScreen's number.\n"+
+        "• Quote is BUDGETARY until we confirm roof framing (members, OC spacing, slope) + roof assembly (deck, insulation, roofing type).\n"+
+        "• To finalize RoofScreen needs: panel height, attachment details, per-sq-ft panel weight.\n"+
+        "• Open question: local fab shop to make the posts/frames vs. buying SC3 frames from RoofScreen — get the local fab quote to compare.",
+      tasks:[
+        {id:"t1",label:"Send RoofScreen the panel height, attachment details & per-sq-ft weight",done:false,due:"2026-06-18"},
+        {id:"t2",label:"Get local fab shop quote for posts/frames to compare vs RoofScreen SC3",done:false,due:"2026-06-22"},
+        {id:"t3",label:"Confirm roof framing + assembly details for RoofScreen engineering",done:false,due:"2026-06-22"},
+        {id:"t4",label:"Order PAC-150 panels & trims (we're supplying)",done:false,due:"2026-06-26"},
+        {id:"t5",label:"Subcontract executed via DocuSign",done:true,due:"2026-06-05"}
+      ]
+    },
+    {
+      id:"trh-clarksville",
+      name:"Texas Roadhouse — Clarksville IN",
+      client:"Texas Roadhouse",
+      gc:"Buffalo Construction, Inc.",
+      location:"Clarksville, IN",
+      status:"active",
+      value:null,
+      scope:"R&B roofing scope. Active build — material delivery approaching.",
+      solicitation:"Buffalo Construction — Procore project",
+      nextMilestone:"Material delivery to site (~12 days out)",
+      nextDate:"2026-06-27",
+      contacts:[
+        {n:"Zach Fields",r:"Buffalo Construction — Project Superintendent",c:"Zach.Fields@buffaloconstruction.com · O (502) 813-8742 · C (812) 722-2167"},
+        {n:"Kathryn Bell",r:"Buffalo Construction — Project Manager",c:"kathryn.bell@buffaloconstruction.com"},
+        {n:"Mindy Montfort",r:"Buffalo Construction — Billing (Procore)",c:"via Procore"},
+        {n:"Brad Rigney / Mason Mattingly / Tony Baker",r:"Buffalo Construction — team",c:"@buffaloconstruction.com"}
+      ],
+      dates:[
+        {l:"Vendor form + COI submitted",d:"2026-05-20"},
+        {l:"Rev 4 / Delta 5 drawings issued",d:"2026-06-11"},
+        {l:"Weekly production meeting (Tue 10:00a ET)",d:"2026-06-16"},
+        {l:"Material delivery (est.)",d:"2026-06-27"}
+      ],
+      docs:[
+        {n:"TRH Clarksville 4WK Lookahead 6.9.2026 (Week 5).xlsx"},
+        {n:"Texas Roadhouse Clarksville, IN — Revised 4.20.26"},
+        {n:"Revision 4 / Delta 5 drawing set"}
+      ],
+      notes:"Active project under Buffalo Construction.\n"+
+        "• 4-week look-ahead distributed every Monday EOB by Zach Fields — check it weekly to track schedule.\n"+
+        "• Rev 4 / Delta 5 drawings landed 6/11 — confirm our scope hasn't changed.\n"+
+        "• Invited to bill in Procore (Mindy Montfort) — get pay app in.\n"+
+        "• Weekly production meeting Tuesdays 10:00a ET (Teams) — strong attendance expected by GC.\n"+
+        "• Material delivery ~12 days out — confirm exact date, site access & who receives.",
+      tasks:[
+        {id:"t1",label:"Confirm exact material delivery date + site receiving with Zach",done:false,due:"2026-06-18"},
+        {id:"t2",label:"Review Rev 4 / Delta 5 for any scope change to our work",done:false,due:"2026-06-17"},
+        {id:"t3",label:"Submit pay application / invoice in Procore (Mindy Montfort)",done:false,due:"2026-06-20"},
+        {id:"t4",label:"Pull this week's 4-wk look-ahead and check our line items",done:false,due:"2026-06-16"},
+        {id:"t5",label:"Attend Tue production meeting",done:false,due:"2026-06-16"}
+      ]
+    }
+  ],
+  pipeline:[
+    {name:"Buckner Industrial",detail:"RFP — bid submitted to Meredith 4/9. Awaiting award.",status:"bid"},
+    {name:"USDA Forage Animal Production Research Unit",detail:"Lexington, KY · GC: Messer · Metal wall panels · Addendum 3 + RFI log received.",status:"bidding"},
+    {name:"Caldwell Preload Office/Warehouse",detail:"Quote requested (Laurisha) — preload office/warehouse complete set.",status:"bidding"},
+    {name:"Blue Grass Airport — CBP Project",detail:"Customs & Border Protection · addendum received via SmartBidNet.",status:"bidding"},
+    {name:"Hypercars Showroom",detail:"Bid (SmartBidNet).",status:"bid"},
+    {name:"Fayette Co. Juvenile Renovation",detail:"Renovation project · addendum (SmartBidNet).",status:"bidding"}
+  ],
+  // Standing weekly meetings (auto-expanded into This Week)
+  recurring:[
+    {label:"TRH Clarksville — Weekly Production Meeting",job:"trh-clarksville",weekday:2,time:"10:00a ET",tag:"meeting"},
+    {label:"Lee St — Production Meeting",job:"lee-st-golf",weekday:5,time:"11:00a ET",tag:"meeting"},
+    {label:"R&B Internal Production Meeting",job:null,weekday:4,time:"9:30a ET",tag:"internal"}
+  ]
+};
+
+/* ---------- STATE ---------- */
+const KEY="rb_jobs_v1";
+let DB = load();
+let view="dash";
+const JOBCOLORS={"lee-st-golf":"#38bdf8","trh-clarksville":"#f59e0b"};
+function colorFor(id){return JOBCOLORS[id]|| "#a78bfa";}
+
+function load(){
+  try{const s=localStorage.getItem(KEY); if(s) return JSON.parse(s);}catch(e){}
+  return JSON.parse(JSON.stringify(SEED));
+}
+function save(){localStorage.setItem(KEY,JSON.stringify(DB));}
+function reseed(){if(confirm("Reset everything back to the original imported job data? Your edits will be lost.")){DB=JSON.parse(JSON.stringify(SEED));save();render();}}
+
+/* ---------- HELPERS ---------- */
+const TODAY = new Date(2026,5,15); // June 15 2026 reference "today"
+function realToday(){const d=new Date();return d;}
+function parseD(s){if(!s)return null;const[y,m,d]=s.split("-").map(Number);return new Date(y,m-1,d);}
+function fmtMoney(n){return n==null?"—":"$"+n.toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});}
+function fmtDate(s){const d=parseD(s);if(!d)return "—";return d.toLocaleDateString("en-US",{month:"short",day:"numeric"});}
+function daysUntil(s){const d=parseD(s);if(!d)return null;const t=stripTime(now());return Math.round((d-t)/86400000);}
+function stripTime(d){return new Date(d.getFullYear(),d.getMonth(),d.getDate());}
+function now(){return realToday()>=new Date(2026,0,1)?realToday():TODAY;}
+function dueClass(s){const n=daysUntil(s);if(n==null)return"";if(n<0)return"due-over";if(n<=3)return"due-soon";return"";}
+function dueLabel(s){const n=daysUntil(s);if(n==null)return"";if(n<0)return Math.abs(n)+"d overdue";if(n===0)return"due today";if(n===1)return"due tomorrow";return"in "+n+"d";}
+function statusPill(s){
+  const map={active:["Active","#0b2e16","#22c55e"],bid:["Bid In","#0c2440","#3b82f6"],bidding:["Bidding","#3a2a07","#f59e0b"],hold:["On Hold","#3a0d0d","#ef4444"],complete:["Complete","#1e293b","#94a3b8"]};
+  const[txt,bg,fg]=map[s]||["—","#1e293b","#94a3b8"];
+  return `<span class="pill" style="background:${bg};color:${fg}">${txt}</span>`;
+}
+function taskStats(j){const t=j.tasks||[];const done=t.filter(x=>x.done).length;return{done,total:t.length,pct:t.length?Math.round(done/t.length*100):0};}
+function openTasksAll(){let out=[];DB.jobs.forEach(j=>(j.tasks||[]).forEach(t=>out.push({...t,job:j})));return out;}
+
+/* ---------- RENDER ---------- */
+function render(){
+  document.getElementById("today").textContent = now().toLocaleDateString("en-US",{weekday:"long",month:"long",day:"numeric",year:"numeric"});
+  document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("active",t.dataset.view===view));
+  const el=document.getElementById("view");
+  if(view==="dash")el.innerHTML=renderDash();
+  else if(view==="week")el.innerHTML=renderWeek();
+  else if(view==="tasks")el.innerHTML=renderTasks();
+  else if(view==="pipeline")el.innerHTML=renderPipeline();
+}
+
+function renderDash(){
+  const active=DB.jobs.filter(j=>j.status==="active");
+  const openTasks=openTasksAll().filter(t=>!t.done);
+  const overdue=openTasks.filter(t=>daysUntil(t.due)<0);
+  const valueInProd=active.reduce((s,j)=>s+(j.value||0),0);
+  const nextDeadline=openTasks.filter(t=>t.due).sort((a,b)=>parseD(a.due)-parseD(b.due))[0];
+
+  let html=`<div class="stats">
+    <div class="stat"><div class="n">${active.length}</div><div class="l">Active Jobs</div><div class="sub">${DB.pipeline.length} in pipeline</div></div>
+    <div class="stat"><div class="n">${openTasks.length}</div><div class="l">Open Tasks</div><div class="sub" style="color:${overdue.length?'var(--red)':'var(--muted)'}">${overdue.length} overdue</div></div>
+    <div class="stat"><div class="n">${fmtMoney(valueInProd)}</div><div class="l">Contract Value</div><div class="sub">active jobs</div></div>
+    <div class="stat"><div class="n">${nextDeadline?fmtDate(nextDeadline.due):"—"}</div><div class="l">Next Deadline</div><div class="sub">${nextDeadline?(nextDeadline.label.slice(0,28)+(nextDeadline.label.length>28?"…":"")):"all clear"}</div></div>
+  </div>`;
+
+  html+=`<div class="sec-head"><h2>Active Jobs</h2><span class="count">${active.length}</span><div class="grow"></div></div>`;
+  html+=`<div class="grid">`+active.map(jobCard).join("")+`</div>`;
+
+  const others=DB.jobs.filter(j=>j.status!=="active");
+  if(others.length){
+    html+=`<div class="sec-head"><h2>Other Jobs</h2><span class="count">${others.length}</span></div>`;
+    html+=`<div class="grid">`+others.map(jobCard).join("")+`</div>`;
+  }
+  return html;
+}
+
+function jobCard(j){
+  const ts=taskStats(j);
+  const col=colorFor(j.id);
+  const dleft=daysUntil(j.nextDate);
+  return `<div class="card" onclick="openJob('${j.id}')">
+    <div class="stripe" style="background:${col}"></div>
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;padding-left:6px">
+      <div><h3 style="padding-left:0">${j.name}</h3></div>${statusPill(j.status)}
+    </div>
+    <div class="gc">${j.gc} · ${j.location}</div>
+    <div class="row"><span class="k">Client</span><span class="v">${j.client||"—"}</span></div>
+    <div class="row"><span class="k">Contract</span><span class="v">${fmtMoney(j.value)}</span></div>
+    ${j.nextDate?`<div class="next"><div class="lab">Next up · <span class="${dueClass(j.nextDate)}">${dleft!=null?dueLabel(j.nextDate):""}</span></div>${j.nextMilestone||""} <b>(${fmtDate(j.nextDate)})</b></div>`:""}
+    <div class="taskbar">
+      <div class="tt"><span>Tasks</span><span>${ts.done}/${ts.total} done</span></div>
+      <div class="bar"><i style="width:${ts.pct}%"></i></div>
+    </div>
+  </div>`;
+}
+
+function renderWeek(){
+  // Build events: job dates within next 21 days + recurring meetings + task due dates
+  const start=stripTime(now());
+  const horizon=new Date(start);horizon.setDate(horizon.getDate()+21);
+  let events=[];
+  DB.jobs.forEach(j=>{
+    (j.dates||[]).forEach(d=>{const dt=parseD(d.d);if(dt>=start&&dt<=horizon)events.push({date:dt,t:d.l,s:j.name,tag:"milestone",job:j.id});});
+    (j.tasks||[]).forEach(tk=>{if(tk.done||!tk.due)return;const dt=parseD(tk.due);if(dt>=start&&dt<=horizon)events.push({date:dt,t:tk.label,s:j.name+" · task",tag:"task",job:j.id});});
+  });
+  // recurring meetings for next 21 days
+  (DB.recurring||[]).forEach(r=>{
+    for(let i=0;i<22;i++){const dt=new Date(start);dt.setDate(dt.getDate()+i);
+      if(dt.getDay()===r.weekday){events.push({date:dt,t:r.label,s:r.time,tag:r.tag,job:r.job});}}
+  });
+  events.sort((a,b)=>a.date-b.date);
+  if(!events.length)return `<div class="empty" style="margin-top:24px">Nothing scheduled in the next three weeks. 🎉</div>`;
+
+  const tagColor={milestone:["#0c2440","#38bdf8"],task:["#3a2a07","#f59e0b"],meeting:["#0b2e16","#22c55e"],internal:["#2a1840","#a78bfa"]};
+  let html=`<div class="sec-head" style="margin-top:22px"><h2>Next 3 Weeks</h2><div class="grow"></div><span class="count">${events.length} items</span></div>`;
+  html+=`<div class="timeline">`+events.map(e=>{
+    const[bg,fg]=tagColor[e.tag]||["#1e293b","#94a3b8"];
+    const dot=e.job?`<span class="jobdot" style="background:${colorFor(e.job)}"></span>`:"";
+    const nd=daysUntil(toISO(e.date));
+    return `<div class="tl">
+      <div class="date"><div class="wd">${e.date.toLocaleDateString("en-US",{weekday:"short"})}</div><div class="d">${e.date.getDate()}</div><div class="m">${e.date.toLocaleDateString("en-US",{month:"short"})}</div></div>
+      <div class="body"><div class="t">${dot}${e.t}</div><div class="s">${e.s} · ${nd===0?"today":nd===1?"tomorrow":"in "+nd+"d"}</div></div>
+      <div class="tag" style="background:${bg};color:${fg}">${e.tag}</div>
+    </div>`;
+  }).join("")+`</div>`;
+  return html;
+}
+function toISO(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
+
+function renderTasks(){
+  const all=openTasksAll();
+  const open=all.filter(t=>!t.done).sort((a,b)=>(parseD(a.due)||9e15)-(parseD(b.due)||9e15));
+  const done=all.filter(t=>t.done);
+  let html=`<div class="sec-head" style="margin-top:22px"><h2>Open Tasks</h2><span class="count">${open.length}</span><div class="grow"></div>
+    <div class="toolbar"><button class="btn ghost sm" onclick="reseed()">Reset data</button></div></div>`;
+  html+=`<div class="tasklist">`+(open.length?open.map(taskRow).join(""):`<div class="empty">No open tasks. Nice. 🍻</div>`)+`</div>`;
+  if(done.length){
+    html+=`<div class="sec-head"><h2>Completed</h2><span class="count">${done.length}</span></div>`;
+    html+=`<div class="tasklist">`+done.map(taskRow).join("")+`</div>`;
+  }
+  return html;
+}
+function taskRow(t){
+  return `<div class="task ${t.done?'done':''}">
+    <button class="cbx ${t.done?'on':''}" onclick="toggleTask('${t.job.id}','${t.id}')">${t.done?'✓':''}</button>
+    <div class="meta">
+      <div class="tlabel">${t.label}</div>
+      <div class="tsub"><span><span class="jobdot" style="background:${colorFor(t.job.id)}"></span>${t.job.name}</span>
+      ${t.due?`<span class="${dueClass(t.due)}">${fmtDate(t.due)} · ${dueLabel(t.due)}</span>`:""}</div>
+    </div>
+    <button class="del" onclick="deleteTask('${t.job.id}','${t.id}')" title="Delete">×</button>
+  </div>`;
+}
+
+function renderPipeline(){
+  let html=`<div class="sec-head" style="margin-top:22px"><h2>Pipeline / Bids</h2><span class="count">${DB.pipeline.length}</span></div>`;
+  html+=`<div class="grid">`+DB.pipeline.map((p,i)=>`
+    <div class="card" style="cursor:default">
+      <div class="stripe" style="background:#a78bfa"></div>
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;padding-left:6px">
+        <h3 style="padding-left:0;font-size:15.5px">${p.name}</h3>${statusPill(p.status)}
+      </div>
+      <div style="padding-left:6px;color:var(--muted);font-size:13px;margin-top:8px">${p.detail}</div>
+    </div>`).join("")+`</div>`;
+  html+=`<p style="color:var(--muted);font-size:12.5px;margin-top:16px">These were pulled from recent bid/RFP emails. Move one to "Active" by opening it once it's awarded — or add it as a full job with <b>+ Add Job</b>.</p>`;
+  return html;
+}
+
+/* ---------- MODAL ---------- */
+function openJob(id){
+  const isNew=id==="new";
+  const j=isNew?null:DB.jobs.find(x=>x.id===id);
+  const m=document.getElementById("modal");
+  if(isNew){m.innerHTML=editForm(null);}
+  else m.innerHTML=jobDetail(j);
+  document.getElementById("overlay").classList.add("open");
+}
+function closeModal(){document.getElementById("overlay").classList.remove("open");}
+
+function jobDetail(j){
+  const ts=taskStats(j);
+  return `<div class="mhead" style="border-top:5px solid ${colorFor(j.id)}">
+    <button class="x" onclick="closeModal()">×</button>
+    <h2>${j.name}</h2>
+    <div class="mgc">${statusPill(j.status)} &nbsp; ${j.gc} · ${j.location}</div>
+  </div>
+  <div class="mbody">
+    <div class="mgrid">
+      <div class="field"><div class="fl">Client</div><div class="fv">${j.client||"—"}</div></div>
+      <div class="field"><div class="fl">Contract Value</div><div class="fv">${fmtMoney(j.value)}</div></div>
+      <div class="field"><div class="fl">Solicitation / Ref</div><div class="fv" style="font-size:13px">${j.solicitation||"—"}</div></div>
+      <div class="field"><div class="fl">Next Milestone</div><div class="fv" style="font-size:13px">${j.nextMilestone||"—"} ${j.nextDate?`<span class="${dueClass(j.nextDate)}">(${fmtDate(j.nextDate)})</span>`:""}</div></div>
+    </div>
+
+    <div class="block"><h4>📋 Scope</h4><div class="notes">${j.scope||"—"}</div></div>
+
+    <div class="block"><h4>✅ Tasks (${ts.done}/${ts.total})</h4>
+      <div class="bar" style="margin-bottom:10px"><i style="width:${ts.pct}%"></i></div>
+      <div class="tasklist">${(j.tasks||[]).map(t=>`
+        <div class="task ${t.done?'done':''}">
+          <button class="cbx ${t.done?'on':''}" onclick="toggleTask('${j.id}','${t.id}')">${t.done?'✓':''}</button>
+          <div class="meta"><div class="tlabel">${t.label}</div>
+          ${t.due?`<div class="tsub"><span class="${dueClass(t.due)}">${fmtDate(t.due)} · ${dueLabel(t.due)}</span></div>`:""}</div>
+          <button class="del" onclick="deleteTask('${j.id}','${t.id}')">×</button>
+        </div>`).join("")}</div>
+      <div class="addrow">
+        <input id="ntask" placeholder="Add a task…" onkeydown="if(event.key==='Enter')addTask('${j.id}')" />
+        <input id="ntaskdue" type="date" style="max-width:160px" />
+        <button class="btn sm" onclick="addTask('${j.id}')">Add</button>
+      </div>
+    </div>
+
+    <div class="block"><h4>👤 Contacts</h4>
+      ${(j.contacts||[]).map(c=>`<div class="contact"><div><div class="cn">${c.n}</div><div class="cr">${c.r}</div></div><div class="cc">${linkContact(c.c)}</div></div>`).join("")||"<div class='cr'>None</div>"}
+    </div>
+
+    <div class="block"><h4>📅 Key Dates</h4>
+      ${(j.dates||[]).map(d=>`<div class="contact"><div class="cn" style="font-weight:500">${d.l}</div><div class="cc ${dueClass(d.d)}">${fmtDate(d.d)} · ${parseD(d.d)?dueLabel(d.d):""}</div></div>`).join("")||"<div class='cr'>None</div>"}
+    </div>
+
+    <div class="block"><h4>📝 Notes</h4>
+      <div class="notes" id="notesView">${j.notes||"—"}</div>
+      <div class="addrow"><button class="btn ghost sm" onclick="editNotes('${j.id}')">Edit notes</button></div>
+    </div>
+
+    <div class="block"><h4>📎 Documents &amp; Links</h4>
+      <div class="doclist">${(j.docs||[]).map(d=>`<div class="doc"><span class="ic">📄</span>${linkMaybe(d.n)}</div>`).join("")||"<div class='cr'>None</div>"}</div>
+    </div>
+
+    <div class="addrow" style="margin-top:22px;border-top:1px solid var(--line);padding-top:16px">
+      <button class="btn ghost sm" onclick="openJob('edit::${j.id}')">✎ Edit job details</button>
+      <div style="flex:1"></div>
+      <button class="btn ghost sm" style="color:var(--red)" onclick="deleteJob('${j.id}')">Delete job</button>
+    </div>
+  </div>`;
+}
+function linkContact(c){if(!c)return"";return c.replace(/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g,'<a href="mailto:$1">$1</a>');}
+function linkMaybe(s){const m=s.match(/((https?:\/\/|www\.)[^\s]+)/);if(m){const url=m[1].startsWith("http")?m[1]:"https://"+m[1];return s.replace(m[1],`<a href="${url}" target="_blank" rel="noopener">${m[1]}</a>`);}return s;}
+
+/* edit form for job (new or existing) */
+function openJobEdit(id){const j=DB.jobs.find(x=>x.id===id);document.getElementById("modal").innerHTML=editForm(j);}
+function editForm(j){
+  const v=(x)=>x==null?"":x;
+  return `<div class="mhead"><button class="x" onclick="closeModal()">×</button>
+    <h2>${j?"Edit Job":"New Job"}</h2><div class="mgc">${j?j.name:"Add a job to your tracker"}</div></div>
+  <div class="mbody">
+    <div class="block"><h4>Job</h4>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div><div class="fl" style="color:var(--muted);font-size:11px;margin-bottom:3px">JOB NAME</div><input id="f_name" value="${v(j&&j.name)}" placeholder="e.g. Lee Street Golf"/></div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <div style="flex:1;min-width:140px"><div class="fl" style="color:var(--muted);font-size:11px;margin-bottom:3px">CLIENT</div><input id="f_client" value="${v(j&&j.client)}"/></div>
+          <div style="flex:1;min-width:140px"><div class="fl" style="color:var(--muted);font-size:11px;margin-bottom:3px">GENERAL CONTRACTOR</div><input id="f_gc" value="${v(j&&j.gc)}"/></div>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <div style="flex:1;min-width:140px"><div class="fl" style="color:var(--muted);font-size:11px;margin-bottom:3px">LOCATION</div><input id="f_loc" value="${v(j&&j.location)}"/></div>
+          <div style="flex:1;min-width:120px"><div class="fl" style="color:var(--muted);font-size:11px;margin-bottom:3px">CONTRACT VALUE ($)</div><input id="f_value" type="number" step="0.01" value="${v(j&&j.value)}"/></div>
+          <div style="flex:1;min-width:120px"><div class="fl" style="color:var(--muted);font-size:11px;margin-bottom:3px">STATUS</div>
+            <select id="f_status">${["active","bidding","bid","hold","complete"].map(s=>`<option ${j&&j.status===s?"selected":""}>${s}</option>`).join("")}</select></div>
+        </div>
+        <div><div class="fl" style="color:var(--muted);font-size:11px;margin-bottom:3px">SCOPE</div><textarea id="f_scope" rows="2">${v(j&&j.scope)}</textarea></div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <div style="flex:2;min-width:160px"><div class="fl" style="color:var(--muted);font-size:11px;margin-bottom:3px">NEXT MILESTONE</div><input id="f_mile" value="${v(j&&j.nextMilestone)}"/></div>
+          <div style="flex:1;min-width:120px"><div class="fl" style="color:var(--muted);font-size:11px;margin-bottom:3px">MILESTONE DATE</div><input id="f_miled" type="date" value="${v(j&&j.nextDate)}"/></div>
+        </div>
+        <div><div class="fl" style="color:var(--muted);font-size:11px;margin-bottom:3px">NOTES</div><textarea id="f_notes" rows="4">${v(j&&j.notes)}</textarea></div>
+      </div>
+      <div class="addrow" style="margin-top:16px">
+        <button class="btn" onclick="saveJob('${j?j.id:""}')">${j?"Save changes":"Create job"}</button>
+        <button class="btn ghost" onclick="closeModal()">Cancel</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ---------- MUTATIONS ---------- */
+function toggleTask(jid,tid){const j=DB.jobs.find(x=>x.id===jid);const t=j.tasks.find(x=>x.id===tid);t.done=!t.done;save();refresh(jid);}
+function deleteTask(jid,tid){const j=DB.jobs.find(x=>x.id===jid);j.tasks=j.tasks.filter(x=>x.id!==tid);save();refresh(jid);}
+function addTask(jid){
+  const inp=document.getElementById("ntask");const due=document.getElementById("ntaskdue");
+  const label=inp.value.trim();if(!label)return;
+  const j=DB.jobs.find(x=>x.id===jid);
+  j.tasks=j.tasks||[];j.tasks.push({id:"t"+Date.now(),label,done:false,due:due&&due.value?due.value:""});
+  save();document.getElementById("modal").innerHTML=jobDetail(j);
+}
+function editNotes(jid){
+  const j=DB.jobs.find(x=>x.id===jid);
+  const cur=document.getElementById("notesView");
+  cur.outerHTML=`<textarea id="notesEdit" rows="8">${j.notes||""}</textarea>
+    <div class="addrow"><button class="btn sm" onclick="saveNotes('${jid}')">Save notes</button></div>`;
+}
+function saveNotes(jid){const j=DB.jobs.find(x=>x.id===jid);j.notes=document.getElementById("notesEdit").value;save();document.getElementById("modal").innerHTML=jobDetail(j);}
+function deleteJob(jid){if(!confirm("Delete this job and all its tasks?"))return;DB.jobs=DB.jobs.filter(x=>x.id!==jid);save();closeModal();render();}
+function saveJob(id){
+  const g=(x)=>document.getElementById(x).value;
+  const data={
+    name:g("f_name").trim()||"Untitled Job",client:g("f_client").trim(),gc:g("f_gc").trim(),
+    location:g("f_loc").trim(),value:g("f_value")?parseFloat(g("f_value")):null,status:g("f_status"),
+    scope:g("f_scope").trim(),nextMilestone:g("f_mile").trim(),nextDate:g("f_miled"),notes:g("f_notes")
+  };
+  if(id){Object.assign(DB.jobs.find(x=>x.id===id),data);}
+  else{DB.jobs.push({id:"job"+Date.now(),...data,contacts:[],dates:[],docs:[],tasks:[]});}
+  save();closeModal();render();
+}
+function refresh(jid){
+  // re-render whichever view is showing + modal if open for this job
+  render();
+  const ov=document.getElementById("overlay");
+  if(ov.classList.contains("open")){const j=DB.jobs.find(x=>x.id===jid);if(j)document.getElementById("modal").innerHTML=jobDetail(j);}
+}
+
+/* handle openJob('edit::id') */
+const _openJob=openJob;
+openJob=function(id){if(typeof id==="string"&&id.startsWith("edit::")){openJobEdit(id.slice(6));document.getElementById("overlay").classList.add("open");return;}_openJob(id);};
+
+/* ---------- BACKUP / RESTORE ---------- */
+function exportData(){
+  const blob=new Blob([JSON.stringify(DB,null,2)],{type:"application/json"});
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);
+  a.download="rb-jobs-backup-"+toISO(now())+".json";a.click();
+}
+function importData(ev){
+  const f=ev.target.files[0];if(!f)return;
+  const r=new FileReader();r.onload=()=>{try{DB=JSON.parse(r.result);save();render();alert("Restored ✔");}catch(e){alert("Couldn't read that file.");}};
+  r.readAsText(f);
+}
+
+/* ---------- NAV ---------- */
+document.getElementById("tabs").addEventListener("click",e=>{
+  const b=e.target.closest(".tab");if(!b)return;view=b.dataset.view;render();
+});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal();});
+
+render();
+</script>
+</body>
+</html>
