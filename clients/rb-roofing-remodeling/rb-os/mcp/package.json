@@ -1,0 +1,24 @@
+{
+  "name": "rb-os-mcp",
+  "version": "0.1.0",
+  "private": true,
+  "description": "RB-OS MCP server — the front door that connects R&B clients to the Allerion Agency.",
+  "type": "module",
+  "bin": {
+    "rb-os-mcp": "dist/server.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "dev": "tsc --watch"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.69.0",
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.0",
+    "@types/node": "^22.0.0"
+  }
+}

@@ -1,0 +1,10 @@
+# Shared environment for the Allerion Agency's R&B agents (Claude Managed Agents).
+# Provision once:  ant beta:environments create < agency/environment.yaml
+name: "rb-os-agency"
+config:
+  type: cloud
+  networking:
+    # The agents reach R&B's connected services (CRM, calendar, payments, etc.).
+    # Keep unrestricted to start; tighten to `limited` + allowed_hosts once the
+    # integration host list is confirmed on the audit call.
+    type: unrestricted
