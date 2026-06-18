@@ -102,6 +102,8 @@
     "lint": "eslint . && markdownlint '**/*.md' --ignore node_modules",
     "harness:audit": "node scripts/harness-audit.js",
     "claw": "node scripts/claw.js",
+    "brain:ingest": "node scripts/brain-ingest.js",
+    "brain:index": "node scripts/brain-index.js",
     "orchestrate:status": "node scripts/orchestration-status.js",
     "orchestrate:worker": "bash scripts/orchestrate-codex-worker.sh",
     "orchestrate:tmux": "node scripts/orchestrate-worktrees.js",
