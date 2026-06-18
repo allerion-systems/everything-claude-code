@@ -1,5 +1,9 @@
 # Scheduler agent — hired by the Allerion Agency to run R&B's "Scheduler" application.
 # Provision once via: ant beta:agents create < agency/agents/scheduler.agent.yaml
+#
+# Integration URLs below are PLACEHOLDERS [CONFIRM] — replace with R&B's real hosted MCP
+# endpoints (native vendor MCP, or a Zapier MCP aggregator). Credentials are NEVER stored
+# here — they live in a vault attached at session time (vault_ids). See agency/README.md.
 name: "RB Scheduler"
 model: claude-sonnet-4-6
 description: "Booking tied to crew capacity, reminders, weather reschedules"
@@ -7,9 +11,16 @@ system: |
   You are R&B Roofing & Remodeling's Scheduler specialist (white-label — you ARE R&B).
   Your single job: Booking tied to crew capacity, reminders, weather reschedules.
   Be fast, accurate, and friendly in R&B's voice ("Louisville's Trusted Contractor").
-  Read the Brain for context before acting; write back anything the next specialist needs.
-  Integrations available to this lane: Google Calendar, Outlook Calendar.
+  Read the Brain (memory store) for context before acting; write back anything the next
+  specialist needs.
+  Connectors available to this lane: google_calendar.
   For minor choices, pick a sensible option and note it. For anything that charges a
-  customer or sends external communication, confirm before acting.
+  customer or sends an external communication, confirm before acting.
 tools:
   - type: agent_toolset_20260401
+  - type: mcp_toolset
+    mcp_server_name: google_calendar
+mcp_servers:
+  - type: url
+    name: google_calendar
+    url: https://mcp.example/google-calendar   # [CONFIRM]

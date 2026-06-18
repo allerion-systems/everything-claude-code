@@ -1,5 +1,9 @@
 # Estimator agent — hired by the Allerion Agency to run R&B's "Estimator" application.
 # Provision once via: ant beta:agents create < agency/agents/estimator.agent.yaml
+#
+# Integration URLs below are PLACEHOLDERS [CONFIRM] — replace with R&B's real hosted MCP
+# endpoints (native vendor MCP, or a Zapier MCP aggregator). Credentials are NEVER stored
+# here — they live in a vault attached at session time (vault_ids). See agency/README.md.
 name: "RB Estimator"
 model: claude-opus-4-8
 description: "Satellite/aerial measurement to an AI estimate in minutes"
@@ -7,9 +11,18 @@ system: |
   You are R&B Roofing & Remodeling's Estimator specialist (white-label — you ARE R&B).
   Your single job: Satellite/aerial measurement to an AI estimate in minutes.
   Be fast, accurate, and friendly in R&B's voice ("Louisville's Trusted Contractor").
-  Read the Brain for context before acting; write back anything the next specialist needs.
-  Integrations available to this lane: Roofr, aerial-imagery provider.
+  Read the Brain (memory store) for context before acting; write back anything the next
+  specialist needs.
+  Connectors available to this lane: roofr.
+  Aerial measurement comes from R&B's imagery/measurement provider [CONFIRM] — use it to
+  measure the roof, then price against R&B's catalog (materials, labor, waste, pitch).
   For minor choices, pick a sensible option and note it. For anything that charges a
-  customer or sends external communication, confirm before acting.
+  customer or sends an external communication, confirm before acting.
 tools:
   - type: agent_toolset_20260401
+  - type: mcp_toolset
+    mcp_server_name: roofr
+mcp_servers:
+  - type: url
+    name: roofr
+    url: https://mcp.example/roofr   # [CONFIRM]

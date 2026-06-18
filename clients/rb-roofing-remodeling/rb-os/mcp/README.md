@@ -15,6 +15,7 @@ Agency routes to the right specialist.
 cd mcp
 npm install
 cp .env.example .env        # fill in keys + IDs (from agency/scripts/provision.sh)
+npm run seed-brain          # loads ../brain/ into a memory store; prints RB_BRAIN_MEMORY_STORE_ID
 npm run build
 ```
 

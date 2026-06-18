@@ -72,5 +72,16 @@ a **vault** at session time — never in the agent definition. See
 `../../whitelabel-ai-blueprint.md` §6 (security) and the audit's tool-inventory items.
 
 ## Shared memory (the Brain)
-Attach `../brain/` as a memory store on each session so every specialist shares context. The
-MCP server does this when it creates the session.
+Seed `../brain/` into a memory store, then every session shares it:
+```sh
+cd ../mcp && npm install && npm run seed-brain   # prints RB_BRAIN_MEMORY_STORE_ID
+```
+Put that ID in `mcp/.env`; the MCP server attaches it to every session it creates, so all
+specialists read and write the same context.
+
+## Connecting integrations (now wired)
+Each specialist YAML in `agents/` already declares its lane's connectors under `mcp_servers`
+(+ matching `mcp_toolset` entries). The URLs are **placeholders flagged `[CONFIRM]`** — replace
+them with R&B's real hosted MCP endpoints (native vendor MCP, or a Zapier MCP aggregator).
+**Credentials are never in the YAML** — store them in a vault and pass `vault_ids` at session
+time (the MCP server does this once configured). See `../../whitelabel-ai-blueprint.md` §6.

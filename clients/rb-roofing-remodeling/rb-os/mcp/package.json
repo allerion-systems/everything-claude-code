@@ -10,7 +10,8 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/server.js",
-    "dev": "tsc --watch"
+    "dev": "tsc --watch",
+    "seed-brain": "node scripts/seed-brain.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.69.0",
