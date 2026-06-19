@@ -1,23 +1,23 @@
 ---
 type: application
-agent: "[[Scheduler Agent]]"
-model: Sonnet 4.6
+brain: OpenAI (GPT)
 ---
 # Scheduler
 
-**Owns:** Booking tied to crew capacity, reminders, weather reschedules
+**Owns:** Booking tied to crew capacity, reminders, reschedules
 
-Part of the [[00-Index|R&B Operating System]] pipeline. Run by its specialist, [[Scheduler Agent]],
-which the [[Allerion Agency]] hires for this lane.
+Part of the [[00-Index|RB-OS]] [[Lead-to-Cash]] pipeline, run by the [[Allerion Agency]].
+
+## Specialist(s)
+[[Scheduler Agent]]
 
 ## Pipeline position
 - **Upstream:** [[Proposals]]
 - **Downstream:** [[Jobs]]
 
-## Integrations
-Google Calendar, Outlook Calendar
+## Stack (per [[../ADR-001-orchestration-and-hybrid-brain|ADR-001]])
+- **Brain:** OpenAI (GPT)
+- **Connectors:** Microsoft 365 (Outlook Calendar), Teams
 
 ## Related
-- Agent: [[Scheduler Agent]]
-- Concept: [[Lead-to-Cash]]
-- Company: [[R&B Roofing and Remodeling]]
+- [[R&B Roofing and Remodeling]] · [[Speed-to-Lead]] · [[Lead-to-Cash]]

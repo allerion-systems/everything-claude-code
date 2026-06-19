@@ -1,23 +1,23 @@
 ---
 type: application
-agent: "[[Billing Agent]]"
-model: Haiku 4.5
+brain: Claude Haiku 4.5
 ---
 # Billing
 
-**Owns:** Invoices, payment links, dunning, financing hand-off
+**Owns:** Invoices, payment links, dunning, financing
 
-Part of the [[00-Index|R&B Operating System]] pipeline. Run by its specialist, [[Billing Agent]],
-which the [[Allerion Agency]] hires for this lane.
+Part of the [[00-Index|RB-OS]] [[Lead-to-Cash]] pipeline, run by the [[Allerion Agency]].
+
+## Specialist(s)
+[[Billing Agent]]
 
 ## Pipeline position
 - **Upstream:** [[Jobs]]
 - **Downstream:** [[Retention]]
 
-## Integrations
-QuickBooks, Stripe
+## Stack (per [[../ADR-001-orchestration-and-hybrid-brain|ADR-001]])
+- **Brain:** Claude Haiku 4.5
+- **Connectors:** QuickBooks (+ Stripe optional)
 
 ## Related
-- Agent: [[Billing Agent]]
-- Concept: [[Lead-to-Cash]]
-- Company: [[R&B Roofing and Remodeling]]
+- [[R&B Roofing and Remodeling]] · [[Speed-to-Lead]] · [[Lead-to-Cash]]

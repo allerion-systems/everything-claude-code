@@ -1,23 +1,23 @@
 ---
 type: application
-agent: "[[Estimator Agent]]"
-model: Opus 4.8
+brain: trio (see agents)
 ---
 # Estimator
 
-**Owns:** Satellite/aerial measurement to an AI estimate in minutes
+**Owns:** Measure → design → price: the instant estimate
 
-Part of the [[00-Index|R&B Operating System]] pipeline. Run by its specialist, [[Estimator Agent]],
-which the [[Allerion Agency]] hires for this lane.
+Part of the [[00-Index|RB-OS]] [[Lead-to-Cash]] pipeline, run by the [[Allerion Agency]].
+
+## Specialist(s)
+[[Roofr Agent]], [[Hover Agent]], [[Handoff.ai Agent]]
 
 ## Pipeline position
 - **Upstream:** [[Triage]]
 - **Downstream:** [[Proposals]]
 
-## Integrations
-Roofr, aerial-imagery provider
+## Stack (per [[../ADR-001-orchestration-and-hybrid-brain|ADR-001]])
+- **Brain:** trio (see agents)
+- **Connectors:** Roofr, Hover, Handoff.ai, QuickBooks
 
 ## Related
-- Agent: [[Estimator Agent]]
-- Concept: [[Lead-to-Cash]]
-- Company: [[R&B Roofing and Remodeling]]
+- [[R&B Roofing and Remodeling]] · [[Speed-to-Lead]] · [[Lead-to-Cash]]

@@ -15,7 +15,13 @@ below as a connected map. This note is the center.
 - [[Dashboard]] (cross-cutting)
 
 ## Specialist agents
-- [[Intake Agent]] · [[Triage Agent]] · [[Estimator Agent]] · [[Proposals Agent]] · [[Scheduler Agent]] · [[Jobs Agent]] · [[Billing Agent]] · [[Retention Agent]] · [[Dashboard Agent]]
+- [[Intake Agent]] · [[Triage Agent]]
+- Estimating trio: [[Roofr Agent]] → [[Hover Agent]] → [[Handoff.ai Agent]] (Chief Estimator)
+- [[Proposals Agent]] · [[Scheduler Agent]] · [[Jobs Agent]] · [[Billing Agent]] · [[Retention Agent]] · [[Dashboard Agent]]
+
+## Decisions & stack
+- [[../ADR-001-orchestration-and-hybrid-brain|ADR-001 — orchestration + hybrid brain]]
+- [[../stack-revision-2026-06|Stack revision — ChatGPT + M365 + Roofr/Hover/Handoff]]
 
 ## Concepts
 - [[Speed-to-Lead]]

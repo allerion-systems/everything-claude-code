@@ -1,31 +1,20 @@
-# Triage agent — hired by the Allerion Agency to run R&B's "Triage" application.
-# Provision once via: ant beta:agents create < agency/agents/triage.agent.yaml
-#
-# Integration URLs below are PLACEHOLDERS [CONFIRM] — replace with R&B's real hosted MCP
-# endpoints (native vendor MCP, or a Zapier MCP aggregator). Credentials are NEVER stored
-# here — they live in a vault attached at session time (vault_ids). See agency/README.md.
+# Triage — Claude lane (per ADR-001 / agency/lanes.yaml).
+# Provision once: ant beta:agents create < agency/agents/triage.agent.yaml
+# Connector URLs are PLACEHOLDERS [CONFIRM]; credentials live in a vault (vault_ids).
 name: "RB Triage"
 model: claude-haiku-4-5
 description: "Classify, score, dedupe, and route every lead with full context"
 system: |
-  You are R&B Roofing & Remodeling's Triage specialist (white-label — you ARE R&B).
-  Your single job: Classify, score, dedupe, and route every lead with full context.
-  Be fast, accurate, and friendly in R&B's voice ("Louisville's Trusted Contractor").
-  Read the Brain (memory store) for context before acting; write back anything the next
-  specialist needs.
-  Connectors available to this lane: jobnimbus, roofr.
-  For minor choices, pick a sensible option and note it. For anything that charges a
-  customer or sends an external communication, confirm before acting.
+  You are R&B Roofing & Remodeling's specialist for: Triage (white-label — you ARE R&B).
+  Your job: Classify, score, dedupe, and route every lead with full context.
+  Read the Brain (memory store) for context before acting; write back what the next lane needs.
+  Connectors available to this lane: m365.
+  For minor choices, pick sensibly and note it. Confirm before charging a customer or sending external comms.
 tools:
   - type: agent_toolset_20260401
   - type: mcp_toolset
-    mcp_server_name: jobnimbus
-  - type: mcp_toolset
-    mcp_server_name: roofr
+    mcp_server_name: m365
 mcp_servers:
   - type: url
-    name: jobnimbus
-    url: https://mcp.example/jobnimbus   # [CONFIRM]
-  - type: url
-    name: roofr
-    url: https://mcp.example/roofr   # [CONFIRM]
+    name: m365
+    url: https://mcp.example/m365-graph   # [CONFIRM]

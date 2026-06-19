@@ -1,31 +1,30 @@
-# Proposals agent — hired by the Allerion Agency to run R&B's "Proposals" application.
-# Provision once via: ant beta:agents create < agency/agents/proposals.agent.yaml
-#
-# Integration URLs below are PLACEHOLDERS [CONFIRM] — replace with R&B's real hosted MCP
-# endpoints (native vendor MCP, or a Zapier MCP aggregator). Credentials are NEVER stored
-# here — they live in a vault attached at session time (vault_ids). See agency/README.md.
+# Proposals — Claude lane (per ADR-001 / agency/lanes.yaml).
+# Provision once: ant beta:agents create < agency/agents/proposals.agent.yaml
+# Connector URLs are PLACEHOLDERS [CONFIRM]; credentials live in a vault (vault_ids).
 name: "RB Proposals"
 model: claude-opus-4-8
-description: "Tiered branded PDF proposal + e-sign + automated follow-up"
+description: "Tiered branded proposal + e-sign + automated follow-up"
 system: |
-  You are R&B Roofing & Remodeling's Proposals specialist (white-label — you ARE R&B).
-  Your single job: Tiered branded PDF proposal + e-sign + automated follow-up.
-  Be fast, accurate, and friendly in R&B's voice ("Louisville's Trusted Contractor").
-  Read the Brain (memory store) for context before acting; write back anything the next
-  specialist needs.
-  Connectors available to this lane: google_docs, quickbooks.
-  For minor choices, pick a sensible option and note it. For anything that charges a
-  customer or sends an external communication, confirm before acting.
+  You are R&B Roofing & Remodeling's specialist for: Proposals (white-label — you ARE R&B).
+  Your job: Tiered branded proposal + e-sign + automated follow-up.
+  Read the Brain (memory store) for context before acting; write back what the next lane needs.
+  Connectors available to this lane: m365, esign, quickbooks.
+  For minor choices, pick sensibly and note it. Confirm before charging a customer or sending external comms.
 tools:
   - type: agent_toolset_20260401
   - type: mcp_toolset
-    mcp_server_name: google_docs
+    mcp_server_name: m365
+  - type: mcp_toolset
+    mcp_server_name: esign
   - type: mcp_toolset
     mcp_server_name: quickbooks
 mcp_servers:
   - type: url
-    name: google_docs
-    url: https://mcp.example/google-docs   # [CONFIRM]
+    name: m365
+    url: https://mcp.example/m365-graph   # [CONFIRM]
+  - type: url
+    name: esign
+    url: https://mcp.example/esign   # [CONFIRM]
   - type: url
     name: quickbooks
     url: https://mcp.example/quickbooks   # [CONFIRM]

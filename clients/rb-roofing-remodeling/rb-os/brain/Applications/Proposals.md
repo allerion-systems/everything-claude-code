@@ -1,23 +1,23 @@
 ---
 type: application
-agent: "[[Proposals Agent]]"
-model: Opus 4.8
+brain: Claude Opus 4.8
 ---
 # Proposals
 
-**Owns:** Tiered branded PDF proposal + e-sign + automated follow-up
+**Owns:** Tiered branded proposal + e-sign + follow-up
 
-Part of the [[00-Index|R&B Operating System]] pipeline. Run by its specialist, [[Proposals Agent]],
-which the [[Allerion Agency]] hires for this lane.
+Part of the [[00-Index|RB-OS]] [[Lead-to-Cash]] pipeline, run by the [[Allerion Agency]].
+
+## Specialist(s)
+[[Proposals Agent]]
 
 ## Pipeline position
 - **Upstream:** [[Estimator]]
 - **Downstream:** [[Scheduler]]
 
-## Integrations
-Google Docs, Gamma, e-sign, QuickBooks (estimate)
+## Stack (per [[../ADR-001-orchestration-and-hybrid-brain|ADR-001]])
+- **Brain:** Claude Opus 4.8
+- **Connectors:** Microsoft 365 (Word/SharePoint), e-sign, QuickBooks
 
 ## Related
-- Agent: [[Proposals Agent]]
-- Concept: [[Lead-to-Cash]]
-- Company: [[R&B Roofing and Remodeling]]
+- [[R&B Roofing and Remodeling]] · [[Speed-to-Lead]] · [[Lead-to-Cash]]

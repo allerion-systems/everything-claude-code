@@ -1,0 +1,76 @@
+# RB-OS lane map — the single source of truth the Agency backend reads to route work.
+# Each lane = one application specialist: its provider, model, role, and connectors.
+# Hybrid brain per ADR-001. GPT model is set in R&B's OpenAI account [CONFIRM];
+# Claude model IDs are exact. Connector URLs/credentials are resolved at runtime
+# (M365 Graph app, QuickBooks OAuth, Roofr/Hover/Handoff API or Zapier) — never stored here.
+
+routers:
+  chatgpt:        { provider: openai, model: "<R&B GPT, set in account> [CONFIRM]", role: "Front-door routing for ChatGPT users (calls Agency Actions)" }
+  backend:        { provider: anthropic, model: claude-opus-4-8, role: "Routing for MCP / app / Teams clients" }
+
+lanes:
+  - id: intake
+    provider: openai
+    model: "<R&B GPT> [CONFIRM]"
+    role: "Customer-facing lead capture + instant 24/7 response"
+    connectors: [m365_outlook, web_form, sms]
+
+  - id: triage
+    provider: anthropic
+    model: claude-haiku-4-5
+    role: "Classify, score, dedupe, and route every lead"
+    connectors: [m365]
+
+  - id: roofr
+    provider: anthropic
+    model: claude-haiku-4-5
+    role: "Aerial Measurement Reporter — order/fetch the roof measurement report"
+    connectors: [roofr]
+
+  - id: hover
+    provider: anthropic
+    model: claude-haiku-4-5
+    role: "Design Agent — photos to 3D model, exterior design, material takeoffs"
+    connectors: [hover]
+
+  - id: handoff
+    provider: anthropic
+    model: claude-opus-4-8
+    role: "CHIEF ESTIMATOR — combine measurements + design + R&B pricing into the estimate"
+    connectors: [handoff_ai, quickbooks]
+
+  - id: proposals
+    provider: anthropic
+    model: claude-opus-4-8
+    role: "Tiered branded proposal + e-sign + automated follow-up"
+    connectors: [m365_word, esign, quickbooks]
+
+  - id: scheduler
+    provider: openai
+    model: "<R&B GPT> [CONFIRM]"
+    role: "Conversational booking tied to crew capacity, reminders, reschedules"
+    connectors: [m365_calendar, teams]
+
+  - id: jobs
+    provider: openai
+    model: "<R&B GPT> [CONFIRM]"
+    role: "Job status hub + homeowner updates + material lists + photos"
+    connectors: [teams, sharepoint, onedrive]
+
+  - id: billing
+    provider: anthropic
+    model: claude-haiku-4-5
+    role: "Invoices, payment links, dunning, financing hand-off"
+    connectors: [quickbooks, stripe_optional]
+
+  - id: retention
+    provider: openai
+    model: "<R&B GPT> [CONFIRM]"
+    role: "Review requests, referrals, warranty + maintenance re-engagement"
+    connectors: [m365_outlook, sms]
+
+  - id: dashboard
+    provider: anthropic
+    model: claude-sonnet-4-6
+    role: "Owner metrics + reporting across the pipeline"
+    connectors: [excel_powerbi, quickbooks]

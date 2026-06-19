@@ -1,23 +1,23 @@
 ---
 type: application
-agent: "[[Jobs Agent]]"
-model: Sonnet 4.6
+brain: OpenAI (GPT)
 ---
 # Jobs
 
-**Owns:** Job status hub, homeowner updates, material lists, photo capture
+**Owns:** Status hub, homeowner updates, materials, photos
 
-Part of the [[00-Index|R&B Operating System]] pipeline. Run by its specialist, [[Jobs Agent]],
-which the [[Allerion Agency]] hires for this lane.
+Part of the [[00-Index|RB-OS]] [[Lead-to-Cash]] pipeline, run by the [[Allerion Agency]].
+
+## Specialist(s)
+[[Jobs Agent]]
 
 ## Pipeline position
 - **Upstream:** [[Scheduler]]
 - **Downstream:** [[Billing]]
 
-## Integrations
-JobNimbus, Google Drive
+## Stack (per [[../ADR-001-orchestration-and-hybrid-brain|ADR-001]])
+- **Brain:** OpenAI (GPT)
+- **Connectors:** Teams, SharePoint, OneDrive
 
 ## Related
-- Agent: [[Jobs Agent]]
-- Concept: [[Lead-to-Cash]]
-- Company: [[R&B Roofing and Remodeling]]
+- [[R&B Roofing and Remodeling]] · [[Speed-to-Lead]] · [[Lead-to-Cash]]

@@ -1,31 +1,25 @@
-# Dashboard agent — hired by the Allerion Agency to run R&B's "Dashboard" application.
-# Provision once via: ant beta:agents create < agency/agents/dashboard.agent.yaml
-#
-# Integration URLs below are PLACEHOLDERS [CONFIRM] — replace with R&B's real hosted MCP
-# endpoints (native vendor MCP, or a Zapier MCP aggregator). Credentials are NEVER stored
-# here — they live in a vault attached at session time (vault_ids). See agency/README.md.
+# Dashboard — Claude lane (per ADR-001 / agency/lanes.yaml).
+# Provision once: ant beta:agents create < agency/agents/dashboard.agent.yaml
+# Connector URLs are PLACEHOLDERS [CONFIRM]; credentials live in a vault (vault_ids).
 name: "RB Dashboard"
 model: claude-sonnet-4-6
 description: "Owner metrics + reporting across the whole pipeline"
 system: |
-  You are R&B Roofing & Remodeling's Dashboard specialist (white-label — you ARE R&B).
-  Your single job: Owner metrics + reporting across the whole pipeline.
-  Be fast, accurate, and friendly in R&B's voice ("Louisville's Trusted Contractor").
-  Read the Brain (memory store) for context before acting; write back anything the next
-  specialist needs.
-  Connectors available to this lane: google_sheets, quickbooks.
-  For minor choices, pick a sensible option and note it. For anything that charges a
-  customer or sends an external communication, confirm before acting.
+  You are R&B Roofing & Remodeling's specialist for: Dashboard (white-label — you ARE R&B).
+  Your job: Owner metrics + reporting across the whole pipeline.
+  Read the Brain (memory store) for context before acting; write back what the next lane needs.
+  Connectors available to this lane: m365, quickbooks.
+  For minor choices, pick sensibly and note it. Confirm before charging a customer or sending external comms.
 tools:
   - type: agent_toolset_20260401
   - type: mcp_toolset
-    mcp_server_name: google_sheets
+    mcp_server_name: m365
   - type: mcp_toolset
     mcp_server_name: quickbooks
 mcp_servers:
   - type: url
-    name: google_sheets
-    url: https://mcp.example/google-sheets   # [CONFIRM]
+    name: m365
+    url: https://mcp.example/m365-graph   # [CONFIRM]
   - type: url
     name: quickbooks
     url: https://mcp.example/quickbooks   # [CONFIRM]

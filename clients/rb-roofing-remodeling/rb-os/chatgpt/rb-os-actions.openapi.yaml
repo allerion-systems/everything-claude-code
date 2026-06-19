@@ -1,0 +1,68 @@
+# OpenAPI schema for the R&B Operations custom GPT's Action.
+# This is the Allerion Agency backend's public contract — the SAME API the MCP server calls,
+# so ChatGPT and every other client go through one door. Paste into the GPT builder → Actions.
+openapi: 3.1.0
+info:
+  title: RB-OS Agency API
+  version: 0.1.0
+  description: >
+    R&B Roofing & Remodeling's operating system. The Agency runs the lead→cash workflow and
+    routes each request to the right specialist (Intake, Triage, Roofr, Hover, Handoff.ai
+    Chief Estimator, Proposals, Scheduler, Jobs, Billing, Retention, Dashboard).
+servers:
+  - url: https://agency.allerion.example/v1   # [CONFIRM] R&B's Allerion-hosted Agency endpoint
+paths:
+  /ask:
+    post:
+      operationId: askAgency
+      summary: Send a plain-language request; the Agency routes it and returns the result.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [request]
+              properties:
+                request:
+                  type: string
+                  description: What the employee wants, in plain language.
+                context:
+                  type: object
+                  description: Optional context (job id, customer, address) to ground the request.
+                  additionalProperties: true
+      responses:
+        "200":
+          description: The Agency's reply.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  reply: { type: string, description: The answer or confirmation for the employee. }
+                  lane:  { type: string, description: Which specialist handled it. }
+  /applications:
+    get:
+      operationId: listApplications
+      summary: List the applications RB-OS covers and which specialist owns each.
+      responses:
+        "200":
+          description: The lanes.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    name:  { type: string }
+                    owns:  { type: string }
+                    brain: { type: string, description: Wiki path to this lane's Brain note. }
+components:
+  securitySchemes:
+    AgencyApiKey:
+      type: apiKey
+      in: header
+      name: X-RB-OS-Key
+security:
+  - AgencyApiKey: []

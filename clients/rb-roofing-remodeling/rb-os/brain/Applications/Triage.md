@@ -1,23 +1,23 @@
 ---
 type: application
-agent: "[[Triage Agent]]"
-model: Haiku 4.5
+brain: Claude Haiku 4.5
 ---
 # Triage
 
-**Owns:** Classify, score, dedupe, and route every lead with full context
+**Owns:** Classify, score, dedupe, and route every lead
 
-Part of the [[00-Index|R&B Operating System]] pipeline. Run by its specialist, [[Triage Agent]],
-which the [[Allerion Agency]] hires for this lane.
+Part of the [[00-Index|RB-OS]] [[Lead-to-Cash]] pipeline, run by the [[Allerion Agency]].
+
+## Specialist(s)
+[[Triage Agent]]
 
 ## Pipeline position
 - **Upstream:** [[Intake]]
 - **Downstream:** [[Estimator]]
 
-## Integrations
-JobNimbus, Roofr
+## Stack (per [[../ADR-001-orchestration-and-hybrid-brain|ADR-001]])
+- **Brain:** Claude Haiku 4.5
+- **Connectors:** Microsoft 365
 
 ## Related
-- Agent: [[Triage Agent]]
-- Concept: [[Speed-to-Lead]]
-- Company: [[R&B Roofing and Remodeling]]
+- [[R&B Roofing and Remodeling]] · [[Speed-to-Lead]] · [[Lead-to-Cash]]

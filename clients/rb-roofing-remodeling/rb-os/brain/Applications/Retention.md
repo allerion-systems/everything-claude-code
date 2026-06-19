@@ -1,23 +1,23 @@
 ---
 type: application
-agent: "[[Retention Agent]]"
-model: Haiku 4.5
+brain: OpenAI (GPT)
 ---
 # Retention
 
-**Owns:** Review requests, referrals, warranty + maintenance re-engagement
+**Owns:** Reviews, referrals, warranty + maintenance
 
-Part of the [[00-Index|R&B Operating System]] pipeline. Run by its specialist, [[Retention Agent]],
-which the [[Allerion Agency]] hires for this lane.
+Part of the [[00-Index|RB-OS]] [[Lead-to-Cash]] pipeline, run by the [[Allerion Agency]].
+
+## Specialist(s)
+[[Retention Agent]]
 
 ## Pipeline position
 - **Upstream:** [[Billing]]
 - **Downstream:** —
 
-## Integrations
-Gmail, SMS (Zapier)
+## Stack (per [[../ADR-001-orchestration-and-hybrid-brain|ADR-001]])
+- **Brain:** OpenAI (GPT)
+- **Connectors:** Microsoft 365 (Outlook), SMS
 
 ## Related
-- Agent: [[Retention Agent]]
-- Concept: [[Speed-to-Lead]]
-- Company: [[R&B Roofing and Remodeling]]
+- [[R&B Roofing and Remodeling]] · [[Speed-to-Lead]] · [[Lead-to-Cash]]

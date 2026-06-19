@@ -1,87 +1,60 @@
-# The Agency — hosted by Allerion
+# The Agency — hosted by Allerion (hybrid brain)
 
-The coordinator that **hires one specialist agent per application** and delegates work, so it's
-simple for R&B employees. Built on **Claude Managed Agents** (a coordinator with a roster of
-sub-agents). See `../brain/Agents/Allerion Agency.md` for the conceptual view.
+The orchestration core that runs R&B's lead→cash workflow and routes each request to the right
+specialist. Per **ADR-001**, it's a **hybrid**: GPT powers the customer-facing/conversational
+lanes; Claude powers the reasoning-heavy lanes. Employees reach it through **ChatGPT** (`../chatgpt/`),
+the **MCP server** (`../mcp/`), and Teams — one platform, many doors.
+
+Source of truth for every lane (provider, model, role, connectors): **`lanes.yaml`**.
 
 ## Layout
 ```
 agency/
-  coordinator.agent.yaml   ← the router (Opus 4.8), holds the roster
-  environment.yaml         ← shared cloud environment for all agents
-  agents/                  ← one specialist per application
-    intake.agent.yaml      (Haiku 4.5)   triage.agent.yaml    (Haiku 4.5)
-    estimator.agent.yaml   (Opus 4.8)    proposals.agent.yaml (Opus 4.8)
-    scheduler.agent.yaml   (Sonnet 4.6)  jobs.agent.yaml      (Sonnet 4.6)
-    billing.agent.yaml     (Haiku 4.5)   retention.agent.yaml (Haiku 4.5)
-    dashboard.agent.yaml   (Sonnet 4.6)
-```
-Model choices follow `../../whitelabel-ai-blueprint.md` §4: cheap/fast **Haiku 4.5** for
-high-volume lanes, **Opus 4.8** for reasoning-heavy lanes and the coordinator, **Sonnet 4.6**
-for the balanced middle.
-
-## Provision (one-time setup)
-
-Prereqs: an `ANTHROPIC_API_KEY`, and the Anthropic CLI (`ant`) or SDK. Agents are persistent —
-create once, reuse by ID. (Setup script: `scripts/provision.sh`.)
-
-```sh
-export ANTHROPIC_API_KEY=sk-ant-...
-
-# 1. Environment
-ENV_ID=$(ant beta:environments create < agency/environment.yaml --transform id -r)
-
-# 2. Specialists — capture each ID
-for f in agency/agents/*.agent.yaml; do
-  id=$(ant beta:agents create < "$f" --transform id -r)
-  echo "$f -> $id"
-done
-
-# 3. Edit agency/coordinator.agent.yaml: replace the agent_REPLACE_* placeholders in
-#    multiagent.agents with the IDs from step 2. Then:
-COORD_ID=$(ant beta:agents create < agency/coordinator.agent.yaml --transform id -r)
-echo "Coordinator: $COORD_ID   Environment: $ENV_ID"
+  lanes.yaml               ← the lane map (all lanes, both providers) — source of truth
+  coordinator.agent.yaml   ← Claude-side coordinator (rosters the Claude lanes)
+  environment.yaml         ← shared cloud environment for the Claude agents
+  agents/                  ← CLAUDE lanes (Managed Agents)
+    triage · roofr · hover · handoff · proposals · billing · dashboard
+  openai/
+    assistants.yaml        ← GPT lanes (OpenAI assistants): intake · scheduler · jobs · retention
+  scripts/provision.sh     ← one-time setup for the Claude side
 ```
 
-Store `COORD_ID` and `ENV_ID` — the MCP server (`../mcp/`) uses them to start sessions.
+## The estimating trio (the headline)
+`roofr` (measure) → `hover` (design) → **`handoff` (Chief Estimator, prices it)**. The Chief
+Estimator owns the number; it's the lane Allerion's future in-house instant estimator replaces.
 
-## How a request flows
-```
-employee → MCP server → sessions.create(agent=COORD_ID, env=ENV_ID)
-        → coordinator routes → specialist does the work (reads/writes the Brain)
-        → result streams back to the employee
-```
-
-## Connecting integrations (per lane)
-Each specialist's lane maps to real connectors (confirm exact accounts on the audit):
-
-| Specialist | Connects to |
+## Hybrid model map (from `lanes.yaml`)
+| Lane | Brain |
 | --- | --- |
-| Intake | Gmail / Outlook, web form, SMS, webhooks |
-| Triage | JobNimbus, Roofr |
-| Estimator | Roofr, aerial-imagery provider |
-| Proposals | Google Docs / Gamma, e-sign, QuickBooks (estimate) |
-| Scheduler | Google / Outlook Calendar |
-| Jobs | JobNimbus, Google Drive |
-| Billing | QuickBooks (`create_invoice`, `create_payment_link`), Stripe |
-| Retention | Gmail, SMS |
-| Dashboard | Google Sheets, QuickBooks reports |
+| Intake, Scheduler, Jobs, Retention | **OpenAI (GPT)** — customer-facing conversation |
+| Triage, Roofr, Hover, Billing | **Claude Haiku 4.5** — cheap, high-volume |
+| Handoff.ai (Chief Estimator), Proposals | **Claude Opus 4.8** — heavy reasoning |
+| Dashboard | **Claude Sonnet 4.6** |
 
-Wire these as MCP servers on each agent (`mcp_servers` in the YAML) with credentials stored in
-a **vault** at session time — never in the agent definition. See
-`../../whitelabel-ai-blueprint.md` §6 (security) and the audit's tool-inventory items.
+## Provision
+
+**Claude lanes** (needs `ANTHROPIC_API_KEY` + the `ant` CLI):
+```sh
+bash agency/scripts/provision.sh   # creates env + Claude agents + coordinator; prints the IDs
+```
+
+**GPT lanes** (needs R&B's OpenAI key): create one OpenAI assistant per entry in
+`openai/assistants.yaml`, using the model R&B sets on their account. [CONFIRM model]
+
+**Agency backend:** the service that reads `lanes.yaml`, exposes the API in
+`../chatgpt/rb-os-actions.openapi.yaml`, and dispatches to the Claude coordinator or the OpenAI
+assistants per lane. (The `../mcp/` server is a thin adapter to this same API.)
+
+## Integrations & secrets
+Each lane's connectors are declared in `lanes.yaml` (and on the Claude agents' `mcp_servers`).
+URLs are `[CONFIRM]` placeholders; **credentials live in a vault** (Claude) or the OpenAI/secret
+store (GPT) and are attached at runtime — never in these files. Connectors: M365 (Graph), QuickBooks,
+Roofr, Hover, Handoff.ai, e-sign, Stripe (optional).
 
 ## Shared memory (the Brain)
-Seed `../brain/` into a memory store, then every session shares it:
+Seed `../brain/` into a memory store so every lane shares context:
 ```sh
 cd ../mcp && npm install && npm run seed-brain   # prints RB_BRAIN_MEMORY_STORE_ID
 ```
-Put that ID in `mcp/.env`; the MCP server attaches it to every session it creates, so all
-specialists read and write the same context.
-
-## Connecting integrations (now wired)
-Each specialist YAML in `agents/` already declares its lane's connectors under `mcp_servers`
-(+ matching `mcp_toolset` entries). The URLs are **placeholders flagged `[CONFIRM]`** — replace
-them with R&B's real hosted MCP endpoints (native vendor MCP, or a Zapier MCP aggregator).
-**Credentials are never in the YAML** — store them in a vault and pass `vault_ids` at session
-time (the MCP server does this once configured). See `../../whitelabel-ai-blueprint.md` §6.
+Claude lanes mount it as a memory store; GPT lanes read it via the Agency backend.

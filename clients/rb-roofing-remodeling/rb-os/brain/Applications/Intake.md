@@ -1,23 +1,23 @@
 ---
 type: application
-agent: "[[Intake Agent]]"
-model: Haiku 4.5
+brain: OpenAI (GPT)
 ---
 # Intake
 
-**Owns:** Unified lead capture + instant 24/7 response across web, SMS, phone, and ads
+**Owns:** Unified lead capture + instant 24/7 response
 
-Part of the [[00-Index|R&B Operating System]] pipeline. Run by its specialist, [[Intake Agent]],
-which the [[Allerion Agency]] hires for this lane.
+Part of the [[00-Index|RB-OS]] [[Lead-to-Cash]] pipeline, run by the [[Allerion Agency]].
+
+## Specialist(s)
+[[Intake Agent]]
 
 ## Pipeline position
 - **Upstream:** —
 - **Downstream:** [[Triage]]
 
-## Integrations
-Gmail / Outlook, web form, SMS (Zapier), Webhooks
+## Stack (per [[../ADR-001-orchestration-and-hybrid-brain|ADR-001]])
+- **Brain:** OpenAI (GPT)
+- **Connectors:** Microsoft 365 (Outlook), web, SMS
 
 ## Related
-- Agent: [[Intake Agent]]
-- Concept: [[Speed-to-Lead]]
-- Company: [[R&B Roofing and Remodeling]]
+- [[R&B Roofing and Remodeling]] · [[Speed-to-Lead]] · [[Lead-to-Cash]]

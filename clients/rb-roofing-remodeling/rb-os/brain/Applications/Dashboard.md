@@ -1,23 +1,23 @@
 ---
 type: application
-agent: "[[Dashboard Agent]]"
-model: Sonnet 4.6
+brain: Claude Sonnet 4.6
 ---
 # Dashboard
 
-**Owns:** Owner metrics + reporting across the whole pipeline
+**Owns:** Owner metrics + reporting across the pipeline
 
-Part of the [[00-Index|R&B Operating System]] pipeline. Run by its specialist, [[Dashboard Agent]],
-which the [[Allerion Agency]] hires for this lane.
+Part of the [[00-Index|RB-OS]] [[Lead-to-Cash]] pipeline, run by the [[Allerion Agency]].
+
+## Specialist(s)
+[[Dashboard Agent]]
 
 ## Pipeline position
 - **Upstream:** (all)
 - **Downstream:** (all)
 
-## Integrations
-Google Sheets, QuickBooks reports
+## Stack (per [[../ADR-001-orchestration-and-hybrid-brain|ADR-001]])
+- **Brain:** Claude Sonnet 4.6
+- **Connectors:** Excel / Power BI, QuickBooks
 
 ## Related
-- Agent: [[Dashboard Agent]]
-- Concept: [[Lead-to-Cash]]
-- Company: [[R&B Roofing and Remodeling]]
+- [[R&B Roofing and Remodeling]] · [[Speed-to-Lead]] · [[Lead-to-Cash]]

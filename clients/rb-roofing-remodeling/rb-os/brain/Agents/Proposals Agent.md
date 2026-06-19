@@ -1,20 +1,17 @@
 ---
 type: agent
 application: "[[Proposals]]"
-model: Opus 4.8
-model_id: claude-opus-4-8
+brain: Claude Opus 4.8
 hired_by: "[[Allerion Agency]]"
 ---
 # Proposals Agent
 
-The specialist the [[Allerion Agency]] hires to own [[Proposals]].
+Specialist the [[Allerion Agency]] hires to run [[Proposals]].
 
-- **Model:** Opus 4.8 (`claude-opus-4-8`) — chosen per [[../whitelabel-ai-blueprint|model strategy]].
-- **Responsibility:** Tiered branded PDF proposal + e-sign + automated follow-up
+
+- **Brain:** Claude Opus 4.8 (per [[../ADR-001-orchestration-and-hybrid-brain|ADR-001]])
+- **Connectors:** Microsoft 365, e-sign, QuickBooks
 - **Config:** `agency/agents/proposals.agent.yaml`
-- **Integrations:** Google Docs, Gamma, e-sign, QuickBooks (estimate)
 
-## Works with
-- Hands off to: [[Scheduler]]
-- Receives from: [[Estimator]]
-- Reports to: [[Allerion Agency]] coordinator
+## Related
+- Application: [[Proposals]] · Reports to: [[Allerion Agency]]

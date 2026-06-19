@@ -1,20 +1,17 @@
 ---
 type: agent
 application: "[[Jobs]]"
-model: Sonnet 4.6
-model_id: claude-sonnet-4-6
+brain: OpenAI (GPT)
 hired_by: "[[Allerion Agency]]"
 ---
 # Jobs Agent
 
-The specialist the [[Allerion Agency]] hires to own [[Jobs]].
+Specialist the [[Allerion Agency]] hires to run [[Jobs]].
 
-- **Model:** Sonnet 4.6 (`claude-sonnet-4-6`) — chosen per [[../whitelabel-ai-blueprint|model strategy]].
-- **Responsibility:** Job status hub, homeowner updates, material lists, photo capture
-- **Config:** `agency/agents/jobs.agent.yaml`
-- **Integrations:** JobNimbus, Google Drive
 
-## Works with
-- Hands off to: [[Billing]]
-- Receives from: [[Scheduler]]
-- Reports to: [[Allerion Agency]] coordinator
+- **Brain:** OpenAI (GPT) (per [[../ADR-001-orchestration-and-hybrid-brain|ADR-001]])
+- **Connectors:** Teams, SharePoint, OneDrive
+- **Config:** `agency/openai/assistants.yaml (jobs)`
+
+## Related
+- Application: [[Jobs]] · Reports to: [[Allerion Agency]]

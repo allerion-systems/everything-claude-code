@@ -1,20 +1,17 @@
 ---
 type: agent
 application: "[[Retention]]"
-model: Haiku 4.5
-model_id: claude-haiku-4-5
+brain: OpenAI (GPT)
 hired_by: "[[Allerion Agency]]"
 ---
 # Retention Agent
 
-The specialist the [[Allerion Agency]] hires to own [[Retention]].
+Specialist the [[Allerion Agency]] hires to run [[Retention]].
 
-- **Model:** Haiku 4.5 (`claude-haiku-4-5`) — chosen per [[../whitelabel-ai-blueprint|model strategy]].
-- **Responsibility:** Review requests, referrals, warranty + maintenance re-engagement
-- **Config:** `agency/agents/retention.agent.yaml`
-- **Integrations:** Gmail, SMS (Zapier)
 
-## Works with
-- Hands off to: —
-- Receives from: [[Billing]]
-- Reports to: [[Allerion Agency]] coordinator
+- **Brain:** OpenAI (GPT) (per [[../ADR-001-orchestration-and-hybrid-brain|ADR-001]])
+- **Connectors:** Microsoft 365 (Outlook), SMS
+- **Config:** `agency/openai/assistants.yaml (retention)`
+
+## Related
+- Application: [[Retention]] · Reports to: [[Allerion Agency]]
