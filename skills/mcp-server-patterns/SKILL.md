@@ -60,6 +60,21 @@ Use **Zod** (or the SDK’s preferred schema format) for input validation.
 - **Rate and cost**: For tools that call external APIs, consider rate limits and cost; document in the tool description.
 - **Versioning**: Pin SDK version in package.json; check release notes when upgrading.
 
+## Debugging
+
+- **MCP Inspector**: interactive, transport-agnostic testing UI. Connect to a stdio or Streamable HTTP server, invoke tools/prompts/resources, and watch the notification stream. Start here before testing against a real client.
+- **Logging**:
+  - stdio transport: write logs to **stderr**, never stdout — stdout is reserved for protocol messages and writing to it will break the connection.
+  - Streamable HTTP transport: stderr isn't captured by the client. Send `notifications/message` log messages instead (`server.sendLoggingMessage({ level, data })` in TS, `ctx.session.send_log_message(...)` in Python), or rely on your own server-side log aggregation and standard HTTP tooling (curl, browser DevTools Network panel).
+  - Log initialization steps, resource access, tool execution, error conditions, and performance metrics.
+- **Common failure points**:
+  - *Working directory*: clients may launch stdio servers from an undefined cwd (e.g. `/` on macOS). Always use absolute paths in server config and `.env` files.
+  - *Environment variables*: stdio servers inherit only a limited, platform-dependent subset of env vars. Pass required vars explicitly via the client's `env` config key.
+  - *Initialization*: verify the server executable path, check for valid JSON config, and confirm required env vars are set and correctly valued.
+  - *Connection problems*: check client logs, confirm the server process is actually running, test standalone with Inspector, and verify protocol/capability negotiation — a `-32602` "Invalid params" error is often a server sending a `sampling` or `elicitation` request to a client that never declared that capability.
+- **Claude Desktop specifics**: connector/tool status is under the "Add files, connectors, and more" menu; logs live at `~/Library/Logs/Claude/mcp*.log` (macOS) or `%APPDATA%\Claude\logs` (Windows); Chrome DevTools can be enabled via `developer_settings.json` (`{"allowDevTools": true}`) for inspecting client-side errors and network payloads.
+- **Iterating**: config changes and server code changes both require a full client restart (fully quit and reopen, not just closing the window); use Inspector for fast iteration during development.
+
 ## Official SDKs and Docs
 
 - **JavaScript/TypeScript**: `@modelcontextprotocol/sdk` (npm). Use Context7 with library name "MCP" for current registration and transport patterns.
