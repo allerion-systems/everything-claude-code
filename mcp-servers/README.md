@@ -31,20 +31,26 @@ Notes:
 - `hover_get_measurements format=skp` downloads the SketchUp model of a captured property - pairs directly with the `sketchup-cloud-modeling` skill / File → Insert workflow.
 - Org-level OAuth job creation needs `params[current_user_email]` or 422s (use `hover_raw_request`).
 
-## Handoff (handoff.ai) - construction estimating
+## Handoff (handoff.ai) - AI construction estimating
 
-**Handoff has no public API as of 2026-07** ([their help center](https://help.handoff.ai/en/articles/9778505-does-handoff-have-an-api)). This server is an honest scaffold: `handoff_status` reports the situation, and the generic `handoff_request` tool goes live the moment you obtain partner/private API credentials from Handoff.
+Wraps the **Handoff Enterprise API** (docs: https://api.handoff.ai/docs). Auth is OAuth2
+client-credentials: get your **Client ID** (UUID) and **Client Secret** (`hnd_...`) from
+`app.handoff.ai/settings/integrations?tab=api-keys`. Token fetch + refresh is automatic.
 
 ```bash
-claude mcp add handoff -- node <this-repo>/mcp-servers/handoff/index.js
-
-# when Handoff grants API access:
 claude mcp add handoff \
-  -e HANDOFF_API_BASE=https://<their-api-base> -e HANDOFF_API_KEY=<key> \
+  -e HANDOFF_CLIENT_ID=<uuid> -e HANDOFF_CLIENT_SECRET=<hnd_key> \
   -- node <this-repo>/mcp-servers/handoff/index.js
 ```
 
-Until then, move estimates in/out of Handoff via the app's exports (PDF/CSV) and let Claude parse them.
+Tools: `handoff_status` (live credential check), `handoff_create_estimate` (BLUEPRINT from
+plan files or MATERIAL_LIST from a prompt - local files are auto-uploaded via presigned
+URLs; supports address-based regional pricing), `handoff_get_estimate` (poll job),
+`handoff_update_estimate`, `handoff_match_materials`, `handoff_get_presets` /
+`handoff_set_presets`, `handoff_raw_request` (webhook config etc.).
+
+Scopes available: `estimates:read estimates:write materials:create blueprints:create
+presets:manage files:manage data:delete webhooks:manage`.
 
 ## Security
 
