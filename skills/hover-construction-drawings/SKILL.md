@@ -55,6 +55,8 @@ The pipeline is three dependency-free Node scripts (Node 18+):
    [--topo site-topo.json]` emits ready-to-run build code for the Trimble
    SketchUp MCP connector (walls, roof, deck, and USGS terrain); the
    **sketchup-modeler** agent relays it and returns a downloadable `.skp`.
+   This step consumes the neutral plan-model schema regardless of where it
+   came from — HOVER, GIS site-scout, or any other converted source.
    Protocol and verification values in `references/sketchup-modeling.md`.
 
 ### Pre-visit site scout (address -> as-built conditions before HOVER)
