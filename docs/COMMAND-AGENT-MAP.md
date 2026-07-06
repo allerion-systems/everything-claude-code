@@ -51,6 +51,7 @@ This document lists each slash command and the primary agent(s) or skills it inv
 | Direct agent | Purpose | Scope | Notes |
 |--------------|---------|-------|-------|
 | `typescript-reviewer` | TypeScript/JavaScript code review | TypeScript/JavaScript projects | Invoke the agent directly when a review needs TS/JS-specific findings and there is no dedicated slash command yet. |
+| `sketchup-modeler` | SketchUp cloud 3D modeling via the Trimble SketchUp MCP | 3D design/build/edit requests, as-built rebuilds from measured data | Backs `/sketchup-design` and stage 2 of `/estimate-pipeline`; see the `sketchup-cloud-modeling` skill. |
 
 ## Skills referenced by commands
 
