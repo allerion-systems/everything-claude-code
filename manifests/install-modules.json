@@ -494,6 +494,27 @@
       "defaultInstall": false,
       "cost": "medium",
       "stability": "stable"
+    },
+    {
+      "id": "construction-domain",
+      "kind": "skills",
+      "description": "Construction domain skills: HOVER photogrammetry integration and framing/roof plan drawing generation.",
+      "paths": [
+        "skills/hover-construction-drawings"
+      ],
+      "targets": [
+        "claude",
+        "cursor",
+        "antigravity",
+        "codex",
+        "opencode"
+      ],
+      "dependencies": [
+        "platform-configs"
+      ],
+      "defaultInstall": false,
+      "cost": "medium",
+      "stability": "stable"
     }
   ]
 }

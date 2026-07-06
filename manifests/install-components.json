@@ -252,6 +252,14 @@
       ]
     },
     {
+      "id": "capability:construction",
+      "family": "capability",
+      "description": "Construction domain skills: HOVER photogrammetry integration and framing/roof plan drawing generation.",
+      "modules": [
+        "construction-domain"
+      ]
+    },
+    {
       "id": "capability:documents",
       "family": "capability",
       "description": "Document processing, conversion, and translation skills.",

@@ -1,0 +1,56 @@
+{
+  "project": {
+    "name": "SAMPLE RESIDENCE - REROOF & ADDITION",
+    "address": "123 Main St, Springfield, IL 62701",
+    "jobId": "17344154",
+    "date": "2026-07-06"
+  },
+  "roof": {
+    "planes": [
+      { "id": "A", "pitch": "6/12", "vertices": [[0, 0], [40, 0], [40, 14], [0, 14]] },
+      { "id": "B", "pitch": "6/12", "vertices": [[0, 14], [40, 14], [40, 28], [0, 28]] }
+    ],
+    "edges": [
+      { "type": "ridge", "from": [0, 14], "to": [40, 14] },
+      { "type": "eave", "from": [0, 0], "to": [40, 0] },
+      { "type": "eave", "from": [0, 28], "to": [40, 28] },
+      { "type": "rake", "from": [0, 0], "to": [0, 14] },
+      { "type": "rake", "from": [0, 14], "to": [0, 28] },
+      { "type": "rake", "from": [40, 0], "to": [40, 14] },
+      { "type": "rake", "from": [40, 14], "to": [40, 28] }
+    ]
+  },
+  "walls": {
+    "footprint": [[0, 0], [40, 0], [40, 28], [0, 28]],
+    "height": 8,
+    "facades": [
+      {
+        "id": "F1",
+        "name": "SOUTH",
+        "from": [0, 0],
+        "to": [40, 0],
+        "openings": [
+          { "type": "door", "width": 3, "height": 6.67 },
+          { "type": "window", "width": 4, "height": 4 },
+          { "type": "window", "width": 4, "height": 4 }
+        ]
+      },
+      {
+        "id": "F2",
+        "name": "EAST",
+        "from": [40, 0],
+        "to": [40, 28],
+        "openings": [
+          { "type": "window", "width": 3, "height": 4, "offset": 6, "sill": 3 }
+        ]
+      },
+      { "id": "F3", "name": "NORTH", "from": [40, 28], "to": [0, 28], "openings": [] },
+      { "id": "F4", "name": "WEST", "from": [0, 28], "to": [0, 0], "openings": [] }
+    ]
+  },
+  "framing": {
+    "rafter": { "size": "2x8", "spacingIn": 16 },
+    "ridge": "2x10",
+    "stud": { "size": "2x6", "spacingIn": 16 }
+  }
+}
