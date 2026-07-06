@@ -16,6 +16,7 @@ existing HOVER account.
 /hover projects [search]          # list/search your HOVER jobs
 /hover pull <job id or address>   # download measurements + CAD artifacts
 /hover plans <job id> [specs]     # generate S-1/S-2/S-3 drawing set
+/hover model <job id>             # build a live 3D SketchUp model (.skp)
 ```
 
 Natural language works too: `/hover get me framing plans for the Johnson
@@ -39,7 +40,12 @@ reroof, 2x10 rafters at 16 inches`.
      header schedule
    Each sheet is emitted as `.dxf` (AutoCAD/LibreCAD/DraftSight) and `.svg`
    (ARCH D title-block sheet — print to PDF at the labeled scale).
-5. **Report** — areas, pitches, rafter counts, header marks, file paths.
+5. **Model in SketchUp** (`/hover model`) — the **sketchup-modeler** agent
+   feeds deterministic build code from `scripts/hover/sketchup-code.js` into
+   the Trimble SketchUp MCP connector and returns a downloadable `.skp`
+   (walls with cut openings + sloped roof planes, thumbnail included).
+   Requires the free Trimble SketchUp connector enabled on your account.
+6. **Report** — areas, pitches, rafter counts, header marks, file paths.
 
 ## Framing Specs
 

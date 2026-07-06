@@ -257,6 +257,22 @@ function normalize(input, options = {}) {
     });
   }
 
+  if (model.deck) {
+    const deck = model.deck;
+    if (!Number.isFinite(deck.width) || deck.width <= 0 || !Number.isFinite(deck.depth) || deck.depth <= 0) {
+      const err = new Error('deck.width and deck.depth must be positive numbers (feet)');
+      err.code = 'INVALID_PLAN_MODEL';
+      throw err;
+    }
+    deck.origin = isPoint(deck.origin) ? deck.origin : [0, 0];
+    deck.height = Number.isFinite(deck.height) ? deck.height : 2.5;
+    deck.joist = Object.assign({ size: '2x8', spacingIn: 16 }, deck.joist || {});
+    deck.beam = deck.beam || '(2) 2x10';
+    deck.posts = deck.posts || '6x6';
+    deck.ledger = deck.ledger || '2x10 LEDGER W/ 1/2" LAG SCREWS @ 16" O.C. STAGGERED';
+    deck.guardrail = deck.guardrail !== false;
+  }
+
   return validatePlanModel(model);
 }
 

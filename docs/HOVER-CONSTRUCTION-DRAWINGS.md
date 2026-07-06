@@ -22,6 +22,32 @@ print to PDF at 100% for a to-scale drawing):
 - **S-3 WALL FRAMING ELEVATIONS & SCHEDULES** — stud elevations per facade,
   window/door rough openings, header marks + header schedule
 
+- **S-4 DECK FRAMING PLAN** (when a deck is in play) — ledger, joist layout,
+  beam + posts, IRC R507 notes. HOVER doesn't measure decks, so the agent
+  estimates deck dimensions from HOVER's own capture photos (scale taken
+  from measured elements in frame) and flags them for field verification.
+
+Plus, optionally, a **live 3D SketchUp model** (`/hover model`): the
+sketchup-modeler agent runs `scripts/hover/sketchup-code.js` (deterministic,
+local, free) and feeds the result to the free Trimble SketchUp connector —
+you get a downloadable `.skp` with walls, cut openings, sloped roof planes,
+the deck, and real USGS terrain under it all. Enable the Trimble SketchUp
+connector in your claude.ai connector settings; note it has its own
+free-tier usage caps.
+
+## Before the site visit: address → as-built conditions
+
+```bash
+node scripts/hover/site-scout.js "123 Main St, Springfield, IL"
+```
+
+Free public GIS, no keys: US Census geocoder (address → coordinates), USGS
+3DEP (terrain elevation grid), OpenStreetMap (existing building footprint).
+Output is `site-topo.json` + a starter `plan-model.json` — enough to
+generate outline drawings and a SketchUp massing on real terrain before
+anyone drives to the site. Everything is flagged as a GIS approximation;
+the HOVER capture is the measured source of truth that replaces it.
+
 ## One-time setup
 
 1. **HOVER API credentials** (uses your HOVER account): request API access /

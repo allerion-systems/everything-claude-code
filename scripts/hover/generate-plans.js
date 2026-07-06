@@ -581,18 +581,102 @@ function buildWallFraming(model) {
   return { file: 'wall-framing', title: 'WALL FRAMING ELEVATIONS & SCHEDULES', sheetNo: 'S-3', canvas: c };
 }
 
+function deckRect(deck) {
+  const d = Array.isArray(deck.direction) ? deck.direction : [0, 1];
+  const lateral = [d[1], d[0]];
+  const A = deck.origin;
+  const B = pm.add(A, pm.scale(lateral, deck.width));
+  const C = pm.add(B, pm.scale(d, deck.depth));
+  const D = pm.add(A, pm.scale(d, deck.depth));
+  return { A, B, C, D, d, lateral };
+}
+
+function buildDeckPlan(model) {
+  if (!model.deck) return null;
+  const deck = model.deck;
+  const { A, B, C, D, d, lateral } = deckRect(deck);
+  const c = new Canvas();
+  const { th } = textHeightsFor({ width: deck.width * 2.2 + 20, height: deck.depth + 10 });
+
+  // house wall line at the ledger edge for context
+  const wallExt = pm.scale(lateral, 4);
+  c.line('A-WALL', pm.sub(A, wallExt), pm.add(B, wallExt));
+  c.poly('A-WALL', [A, B, C, D], true);
+
+  // ledger along A-B
+  c.line('S-FRAM-MEMB', A, B);
+  const abMid = pm.scale(pm.add(A, B), 0.5);
+  const ledgerAngle = Math.atan2(B[1] - A[1], B[0] - A[0]) * 180 / Math.PI;
+  c.text('ANNO', pm.add(abMid, pm.scale(d, th * 0.8)), th, deck.ledger + ' - VERIFY',
+    { align: 'center', rotation: normalizeTextAngle(ledgerAngle) });
+
+  // joists span from ledger to outer edge, spaced along the lateral axis
+  const spacingFt = deck.joist.spacingIn / 12;
+  let joists = 0;
+  for (let t = spacingFt; t < deck.width - 1e-6; t += spacingFt) {
+    const p1 = pm.add(A, pm.scale(lateral, t));
+    c.line('S-FRAM-RAFT', p1, pm.add(p1, pm.scale(d, deck.depth)));
+    joists++;
+  }
+  const center = pm.scale(pm.add(A, C), 0.5);
+  c.text('ANNO', center, th, `${deck.joist.size} JOISTS @ ${deck.joist.spacingIn}" O.C.`, { align: 'center' });
+
+  // drop beam with cantilever, posts at ends + middle
+  const beamSet = Math.min(1.5, deck.depth / 4);
+  const bA = pm.add(A, pm.scale(d, deck.depth - beamSet));
+  const bB = pm.add(B, pm.scale(d, deck.depth - beamSet));
+  c.line('S-FRAM-MEMB', bA, bB);
+  c.text('ANNO', pm.add(pm.scale(pm.add(bA, bB), 0.5), pm.scale(d, th * 0.8)), th,
+    `${deck.beam} BEAM - VERIFY`, { align: 'center', rotation: normalizeTextAngle(ledgerAngle) });
+  const postT = deck.width > 12 ? [1, deck.width / 2, deck.width - 1] : [1, deck.width - 1];
+  for (const t of postT) {
+    const p = pm.add(pm.add(A, pm.scale(lateral, t)), pm.scale(d, deck.depth - beamSet));
+    c.poly('S-HDR', [
+      [p[0] - 0.25, p[1] - 0.25], [p[0] + 0.25, p[1] - 0.25],
+      [p[0] + 0.25, p[1] + 0.25], [p[0] - 0.25, p[1] + 0.25]
+    ], true);
+  }
+  c.text('ANNO', pm.add(pm.scale(pm.add(bA, bB), 0.5), pm.scale(d, -th * 2.2)), th,
+    `${deck.posts} POSTS ON FOOTINGS PER CODE (${postT.length}x)`, { align: 'center', rotation: normalizeTextAngle(ledgerAngle) });
+
+  drawDim(c, A, B, -1, th * 4, th);
+  drawDim(c, B, C, -1, th * 4, th);
+
+  const box = pm.bbox([A, B, C, D]);
+  const rx = box.maxX + th * 10;
+  const notes = [
+    `DECK FRAMING PER GOVERNING CODE (IRC R507). MEMBER SIZES SHOWN ARE OWNER-SUPPLIED OR PLACEHOLDER VALUES - VERIFY SPANS, SPECIES, AND FASTENING AGAINST CODE TABLES OR ENGINEERED DESIGN.`,
+    'LEDGER ATTACHMENT TO EXISTING STRUCTURE MUST BE VERIFIED (RIM/BAND CONDITION, FLASHING, LATERAL-LOAD ANCHORS PER R507.9.2).',
+    'FOOTINGS: SIZE AND DEPTH PER LOCAL FROST DEPTH AND SOIL BEARING - VERIFY WITH BUILDING DEPARTMENT.',
+    'ALL LUMBER PRESSURE-TREATED OR NATURALLY DURABLE; HOT-DIPPED GALVANIZED OR STAINLESS CONNECTORS.'
+  ];
+  if (deck.guardrail) {
+    notes.push('GUARDRAIL REQUIRED: WALKING SURFACE > 30" ABOVE GRADE. 36" MIN HEIGHT, 4" SPHERE RULE (VERIFY LOCAL AMENDMENTS).');
+  }
+  if (deck.estimated) {
+    notes.unshift('DECK DIMENSIONS ESTIMATED FROM HOVER CAPTURE PHOTOS (HOVER DOES NOT MEASURE DECKS). FIELD VERIFY ALL DECK DIMENSIONS BEFORE ORDERING MATERIAL OR SUBMITTING FOR PERMIT.');
+  }
+  drawNotes(c, rx, box.maxY, 'DECK FRAMING NOTES', notes, th);
+
+  return { file: 'deck-framing-plan', title: 'DECK FRAMING PLAN', sheetNo: 'S-4', canvas: c, joistCount: joists };
+}
+
 // ---------------------------------------------------------------------------
 // CLI
 // ---------------------------------------------------------------------------
 
 function generate(model, options = {}) {
-  const sheetsWanted = options.sheets || ['roof', 'roof-framing', 'walls'];
+  const sheetsWanted = options.sheets || ['roof', 'roof-framing', 'walls', 'deck'];
   const built = [];
   if (sheetsWanted.includes('roof')) built.push(buildRoofPlan(model));
   if (sheetsWanted.includes('roof-framing')) built.push(buildRoofFraming(model));
   if (sheetsWanted.includes('walls')) {
     const walls = buildWallFraming(model);
     if (walls) built.push(walls);
+  }
+  if (sheetsWanted.includes('deck')) {
+    const deckSheet = buildDeckPlan(model);
+    if (deckSheet) built.push(deckSheet);
   }
 
   const outputs = [];
@@ -668,4 +752,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { generate, buildRoofPlan, buildRoofFraming, buildWallFraming, renderDxf, renderSvgSheet, chooseScale, LAYERS, SHEET };
+module.exports = { generate, buildRoofPlan, buildRoofFraming, buildWallFraming, buildDeckPlan, deckRect, renderDxf, renderSvgSheet, chooseScale, LAYERS, SHEET };

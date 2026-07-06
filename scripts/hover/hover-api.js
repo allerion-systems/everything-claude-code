@@ -231,6 +231,27 @@ async function cmdPull(jobId, options) {
         console.log(`  model ${model.id}: artifact ${name} failed (${err.message})`);
       }
     }
+
+    // Capture photos: HOVER measures walls/roofs but NOT decks - the photos
+    // are how the agent picks up deck dimensions (scale from measured
+    // elements in frame). Cap the download to keep pulls fast.
+    const images = (model.images || []).slice(0, options.maxPhotos || 24);
+    if (images.length > 0) {
+      const photoDir = path.join(modelDir, 'photos');
+      fs.mkdirSync(photoDir, { recursive: true });
+      let downloaded = 0;
+      for (const image of images) {
+        if (!image.url) continue;
+        try {
+          const res = await fetch(image.url);
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          const buf = Buffer.from(await res.arrayBuffer());
+          fs.writeFileSync(path.join(photoDir, `photo-${image.id}.${extFromUrl(image.url, 'jpg')}`), buf);
+          downloaded++;
+        } catch (_err) { /* skip unavailable photos */ }
+      }
+      console.log(`  model ${model.id}: ${downloaded}/${images.length} capture photos -> ${photoDir}`);
+    }
   }
 
   console.log(`\nPulled to ${dest}`);
@@ -251,6 +272,7 @@ function parseArgs(argv) {
     const a = argv[i];
     if (a === '--dest') args.dest = argv[++i];
     else if (a === '--versions') args.versions = argv[++i].split(',').map(s => s.trim());
+    else if (a === '--max-photos') args.maxPhotos = Number(argv[++i]);
     else args._.push(a);
   }
   return args;

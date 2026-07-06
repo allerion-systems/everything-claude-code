@@ -51,6 +51,41 @@ The pipeline is three dependency-free Node scripts (Node 18+):
    ARCH D SVG plot sheet with border, title block, legend, schedules, notes,
    and the NOT FOR CONSTRUCTION disclaimer. Drafting conventions live in
    `references/drafting-standards.md`.
+4. **Model (optional)** — `node scripts/hover/sketchup-code.js <model.json>
+   [--topo site-topo.json]` emits ready-to-run build code for the Trimble
+   SketchUp MCP connector (walls, roof, deck, and USGS terrain); the
+   **sketchup-modeler** agent relays it and returns a downloadable `.skp`.
+   Protocol and verification values in `references/sketchup-modeling.md`.
+
+### Pre-visit site scout (address -> as-built conditions before HOVER)
+
+`node scripts/hover/site-scout.js "<address>"` uses free public GIS (US
+Census geocoder, USGS 3DEP elevation, OpenStreetMap footprints — no keys,
+no cost) to produce `site-topo.json` plus a starter `plan-model.json` with
+the existing building footprint, clearly flagged as a GIS approximation.
+Drawings and a terrain-sitting SketchUp massing exist before anyone drives
+to the site; the HOVER capture later replaces the approximation with
+measured geometry. `site-topo.js` alone fetches just the terrain grid.
+
+### Deck pickup (HOVER does not measure decks)
+
+HOVER's photogrammetry measures walls/roofs/openings but NOT decks — the
+deck appears in capture photos only. Procedure:
+
+1. `hover-api.js pull` downloads capture photos to `photos/` automatically.
+2. Read the photos that show the deck alongside a HOVER-measured element
+   (facade length, door/window width). Scale = known dimension ÷ its pixel
+   length in that photo; apply to the deck edges to estimate width/depth/
+   height. Cross-check across 2+ photos.
+3. Write the `deck` section into the plan model with `"estimated": true`:
+   `{ "attachedTo": "F3", "origin": [x,y], "direction": [0,1], "width": w,
+   "depth": d, "height": h, "estimated": true }` (joist/beam/post specs
+   optional — flagged defaults otherwise).
+4. Regenerate: the set gains **S-4 DECK FRAMING PLAN** (ledger, joists,
+   beam, posts, IRC R507 notes, photo-estimate warning) and the SketchUp
+   model gains the 3D deck (platform, posts, guardrail on open sides).
+5. Tell the user the dimensions are photo-estimated and must be tape-verified
+   before material orders or permit submission.
 
 ### Design inputs
 
