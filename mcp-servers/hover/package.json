@@ -1,0 +1,11 @@
+{
+  "name": "hover-mcp-server",
+  "version": "1.0.0",
+  "description": "MCP server for the HOVER (hover.to) property measurement API - jobs, measurements, deliverables, capture requests",
+  "type": "module",
+  "bin": { "hover-mcp-server": "index.js" },
+  "engines": { "node": ">=18" },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0"
+  }
+}

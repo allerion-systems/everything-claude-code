@@ -1,0 +1,11 @@
+{
+  "name": "handoff-mcp-server",
+  "version": "1.0.0",
+  "description": "MCP server scaffold for Handoff (handoff.ai) construction estimating - ready for API credentials when Handoff opens their API",
+  "type": "module",
+  "bin": { "handoff-mcp-server": "index.js" },
+  "engines": { "node": ">=18" },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0"
+  }
+}
