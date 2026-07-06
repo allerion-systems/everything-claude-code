@@ -13,6 +13,7 @@ existing HOVER account.
 
 ```
 /hover setup                      # configure HOVER API credentials
+/hover status                     # check HOVER + Handoff connection status (all sources)
 /hover projects [search]          # list/search your HOVER jobs
 /hover pull <job id or address>   # download measurements + CAD artifacts
 /hover plans <job id> [specs]     # generate S-1/S-2/S-3 drawing set
@@ -24,6 +25,11 @@ reroof, 2x10 rafters at 16 inches`.
 
 ## What This Command Does
 
+0. **`/hover status`** invokes the **hover-handoff-admin** agent, which checks
+   *every* configured data source (HOVER, and Handoff once it has a public
+   API) in one pass — credential status, reachability, and what to do next
+   for whichever isn't connected. Use this before `projects`/`pull` if you're
+   not sure your credentials are set up.
 1. **Find the project** — searches your HOVER account by name/address via
    `scripts/hover/hover-api.js jobs`
 2. **Pull at a moment's notice** — downloads job details, summarized/full/
