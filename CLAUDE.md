@@ -22,16 +22,24 @@ node tests/hooks/hooks.test.js
 
 The project is organized into several core components:
 
-- **agents/** - Specialized subagents for delegation (planner, code-reviewer, tdd-guide, etc.)
-- **skills/** - Workflow definitions and domain knowledge (coding standards, patterns, testing)
-- **commands/** - Slash commands invoked by users (/tdd, /plan, /e2e, etc.)
-- **hooks/** - Trigger-based automations (session persistence, pre/post-tool hooks)
-- **rules/** - Always-follow guidelines (security, coding style, testing requirements)
+- **agents/** - Specialized subagents for delegation (30+: planner, code-reviewer, tdd-guide, language-specific reviewers/build-resolvers, etc.)
+- **skills/** - Workflow definitions and domain knowledge (126+: coding standards, patterns, testing, etc.)
+- **commands/** - Slash commands invoked by users (61+: /tdd, /plan, /e2e, etc.)
+- **hooks/** - Trigger-based automations defined in `hooks/hooks.json` (SessionStart/SessionEnd, Pre/PostToolUse, PostToolUseFailure, PreCompact, Stop)
+- **rules/** - Always-follow guidelines per language (common, cpp, csharp, golang, java, kotlin, perl, php, python, rust, swift, typescript)
 - **mcp-configs/** - MCP server configurations for external integrations
-- **scripts/** - Cross-platform Node.js utilities for hooks and setup
+- **scripts/** - Cross-platform Node.js utilities for hooks, install/uninstall, and CI validation (`scripts/ci/validate-*.js`)
 - **tests/** - Test suite for scripts and utilities
+- **contexts/** - Named behavior-mode presets (dev.md, research.md, review.md)
+- **examples/** - Sample CLAUDE.md files and statusline config for reference
+- **manifests/** + **schemas/** - Install profile/module manifests (`manifests/install-*.json`) and their JSON Schemas, consumed by `scripts/install-*.js`
+- **plugins/** - Guide for installing Claude Code plugin marketplaces (docs only, no code)
+- **docs/** - Additional guides/architecture notes, including localized READMEs (`docs/<lang>/README.md`)
+- **ecc2/** - Experimental Rust TUI dashboard ("ECC 2.0" agentic IDE control plane); a separate Cargo project, not part of the Node.js tooling above
 
 ## Key Commands
+
+Representative examples (see `commands/` for the full list of 60+):
 
 - `/tdd` - Test-driven development workflow
 - `/plan` - Implementation planning
@@ -43,12 +51,13 @@ The project is organized into several core components:
 
 ## Development Notes
 
-- Package manager detection: npm, pnpm, yarn, bun (configurable via `CLAUDE_PACKAGE_MANAGER` env var or project config)
+- Package manager detection: npm, pnpm, yarn, bun (configurable via `CLAUDE_PACKAGE_MANAGER` env var or project config); see `scripts/lib/package-manager.js`
 - Cross-platform: Windows, macOS, Linux support via Node.js scripts
 - Agent format: Markdown with YAML frontmatter (name, description, tools, model)
 - Skill format: Markdown with clear sections for when to use, how it works, examples
 - Skill placement: Curated in skills/; generated/imported under ~/.claude/skills/. See docs/SKILL-PLACEMENT-POLICY.md
 - Hook format: JSON with matcher conditions and command/notification hooks
+- `npm test` runs the full CI validation chain (validate-agents/commands/rules/skills/hooks/install-manifests, catalog counts, then `tests/run-all.js`); run `npm install` first if `node_modules/` is missing (needed for `ajv`-backed manifest validation and install/uninstall tests)
 
 ## Contributing
 
