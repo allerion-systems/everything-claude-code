@@ -868,6 +868,12 @@ Yes. ECC is cross-platform:
 </details>
 
 <details>
+<summary><b>Can I run Claude Code against OpenRouter models (including free ones)?</b></summary>
+
+Yes. OpenRouter exposes an Anthropic-compatible endpoint, so Claude Code can be pointed at any OpenRouter model (free or paid) with a few `env` entries in `settings.json` — your ECC agents, skills, and hooks keep working unchanged. See the [OpenRouter Guide](docs/OPENROUTER-GUIDE.md) for setup, free-tier rate limits, and caveats.
+</details>
+
+<details>
 <summary><b>How do I contribute a new skill or agent?</b></summary>
 
 See [CONTRIBUTING.md](CONTRIBUTING.md). The short version:
