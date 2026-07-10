@@ -142,6 +142,15 @@
         "CONFLUENCE_API_TOKEN": "YOUR_CONFLUENCE_TOKEN_HERE"
       },
       "description": "Confluence Cloud integration — search pages, retrieve content, explore spaces"
+    },
+    "science": {
+      "command": "node",
+      "args": ["mcp-servers/science/src/index.js"],
+      "env": {
+        "SCIENCE_MCP_CONTACT_EMAIL": "",
+        "NCBI_API_KEY": ""
+      },
+      "description": "Science research over free no-auth APIs — arXiv, PubMed, PubChem, ClinicalTrials.gov, CrossRef, OpenAlex. Local server; run 'npm install' in mcp-servers/science first and use an absolute path to src/index.js. See mcp-servers/science/README.md"
     }
   },
   "_comments": {
