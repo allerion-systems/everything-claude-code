@@ -17,6 +17,7 @@ existing HOVER account.
 /hover pull <job id or address>   # download measurements + CAD artifacts
 /hover plans <job id> [specs]     # generate S-1/S-2/S-3 drawing set
 /hover model <job id>             # build a live 3D SketchUp model (.skp)
+/hover estimate <job id> [terms]  # materials takeoff + preliminary estimate
 ```
 
 Natural language works too: `/hover get me framing plans for the Johnson
@@ -45,7 +46,14 @@ reroof, 2x10 rafters at 16 inches`.
    the Trimble SketchUp MCP connector and returns a downloadable `.skp`
    (walls with cut openings + sloped roof planes, thumbnail included).
    Requires the free Trimble SketchUp connector enabled on your account.
-6. **Report** — areas, pitches, rafter counts, header marks, file paths.
+6. **Estimate** (`/hover estimate`) — the **construction-estimator** agent
+   runs `scripts/hover/estimate.js` to produce a materials takeoff (roof
+   squares by pitch, edge lengths, rafter/stud counts, siding net of
+   openings, deck) priced against your price book, emitted as
+   `estimate.json` / `.csv` / `.md`. Placeholder prices are flagged until
+   you supply real costs (`--print-prices` emits a book to edit). Marked
+   PRELIMINARY — NOT A BID.
+7. **Report** — areas, pitches, rafter counts, header marks, file paths.
 
 ## Framing Specs
 
