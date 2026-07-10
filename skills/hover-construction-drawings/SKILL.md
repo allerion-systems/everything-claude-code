@@ -56,6 +56,15 @@ The pipeline is three dependency-free Node scripts (Node 18+):
    SketchUp MCP connector (walls, roof, deck, and USGS terrain); the
    **sketchup-modeler** agent relays it and returns a downloadable `.skp`.
    Protocol and verification values in `references/sketchup-modeling.md`.
+5. **Estimate (optional)** — `node scripts/hover/estimate.js <model.json>
+   [--prices book.json] [--markup 10] [--tax 8] [--sections roofing]`
+   computes the materials takeoff from the same geometry (squares by pitch,
+   ridge/eave/rake/hip/valley LF, rafter/stud counts, siding net of
+   openings, deck) and prices it, emitting `estimate.json`/`.csv`/`.md`.
+   The **construction-estimator** agent drives this; unit costs come from
+   the user's price book (`--print-prices` emits a starter to edit) and
+   every placeholder-priced line is flagged. Output is stamped
+   PRELIMINARY — NOT A BID.
 
 ### Pre-visit site scout (address -> as-built conditions before HOVER)
 

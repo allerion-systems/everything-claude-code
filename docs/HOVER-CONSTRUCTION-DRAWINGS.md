@@ -35,6 +35,17 @@ the deck, and real USGS terrain under it all. Enable the Trimble SketchUp
 connector in your claude.ai connector settings; note it has its own
 free-tier usage caps.
 
+And a **materials takeoff + preliminary estimate** (`/hover estimate`): the
+construction-estimator agent runs `scripts/hover/estimate.js` against the
+same plan model to compute roof squares by pitch, ridge/eave/rake/hip/valley
+lengths, rafter and stud counts, siding net of openings, and deck materials,
+then prices everything against your price book with explicit waste, overhead
+& profit, and tax inputs. Output is `estimate.json` + `estimate.csv` +
+`estimate.md`. Until you supply real unit costs
+(`node scripts/hover/estimate.js --print-prices > my-price-book.json`, edit,
+pass with `--prices`), lines are priced with flagged PLACEHOLDER values —
+and every estimate is stamped **PRELIMINARY — NOT A BID**.
+
 ## Before the site visit: address → as-built conditions
 
 ```bash
