@@ -137,6 +137,17 @@ layers can read dashed (`[6,4]`) without touching geometry.
 - **Reconcile with the drawings.** If a plan set exists, the model must match
   it (deck height, riser count, pitch, which side the garage is on). A wireframe
   that contradicts the controlling document is worse than none.
+- **Ground the existing shell in the capture — never invent the roof.** When a
+  HOVER capture exists, pull the *existing* roof from it: pitches from
+  `roof.pitch[]` (e.g. a 7:12 hip with a 12:12 gable wing — model the real
+  facets, not one assumed slope), and eave/ridge/wall/sill heights from the DXF
+  (HOVER exports are in **inches** — ÷12) or the measurement PDF. A guessed
+  pitch or a hip drawn as a gable is the most common reason a model "doesn't
+  match." The `508-foxwick.py` example is built this way.
+- **Covered-porch roofs are hips, not awnings.** A porch roof on a two-storey
+  wall ties in as a **hip tucked just under the second-floor sills**; its pitch
+  is *derived* from (sill − outer-beam height) ÷ depth, not chosen. Echo the
+  existing roof's vocabulary (hip vs gable) and the client's inspiration.
 - **One unit system.** Mixing feet and inches silently scales the model.
 - **Keep it a wireframe.** No fills, no lighting — legibility of the structure
   is the point. For renders, export OBJ and light it in Blender.
