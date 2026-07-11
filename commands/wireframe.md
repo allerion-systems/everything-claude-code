@@ -11,8 +11,8 @@ as a shareable artifact — the open-source alternative to driving the SketchUp
 connector. Runs on the **parametric-wireframe** skill: plain Python geometry →
 a single self-contained HTML viewer, no MCP, no account, no build step.
 
-> Heads up: `/model` is reserved by Claude Code for switching models, so this
-> command is `/wireframe`. Natural language works too — "3D this deck",
+> Heads up: Claude Code reserves the built-in model switcher (that name is
+> taken), so this command is `/wireframe`. Natural language works too — "3D this deck",
 > "wireframe the porch", "model this in the browser".
 
 ## What it does

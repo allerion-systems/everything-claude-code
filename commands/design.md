@@ -69,8 +69,8 @@ capture before publishing.
   licensed professional seals it. Permit acceptance varies by jurisdiction.
 
 > Note: `/design` is the deck/covered-deck orchestrator. For a raw HOVER permit
-> set use `/hover`; for just the 3D model use `/wireframe`. (`/model` is
-> reserved by Claude Code's built-in model switcher.)
+> set use `/hover`; for just the 3D model use `/wireframe`. (The built-in model
+> switcher already owns that other name.)
 
 See `skills/hover-construction-drawings/SKILL.md` and
 `skills/parametric-wireframe/SKILL.md` for the underlying pipelines.
