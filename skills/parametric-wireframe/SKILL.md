@@ -144,10 +144,22 @@ layers can read dashed (`[6,4]`) without touching geometry.
   (HOVER exports are in **inches** — ÷12) or the measurement PDF. A guessed
   pitch or a hip drawn as a gable is the most common reason a model "doesn't
   match." The `508-foxwick.py` example is built this way.
-- **Covered-porch roofs are hips, not awnings.** A porch roof on a two-storey
-  wall ties in as a **hip tucked just under the second-floor sills**; its pitch
-  is *derived* from (sill − outer-beam height) ÷ depth, not chosen. Echo the
-  existing roof's vocabulary (hip vs gable) and the client's inspiration.
+- **Lock the as-built once it reads right.** The moment the client confirms
+  the existing shell matches, bake its segments — transformed and
+  layer-assigned — into a `*_locked.json` and make the build script load that
+  file verbatim. Design revisions may only **add** layers below the locked
+  block; never re-run or re-tune the ingestion filters per revision, or every
+  new feature risks restyling or dropping lines of a house the client already
+  approved. Re-bake only when the capture itself changes.
+- **Derive the porch-roof pitch — and know when a gable needs a beam.** A
+  porch roof on a two-storey wall ties in **just under the second-floor
+  sills**; its pitch is *derived* from (sill − outer-beam height) ÷ depth, not
+  chosen. A client's projecting gable *is* achievable above a low shed — but
+  only with a **structural ridge beam** carried at the yard face by a
+  structural truss or posts, holding level and then saddling down to the wall
+  tie below the sills. That same beam is what permits an open/vaulted ceiling
+  (no rafter ties). Flag the beam, truss members, and point-load footings for
+  a PE.
 - **One unit system.** Mixing feet and inches silently scales the model.
 - **Keep it a wireframe.** No fills, no lighting — legibility of the structure
   is the point. For renders, export OBJ and light it in Blender.

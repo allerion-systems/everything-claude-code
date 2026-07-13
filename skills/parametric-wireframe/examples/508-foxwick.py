@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Worked example: 508 Foxwick Ct porch & deck addition (R1 geometry).
+"""Worked example: 508 Foxwick Ct porch & deck addition (R3 geometry).
 
 Run from the skill root:
     python3 examples/508-foxwick.py
@@ -7,12 +7,24 @@ Produces 508-foxwick-wireframe.html — publish it with the Artifact tool.
 
 Existing-shell geometry is grounded in the HOVER capture (Property 22311873 /
 Model 22357787): measured roof pitches 7:12 (58%) + 12:12 gable wing (39%) +
-5:12 (3%), a 16-facet hip-and-valley roof, and a brick chimney reaching ~31'.
-New-work dimensions come from plan set R1 (A-101/S-101..103/A-201/A-301): deck
-36'x16' @ +4'-9", 8-riser stair, standing-seam HIP porch roof tied in at
-+16'-6" (just under the measured 2nd-floor sills), freestanding stone chimney
-at the right end. Coordinates: X left->right from the yard, Y up, Z toward the
-yard; the house rear wall is the z=0 plane and the house body runs into -Z."""
+5:12 (3%), a 16-facet hip-and-valley roof, a brick chimney reaching ~31', and
+two one-story bay projections at the rear wall. The bays REMAIN; only the low
+5:12 roofs sitting on top of them are demolished so the new porch roof can run
+clean to the main wall.
+
+R3 porch roof is the confirmed design: a 2:12 standing-seam SHED over the
+whole deck, ledger at +16'-6" on the main wall (below the measured +17'-5"
+second-floor sills), passing over the bays — plus a 12:12 OPEN-CEILING cross
+GABLE over the door bay. The gable works because its ridge is a STRUCTURAL
+LVL beam: carried at the yard face by a structural king-post timber truss,
+holding level, then saddling down to the wall tie below the sills. No rafter
+ties → vaulted cedar T&G ceiling. Ridge beam, truss and point-load footings
+are PE-design items.
+
+Coordinates: X left->right from the yard, Y up, Z toward the yard; the house
+MAIN rear wall is the z=0 plane and the house body runs into -Z. In a real
+job the existing shell below would be baked to a locked JSON once approved
+(see SKILL.md "Lock the as-built") — design layers only ever ADD below it."""
 import math
 import os
 import sys
@@ -27,34 +39,34 @@ s = Scene()
 HX0, HX1, HZB, EH = -4.0, 30.0, -28.0, 23.0
 RH = EH + 14.0 * (7.0 / 12.0)            # 7:12 over half-depth (28/2) -> ~31.2'
 RX0, RX1, RZ = 10.0, 16.0, -14.0         # short hip ridge, centred in x & z
-s.box("existing", HX0, 0, 0, HX1, EH, HZB)           # 2-storey wall mass
-for cz in (0.0, HZB):                                # 4 hip rafters to ridge
+s.box("existing", HX0, 0, 0, HX1, EH, HZB)
+for cz in (0.0, HZB):
     s.line("existing", (HX0, EH, cz), (RX0, RH, RZ))
     s.line("existing", (HX1, EH, cz), (RX1, RH, RZ))
-s.line("existing", (RX0, RH, RZ), (RX1, RH, RZ))     # ridge
-s.line("existing", (HX0, EH, 0), (HX1, EH, 0))       # rear eave
+s.line("existing", (RX0, RH, RZ), (RX1, RH, RZ))
+s.line("existing", (HX0, EH, 0), (HX1, EH, 0))
 
-# ---- 2nd-floor windows (preserved) + rear openings ------------------------
+# ---- 2nd-floor windows (preserved — porch tie-in stays BELOW their sills) --
 for wx0 in (6.5, 16.5):
     s.rect("existing", (wx0,16.9,0),(wx0+4.0,16.9,0),(wx0+4.0,20.9,0),(wx0,20.9,0))
-for dx0,w in ((9.0,6.0),(20.0,3.0)):                 # french doors + rear door
-    s.rect("existing", (dx0,4.9,0),(dx0+w,4.9,0),(dx0+w,11.57,0),(dx0,11.57,0))
+s.rect("existing", (27.0,5.2,0),(33.0,5.2,0),(33.0,11.87,0),(27.0,11.87,0))  # french doors (gable bay)
 
-# ---- existing bay (breakfast nook, to integrate under new porch roof) ------
-s.box("existing", 8.0,0,0, 15.5,11.0,3.2)
+# ---- TWO existing one-story bays (WALLS REMAIN; roofs demo'd below) --------
+s.box("existing", 7.5,0,0, 14.0,11.0,3.0)
+s.box("existing", 20.0,0,0, 26.5,11.0,3.0)
 
 # ---- existing BRICK chimney: right side, up to ~31' (HOVER) ----------------
 s.box("existing", 25.5,EH-2.5,-7.0, 27.6,31.4,-5.0)
 
 # ---- GARAGE WING on the LEFT: 12:12 GABLE, ridge in x, gable end to drive ---
 GX0, GX1, GZB, EG = -28.0, -4.0, -24.0, 13.5
-RG = EG + 12.0 * (12.0/12.0)             # 12:12 over half-depth (24/2) -> 25.5'
-s.box("existing", GX0,2.0,0, GX1,EG,GZB)             # garage walls (floor +2')
-s.line("existing", (GX0,RG,-12),(GX1,RG,-12))        # ridge (runs in x)
-for gx in (GX0, GX1):                                # rear + front rake at ends
-    s.line("existing", (gx,EG,0),(gx,RG,-12)); s.line("existing", (gx,EG,GZB),(gx,RG,-12))
-s.line("existing", (GX0,EG,0),(GX1,EG,0))            # rear eave
-s.line("existing", (GX0,RG,-12),(GX0,EG,GZB))        # west gable-end slope (to drive)
+RG_G = EG + 12.0 * (12.0/12.0)           # 12:12 over half-depth (24/2) -> 25.5'
+s.box("existing", GX0,2.0,0, GX1,EG,GZB)
+s.line("existing", (GX0,RG_G,-12),(GX1,RG_G,-12))
+for gx in (GX0, GX1):
+    s.line("existing", (gx,EG,0),(gx,RG_G,-12)); s.line("existing", (gx,EG,GZB),(gx,RG_G,-12))
+s.line("existing", (GX0,EG,0),(GX1,EG,0))
+s.line("existing", (GX0,RG_G,-12),(GX0,EG,GZB))
 
 # ---- grade (slopes up toward garage) --------------------------------------
 s.line("grade", (GX0-6,2.0,0),(GX1,2.0,0)); s.line("grade", (GX1,2.0,0),(-2,0,4))
@@ -64,41 +76,47 @@ for gz in (8,12,16,20,24):
     s.line("grade", (-2,0,gz),(44,0,gz))
 
 # ============================ DEMO =========================================
+# existing elevated deck — remove entirely
 s.rect("demo", (0,4.75,0),(26.5,4.75,0),(26.5,4.75,12.5),(0,4.75,12.5))
 s.line("demo", (26.5,4.75,12.5),(31,0.3,16.5))
+# low 5:12 roofs ON TOP of the two bays — remove (bay walls/windows remain)
+for bx0, bx1 in ((7.5,14.0),(20.0,26.5)):
+    s.rect("demo", (bx0,11.05,0),(bx1,11.05,0),(bx1,11.05,3.0),(bx0,11.05,3.0))
+    s.line("demo", (bx0,11.05,0),(bx1,11.05,3.0)); s.line("demo", (bx1,11.05,0),(bx0,11.05,3.0))
 
-# ============================ NEW DECK (R1) ================================
-DX0,DX1,DZ1,DY = 0.0,36.0,16.0,4.75
+# ============================ NEW DECK (R3) ================================
+# 36'-7" total = 7'-0" grill bay (garage end) + 29'-7" living run, @ +5'-4"
+DX0,DX1,DZ1,DY = 0.0,36.58,16.0,5.33
 s.rect("deck", (DX0,DY,0),(DX1,DY,0),(DX1,DY,DZ1),(DX0,DY,DZ1))
 s.rect("deck", (DX0+0.9,DY,0.9),(DX1-0.9,DY,0.9),(DX1-0.9,DY,DZ1-0.9),(DX0+0.9,DY,DZ1-0.9))
+s.line("deck", (7.0,DY+0.02,0),(7.0,DY+0.02,DZ1))                     # grill-bay break
 
-# ---- deck framing S-102: ledger, 2x12 joists @16, B1 drop beam ------------
+# ---- deck framing S-102: ledger, 2x12 joists @16, drop beam ----------------
 JT = DY-0.1; JB = JT-0.94; SPACING = 16/12.0
-for zc in (0.05, 15.67, DZ1):
+for zc in (0.05, 15.0, DZ1):
     s.line("framing", (DX0,JB,zc),(DX1,JB,zc))
 s.line("framing", (DX0,JT,0.05),(DX1,JT,0.05))
-s.line("framing", (DX0,JB-0.94,15.67),(DX1,JB-0.94,15.67))       # B1 lower ply
+s.line("framing", (DX0,JB-0.94,15.0),(DX1,JB-0.94,15.0))
 i = 0
 while DX0 + i*SPACING <= DX1:
-    x = DX0 + i*SPACING; s.line("framing", (x,JB,0.05),(x,JB,15.67)); i += 1
+    x = DX0 + i*SPACING; s.line("framing", (x,JB,0.05),(x,JB,15.0)); i += 1
 
-# ---- posts + footings F1 (30" below grade) --------------------------------
-COLX = [0.4, 6.75, 13.5, 22.5, 29.25, 35.6]
-for x in COLX + [30.0]:
-    z = 15.67 if x != 30.0 else 0.5
-    s.box("framing", x-0.25,0,z-0.25, x+0.25,JB-0.94,z+0.25)
-    s.box("foundation", x-0.85,-2.5,z-0.85, x+0.85,-0.5,z+0.85)
+# ---- FIVE posts + footings (30" below grade); gable posts carry the truss --
+POSTX = [0.5, 9.0, 18.0, 24.0, 36.1]
+for x in POSTX:
+    s.box("framing", x-0.25,0,14.75, x+0.25,JB-0.94,15.25)
+    s.box("foundation", x-0.85,-2.5,14.4, x+0.85,-0.5,15.6)
 
-# ---- stair 8R @ 7-1/8", 7T @ 11", 8'-0" clear -----------------------------
-SX0,SX1,r,t = 14.0,22.0,7.125/12.0,11.0/12.0
-for k in range(8):
+# ---- stair 9R @ ~7-1/8", 8T @ 11", 8'-0" clear, centred on the doors -------
+NR = 9; SX0,SX1 = 26.0,34.0; r = DY/NR; t = 11.0/12.0
+for k in range(NR):
     yT = DY - k*r; z0 = DZ1 + k*t
     s.line("stair", (SX0,yT,z0),(SX1,yT,z0))
     s.line("stair", (SX0,yT,z0),(SX0,yT-r,z0)); s.line("stair", (SX1,yT,z0),(SX1,yT-r,z0))
-    if k < 7:
+    if k < NR-1:
         s.line("stair", (SX0,yT-r,z0),(SX0,yT-r,z0+t)); s.line("stair", (SX1,yT-r,z0),(SX1,yT-r,z0+t))
-s.rect("stair", (SX0-0.5,0.02,DZ1+7*t),(SX1+0.5,0.02,DZ1+7*t),
-                (SX1+0.5,0.02,DZ1+7*t+3),(SX0-0.5,0.02,DZ1+7*t+3))   # paver landing
+s.rect("stair", (SX0-0.5,0.02,DZ1+(NR-1)*t),(SX1+0.5,0.02,DZ1+(NR-1)*t),
+                (SX1+0.5,0.02,DZ1+(NR-1)*t+3),(SX0-0.5,0.02,DZ1+(NR-1)*t+3))
 
 # ---- guard 36" black aluminum ---------------------------------------------
 def rail(x0,z0,x1,z1):
@@ -108,52 +126,82 @@ def rail(x0,z0,x1,z1):
         f=j/float(k); s.line("guard", (x0+f*(x1-x0),DY,z0+f*(z1-z0)),(x0+f*(x1-x0),DY+3,z0+f*(z1-z0)))
 rail(DX0,0,DX0,DZ1); rail(DX1,0,DX1,DZ1); rail(DX0,DZ1,SX0,DZ1); rail(SX1,DZ1,DX1,DZ1)
 
-# ============================ NEW COVERED PORCH ROOF =======================
-# Standing-seam HIP roof: rises from outer eave (+13'-3") to a +16'-6" tie-in
-# just below the measured 2nd-floor sills. Hipped both ends, per North Star.
-PEY, PWY, HI = 13.25, 16.5, 6.0
-def py(z): return PWY - (PWY-PEY)*(z/DZ1)            # porch-roof height at depth z
-ZC = 15.5                                            # eave line (over columns)
+# ============================ NEW PORCH ROOF (R3) ===========================
+# Whole-deck 2:12 shed from the MAIN-wall ledger (+16'-6", under the sills),
+# passing over the bays, + 12:12 open-ceiling gable on a structural ridge.
+TIE, SLP = 16.5, 2.0/12.0
+ZC, ZE = 15.5, 17.0                       # post/beam line; eave w/ 18" overhang
+def shedY(z): return TIE - z*SLP
+EY, EE = shedY(ZC), shedY(ZE)             # 13.92 @ beam, 13.67 @ eave edge
 
-# columns: stone base + square wrap up to the eave
-for x in COLX:
-    s.box("columns", x-0.85,DY,ZC-0.85, x+0.85,DY+3,ZC+0.85)          # stone base
-    s.box("columns", x-0.42,DY+3,ZC-0.42, x+0.42,py(ZC)-0.4,ZC+0.42)  # wrapped post
-
-# roof framing S-103: ledger at wall, beam at eave, 2x10 rafters @16 up-slope
-s.line("roofframing", (DX0,PWY,0.05),(DX1,PWY,0.05))
-s.line("roofframing", (DX0,PEY,ZC),(DX1,PEY,ZC))
+# ---- columns: stone base + square wrap + knee braces ------------------------
+for x in POSTX:
+    s.box("columns", x-0.85,DY,ZC-0.85, x+0.85,DY+2.5,ZC+0.85)         # stone base
+    s.box("columns", x-0.42,DY+2.5,ZC-0.42, x+0.42,EY-1.0,ZC+0.42)     # square post
+    for dx in (-1.8, 1.8):
+        s.line("roofframing", (x,EY-2.6,ZC),(x+dx,EY-1.05,ZC))
+s.line("roofframing", (DX0,EY,ZC),(DX1,EY,ZC))                         # carrying beam
+s.line("roofframing", (DX0,EY-1.0,ZC),(DX1,EY-1.0,ZC))
+s.line("roofframing", (DX0,TIE,0),(DX1,TIE,0))                         # ledger @ main wall
 i = 0
-while DX0 + i*SPACING <= DX1:
-    x = DX0 + i*SPACING; s.line("roofframing", (x,PWY,0.05),(x,PEY,ZC)); i += 1
+while DX0 + i*2.67 <= DX1:                                             # rafters (indicative)
+    x = DX0 + i*2.67; s.line("roofframing", (x,TIE,0),(x,EE,ZE)); i += 1
 
-# roof surface: high edge at wall (inset = hip), front eave, hips, end returns
-s.line("roof", (HI,PWY,0),(DX1-HI,PWY,0))            # ridge against wall
-s.line("roof", (DX0,PEY,DZ1),(DX1,PEY,DZ1))          # front eave
-s.line("roof", (DX0,PEY,DZ1),(HI,PWY,0))             # front-left hip
-s.line("roof", (DX1,PEY,DZ1),(DX1-HI,PWY,0))         # front-right hip
-s.line("roof", (DX0,PEY,DZ1),(DX0,PEY,0)); s.line("roof", (DX0,PEY,0),(HI,PWY,0))    # L end
-s.line("roof", (DX1,PEY,DZ1),(DX1,PEY,0)); s.line("roof", (DX1,PEY,0),(DX1-HI,PWY,0))# R end
-for x in (8,12,16,20,24,28):                         # standing-seam battens
-    s.line("roof", (x,PEY,DZ1),(x,PWY,0))
-s.line("roof", (DX0,PEY,DZ1),(DX1,PEY,DZ1))          # (fascia doubled below)
-s.line("roof", (DX0,PEY-0.6,DZ1),(DX1,PEY-0.6,DZ1))  # fascia
+# ---- shed plane + standing seams + fascia ----------------------------------
+s.rect("roof", (DX0,TIE+0.15,0),(DX1,TIE+0.15,0),(DX1,EE+0.15,ZE),(DX0,EE+0.15,ZE))
+for i2 in range(1,13):
+    x = DX0 + i2*(DX1-DX0)/13.0
+    s.line("roof", (x,TIE+0.15,0),(x,EE+0.15,ZE))
+s.line("roof", (DX0,EE-0.55,ZE),(DX1,EE-0.55,ZE))
+s.line("roof", (DX0,EE+0.15,ZE),(DX0,EE-0.55,ZE)); s.line("roof", (DX1,EE+0.15,ZE),(DX1,EE-0.55,ZE))
 
-# ---- NEW freestanding stone chimney: right end, clean stone to yard --------
-CX0,CX1,CZ0,CZ1 = 30.1,35.1,13.0,16.0
-CTOP = 19.6                                          # rises above the porch roof
-s.box("chimney", CX0,DY,CZ0, CX1,CTOP,CZ1)
-s.rect("chimney", (31.6,DY+0.7,CZ0),(33.6,DY+0.7,CZ0),(33.6,DY+3.2,CZ0),(31.6,DY+3.2,CZ0))  # firebox
-s.line("chimney", (31.3,DY+4.0,CZ0),(33.9,DY+4.0,CZ0))                                        # mantel
-s.rect("chimney", (31.5,DY+4.6,CZ0),(33.7,DY+4.6,CZ0),(33.7,DY+6.2,CZ0),(31.5,DY+6.2,CZ0))   # TV
-s.box("foundation", 29.6,-2.5,12.5, 35.6,-0.2,16.5)                                            # F3 pad
+# ---- OPEN-CEILING cross gable over the door bay (12:12) --------------------
+GB0, GB1 = 24.0, 36.1
+GCg = (GB0+GB1)/2.0
+APX = EE + (GB1-GB0)/2.0                  # 12:12 apex at the yard face
+ZFo = 5.0                                 # ridge saddles down from here to the tie
+s.line("roof", (GCg,APX,ZE),(GCg,APX,ZFo)); s.line("roof", (GCg,APX,ZFo),(GCg,TIE,0))
+s.line("roof", (GB0,EE,ZE),(GCg,APX,ZE)); s.line("roof", (GB1,EE,ZE),(GCg,APX,ZE))
+vp  = [(GB0+(shedY(z)-EE), shedY(z), z) for z in (11.0, ZFo)]          # left valley
+s.poly("roof", (GB0,EE,ZE), *vp, (GB0+(TIE-EE), TIE, 0))
+vp2 = [(GB1-(shedY(z)-EE), shedY(z), z) for z in (11.0, ZFo)]          # right valley
+s.poly("roof", (GB1,EE,ZE), *vp2, (GB1-(TIE-EE), TIE, 0))
+s.line("roof", (GB0+(shedY(ZFo)-EE),shedY(ZFo),ZFo),(GCg,APX,ZFo))     # fold creases
+s.line("roof", (GB1-(shedY(ZFo)-EE),shedY(ZFo),ZFo),(GCg,APX,ZFo))
+for tt in (0.33, 0.66):                                                # gable-plane seams
+    yy = EE + tt*(APX-EE)
+    s.line("roof", (GB0+tt*(GCg-GB0),yy,ZE),(GB0+tt*(GCg-GB0),yy,ZFo+(1-tt)*2))
+    s.line("roof", (GB1-tt*(GB1-GCg),yy,ZE),(GB1-tt*(GB1-GCg),yy,ZFo+(1-tt)*2))
+
+# ---- STRUCTURAL king-post truss @ yard face + LVL ridge beam (PE) ----------
+TZ = ZE
+s.line("truss", (GB0,EE,TZ),(GB1,EE,TZ))                               # bottom chord
+s.line("truss", (GCg,EE,TZ),(GCg,APX,TZ))                              # king post
+s.line("truss", (GB0,EE,TZ),(GCg,APX,TZ)); s.line("truss", (GB1,EE,TZ),(GCg,APX,TZ))
+s.line("truss", (GCg,EE+0.3,TZ),((GB0+GCg)/2,(EE+APX)/2,TZ))           # struts
+s.line("truss", (GCg,EE+0.3,TZ),((GB1+GCg)/2,(EE+APX)/2,TZ))
+s.line("roofframing", (GCg,APX-0.1,ZE),(GCg,TIE-0.1,0))                # ridge BEAM
+
+# ---- NEW freestanding stone chimney RIGHT of the gable (own footing) --------
+CX0,CX1,CZ0,CZ1 = 36.7,40.7,12.2,16.2
+CTOP = 21.5
+s.box("chimney", CX0,DY-1.0,CZ0, CX1,CTOP,CZ1)
+s.rect("chimney", (37.7,DY+0.7,CZ0),(39.7,DY+0.7,CZ0),(39.7,DY+3.2,CZ0),(37.7,DY+3.2,CZ0))  # firebox
+s.line("chimney", (37.4,DY+4.0,CZ0),(40.0,DY+4.0,CZ0))                                       # mantel
+s.rect("chimney", (37.6,DY+4.6,CZ0),(39.8,DY+4.6,CZ0),(39.8,DY+6.2,CZ0),(37.6,DY+6.2,CZ0))   # TV
+s.box("foundation", 36.2,-2.5,11.7, 41.2,-0.2,16.7)                                          # own pad
 
 # ============================ LABELS =======================================
 for txt,x,y,z,ly in [
     ("GARAGE 12:12 GABLE",-16,20,-6,"existing"), ("RESIDENCE 7:12 HIP",13,25.5,-8,"existing"),
-    ("EXIST. BRICK CHIMNEY",26.5,29,-6,"existing"), ("NEW STONE CHIMNEY",32.6,17.5,14.5,"chimney"),
-    ("DECK 36' x 16'",18,5.6,8,"deck"), ("STAIR 8R",18,2.2,20.5,"stair"),
-    ("B1 (3)2x12",2.5,2.6,15.67,"framing"), ("STANDING-SEAM HIP 2½:12",18,15.4,9,"roof")]:
+    ("EXIST. BRICK CHIMNEY",26.5,29,-6,"existing"),
+    ("DEMO BAY ROOFS — BAY WALLS REMAIN",13,12.3,2,"demo"),
+    ("NEW STONE CHIMNEY (OWN FTG)",38.7,22.4,14.5,"chimney"),
+    ("DECK 36'-7\" (7' GRILL BAY + 29'-7\") @ +5'-4\"",25,DY+1.3,6,"deck"),
+    ("STAIR 9R",30,2.2,22,"stair"),
+    ("WHOLE SHED ROOF 2:12 · TIE +16'-6\"",8,13.9,9.5,"roof"),
+    ("OPEN-CEILING TRUSS GABLE 12:12",30,20.8,15,"truss"),
+    ("STRUCTURAL RIDGE BEAM (PE)",30,19.4,4,"roofframing")]:
     s.label(txt,x,y,z,ly)
 
 res = build(
@@ -162,32 +210,34 @@ res = build(
     template=os.path.join(os.path.dirname(__file__), "..", "templates", "viewer.html"),
     title="508 FOXWICK — WIREFRAME",
     subtitle="HERNANDEZ RESIDENCE · PORCH & DECK · LOUISVILLE KY · HOVER 22357787",
-    rev="R1 · 11 JUL 2026",
+    rev="R3 · 13 JUL 2026",
     stamp="PRELIMINARY — NOT FOR CONSTRUCTION — V.I.F.",
-    units="FT", obj_name="508-foxwick-r1-wireframe",
-    hud=["<b>EXIST. ROOF</b> 7:12 HIP + 12:12 GABLE WING (HOVER)",
-         "<b>PORCH ROOF</b> 2½:12 std-seam HIP → +16'-6\" tie-in",
-         "<b>DECK</b> 36'×16' @ +4'-9\" · <b>STAIR</b> 8R @ 7-1/8\""],
+    units="FT", obj_name="508-foxwick-r3-wireframe",
+    hud=["<b>ROOF</b> 2:12 shed over whole deck + OPEN-CEILING 12:12 truss gable",
+         "<b>DEMO</b> bay roofs only — bay walls remain · <b>EXIST.</b> per HOVER",
+         "<b>DECK</b> 36'-7\" (7' + 29'-7\") @ +5'-4\" · <b>STAIR</b> 9R · tie +16'-6\""],
     layers={
         "existing":    ["Existing shell (HOVER)",   "#8B877B", "#6E7480", 1.0],
         "grade":       ["Grade / patio",            "#B9B4A5", "#3E434E", 0.7],
-        "demo":        ["Demo — existing deck",      "#A65138", "#C96A47", 1.2, [6,4]],
-        "foundation":  ["Footings F1/F3",            "#8C7B62", "#8A7355", 0.9, [4,3]],
+        "demo":        ["Demo — deck + bay roofs",   "#A65138", "#C96A47", 1.2, [6,4]],
+        "foundation":  ["Footings",                  "#8C7B62", "#8A7355", 0.9, [4,3]],
         "framing":     ["Deck framing (S-102)",      "#B27B2E", "#E0A45C", 1.0],
         "deck":        ["Deck surface",              "#7A6A4C", "#A89468", 1.4],
         "stair":       ["Stair",                     "#C08A3E", "#E7B878", 1.1],
         "guard":       ["Guard 36\" alum.",          "#3A3833", "#C9C4B4", 0.8],
         "columns":     ["Columns + stone bases",     "#9C8F6F", "#CBBD97", 1.1],
         "roofframing": ["Porch roof framing (S-103)","#4E7D8C", "#6FA8BC", 0.9],
-        "roof":        ["Porch roof — std-seam hip", "#39616F", "#4E8496", 1.3],
+        "roof":        ["Porch roof — shed + gable", "#39616F", "#4E8496", 1.3],
+        "truss":       ["Structural timber truss",   "#8A5A2B", "#C08442", 1.6],
         "chimney":     ["New stone chimney",         "#87796A", "#A99A85", 1.3],
     },
     scenes={
-        "Perspective":     dict(yaw=-0.55, pitch=0.30, dist=105, fov=42, tgt=[6,11,2]),
-        "Rear elevation":  dict(yaw=0.0,   pitch=0.03, dist=290, fov=14, tgt=[4,14,0]),
-        "Chimney bay":     dict(yaw=1.05,  pitch=0.16, dist=85,  fov=38, tgt=[26,11,8]),
-        "Framing plan":    dict(yaw=0.0,   pitch=1.45, dist=150, fov=26, tgt=[10,4,6]),
-        "Section @ stair": dict(yaw=1.35,  pitch=0.10, dist=150, fov=18, tgt=[18,9,6]),
+        "Perspective":     dict(yaw=-0.55, pitch=0.28, dist=110, fov=42, tgt=[10,11,4]),
+        "Rear elevation":  dict(yaw=0.0,   pitch=0.03, dist=300, fov=14, tgt=[8,14,0]),
+        "Right side":      dict(yaw=1.5708,pitch=0.03, dist=300, fov=14, tgt=[10,13,8]),
+        "Gable + truss":   dict(yaw=-0.15, pitch=0.14, dist=70,  fov=40, tgt=[30,15,12]),
+        "Framing plan":    dict(yaw=0.0,   pitch=1.45, dist=150, fov=26, tgt=[12,4,7]),
+        "Section @ stair": dict(yaw=1.35,  pitch=0.10, dist=150, fov=18, tgt=[30,9,7]),
     },
     default_scene="Perspective",
 )
