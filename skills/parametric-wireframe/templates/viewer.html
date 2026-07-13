@@ -1,0 +1,210 @@
+<title>__TITLE__</title>
+<style>
+:root{
+  --paper:#EFECE4; --panel:#F7F5EF; --ink:#26241F; --muted:#6E6A5E; --line:#D8D3C6;
+  --accent:#9A5A28; --demo:#A65138;
+}
+@media (prefers-color-scheme: dark){
+  :root{ --paper:#12151B; --panel:#191D25; --ink:#E8E4D8; --muted:#93907F; --line:#2C3038;
+         --accent:#E0A45C; --demo:#C96A47; }
+}
+:root[data-theme="dark"]{ --paper:#12151B; --panel:#191D25; --ink:#E8E4D8; --muted:#93907F;
+  --line:#2C3038; --accent:#E0A45C; --demo:#C96A47; }
+:root[data-theme="light"]{ --paper:#EFECE4; --panel:#F7F5EF; --ink:#26241F; --muted:#6E6A5E;
+  --line:#D8D3C6; --accent:#9A5A28; --demo:#A65138; }
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font:14px/1.5 -apple-system,"Segoe UI",system-ui,sans-serif;overflow:hidden}
+#stage{position:fixed;inset:0;touch-action:none;cursor:grab}
+#stage.dragging{cursor:grabbing}
+header{position:fixed;top:0;left:0;right:0;display:flex;flex-wrap:wrap;gap:6px 14px;
+  align-items:baseline;padding:12px 16px;pointer-events:none;z-index:3}
+header h1{margin:0;font-size:15px;letter-spacing:.14em;font-weight:700}
+header .sub{font-family:ui-monospace,Menlo,monospace;font-size:11px;color:var(--muted);letter-spacing:.06em}
+header .rev{font-family:ui-monospace,Menlo,monospace;font-size:11px;color:var(--accent);
+  border:1px solid var(--accent);border-radius:3px;padding:1px 7px}
+.rail{position:fixed;left:12px;top:64px;bottom:12px;width:216px;display:flex;flex-direction:column;
+  gap:8px;z-index:4;pointer-events:none}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:10px 12px;
+  pointer-events:auto;box-shadow:0 8px 24px rgba(0,0,0,.14)}
+.card h2{margin:0 0 8px;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.layers{overflow-y:auto;flex:1;min-height:0}
+.ly{display:flex;align-items:center;gap:8px;padding:3px 2px;cursor:pointer;user-select:none;border-radius:4px}
+.ly:hover{background:rgba(128,128,128,.08)}
+.ly input{accent-color:var(--accent);margin:0}
+.sw{width:14px;height:3px;border-radius:2px;flex:none}
+.ly span{font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.scenes{display:flex;flex-wrap:wrap;gap:6px}
+.scenes button,.actions button{font:inherit;font-size:12px;padding:4px 10px;border-radius:4px;
+  border:1px solid var(--line);background:transparent;color:var(--ink);cursor:pointer}
+.scenes button:hover,.actions button:hover{border-color:var(--accent);color:var(--accent)}
+.scenes button.on{background:var(--accent);border-color:var(--accent);color:var(--paper)}
+.scenes button:focus-visible,.actions button:focus-visible,.ly input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.actions{display:flex;gap:6px;flex-wrap:wrap}
+#hud{position:fixed;right:12px;bottom:12px;z-index:3;pointer-events:none;text-align:right;
+  font-family:ui-monospace,Menlo,monospace;font-size:10.5px;color:var(--muted);letter-spacing:.05em}
+#hud b{color:var(--ink)}
+#stamp{position:fixed;right:16px;top:64px;z-index:3;pointer-events:none;
+  font-family:ui-monospace,Menlo,monospace;font-size:10px;letter-spacing:.18em;color:var(--demo);
+  border:1.5px solid var(--demo);padding:4px 9px;border-radius:3px;transform:rotate(2deg)}
+@media (max-width:760px){ .rail{width:180px;top:88px} #stamp{display:none} }
+</style>
+
+<header>
+  <h1 id="h-title"></h1>
+  <span class="sub" id="h-sub"></span>
+  <span class="rev" id="h-rev"></span>
+  <span class="sub">drag orbit · shift-drag pan · wheel zoom</span>
+</header>
+<div id="stamp"></div>
+<canvas id="stage" aria-label="Interactive 3D wireframe"></canvas>
+
+<div class="rail">
+  <div class="card"><h2>Scenes</h2><div class="scenes" id="scenes"></div></div>
+  <div class="card layers"><h2>Layers</h2><div id="layers"></div></div>
+  <div class="card"><h2>Export</h2><div class="actions">
+    <button id="objBtn" type="button">Download .OBJ</button>
+    <button id="lblBtn" type="button">Labels: on</button>
+  </div></div>
+</div>
+<div id="hud"><div id="hud-lines"></div><div id="cam"></div></div>
+
+<script>
+const MODEL = __MODEL__;
+const CFG = __CONFIG__;
+/* CFG = { title, subtitle, rev, stamp, units, objName, hud:[..],
+   layers:[[key,label,cssColor,width,dash?]], labels:[[txt,x,y,z,layerKey]],
+   scenes:{name:{yaw,pitch,dist,fov,tgt:[x,y,z]}}, defaultScene } */
+
+document.getElementById('h-title').textContent = CFG.title;
+document.getElementById('h-sub').textContent = CFG.subtitle || '';
+document.getElementById('h-rev').textContent = CFG.rev || '';
+document.getElementById('stamp').textContent = CFG.stamp || '';
+document.getElementById('hud-lines').innerHTML =
+  (CFG.hud||[]).map(l => '<div>'+l+'</div>').join('');
+
+const canvas = document.getElementById('stage');
+const ctx = canvas.getContext('2d');
+let W=0,H=0,DPR=1;
+const COLOR = {}; for(const d of CFG.layers) COLOR[d[0]] = d[2];
+const vis = {}; CFG.layers.forEach(d => vis[d[0]] = true);
+let showLabels = true;
+const scDef = CFG.scenes[CFG.defaultScene];
+let cam = { yaw:scDef.yaw, pitch:scDef.pitch, dist:scDef.dist, fov:scDef.fov, tgt:[...scDef.tgt] };
+
+function resize(){
+  DPR = Math.min(window.devicePixelRatio||1, 2);
+  W = canvas.clientWidth = window.innerWidth;
+  H = canvas.clientHeight = window.innerHeight;
+  canvas.width = W*DPR; canvas.height = H*DPR;
+  draw();
+}
+window.addEventListener('resize', resize);
+
+function sub(a,b){return [a[0]-b[0],a[1]-b[1],a[2]-b[2]]}
+function cross(a,b){return [a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]]}
+function dot(a,b){return a[0]*b[0]+a[1]*b[1]+a[2]*b[2]}
+function norm(a){const l=Math.hypot(a[0],a[1],a[2])||1;return [a[0]/l,a[1]/l,a[2]/l]}
+let RIGHT,UP,FWD,EYE,FOC;
+function updateCam(){
+  const cp=Math.cos(cam.pitch),sp=Math.sin(cam.pitch),cy=Math.cos(cam.yaw),sy=Math.sin(cam.yaw);
+  EYE=[cam.tgt[0]+cam.dist*cp*sy, cam.tgt[1]+cam.dist*sp, cam.tgt[2]+cam.dist*cp*cy];
+  FWD=norm(sub(cam.tgt,EYE)); RIGHT=norm(cross(FWD,[0,1,0])); UP=cross(RIGHT,FWD);
+  FOC=(H*DPR/2)/Math.tan(cam.fov*Math.PI/360);
+}
+const NEAR=0.5;
+function toCam(p){const d=sub(p,EYE);return [dot(d,RIGHT),dot(d,UP),dot(d,FWD)]}
+function proj(c){return [W*DPR/2+FOC*c[0]/c[2], H*DPR/2-FOC*c[1]/c[2]]}
+function drawPolyline(pts){
+  let prev=toCam(pts[0]);
+  for(let i=1;i<pts.length;i++){
+    let a=prev,b=toCam(pts[i]);prev=b;
+    if(a[2]<NEAR&&b[2]<NEAR)continue;
+    if(a[2]<NEAR||b[2]<NEAR){const t=(NEAR-a[2])/(b[2]-a[2]);
+      const m=[a[0]+t*(b[0]-a[0]),a[1]+t*(b[1]-a[1]),NEAR]; if(a[2]<NEAR)a=m;else b=m;}
+    const p=proj(a),q=proj(b); ctx.moveTo(p[0],p[1]);ctx.lineTo(q[0],q[1]);
+  }
+}
+function draw(){
+  updateCam();
+  ctx.setTransform(1,0,0,1,0,0);
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  for(const [key,,color,width,dash] of CFG.layers){
+    if(!vis[key]||!MODEL[key])continue;
+    ctx.beginPath(); ctx.strokeStyle=color; ctx.lineWidth=(width||1)*DPR;
+    ctx.setLineDash(dash?dash.map(v=>v*DPR):[]);
+    for(const pl of MODEL[key]) drawPolyline(pl);
+    ctx.stroke();
+  }
+  ctx.setLineDash([]);
+  if(showLabels){
+    ctx.font=(10.5*DPR)+'px ui-monospace, Menlo, monospace'; ctx.textAlign='center';
+    for(const [txt,x,y,z,ly] of (CFG.labels||[])){
+      if(!vis[ly])continue; const c=toCam([x,y,z]); if(c[2]<NEAR)continue;
+      const p=proj(c); ctx.fillStyle=COLOR[ly]||CFG.layers[0][2]; ctx.fillText(txt,p[0],p[1]);
+    }
+  }
+  const az=((cam.yaw*180/Math.PI)%360).toFixed(0), el=(cam.pitch*180/Math.PI).toFixed(0);
+  document.getElementById('cam').textContent=`AZ ${az}° · EL ${el}° · ${cam.dist.toFixed(0)} ${CFG.units||'FT'}`;
+}
+
+let drag=null;
+canvas.addEventListener('pointerdown',e=>{canvas.setPointerCapture(e.pointerId);
+  drag={x:e.clientX,y:e.clientY,pan:e.shiftKey||e.button===2};canvas.classList.add('dragging');});
+canvas.addEventListener('pointermove',e=>{
+  if(!drag)return; const dx=e.clientX-drag.x,dy=e.clientY-drag.y; drag.x=e.clientX;drag.y=e.clientY;
+  if(drag.pan){const s=cam.dist*0.0016;
+    cam.tgt[0]-=(RIGHT[0]*dx-UP[0]*dy)*s; cam.tgt[1]-=(RIGHT[1]*dx-UP[1]*dy)*s; cam.tgt[2]-=(RIGHT[2]*dx-UP[2]*dy)*s;}
+  else{cam.yaw-=dx*0.006; cam.pitch=Math.max(-0.2,Math.min(1.52,cam.pitch+dy*0.005));}
+  setScene(null); draw();
+});
+canvas.addEventListener('pointerup',()=>{drag=null;canvas.classList.remove('dragging');});
+canvas.addEventListener('contextmenu',e=>e.preventDefault());
+canvas.addEventListener('wheel',e=>{e.preventDefault();
+  cam.dist=Math.max(10,Math.min(600,cam.dist*Math.exp(e.deltaY*0.0012)));draw();},{passive:false});
+let pinch={};
+canvas.addEventListener('touchstart',e=>{if(e.touches.length===2){drag=null;
+  pinch.d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);}},{passive:true});
+canvas.addEventListener('touchmove',e=>{if(e.touches.length===2&&pinch.d){
+  const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);
+  cam.dist=Math.max(10,Math.min(600,cam.dist*pinch.d/d));pinch.d=d;draw();}},{passive:true});
+
+const scenesEl=document.getElementById('scenes');
+function setScene(name){[...scenesEl.children].forEach(b=>b.classList.toggle('on',b.textContent===name));}
+for(const name of Object.keys(CFG.scenes)){
+  const b=document.createElement('button');b.type='button';b.textContent=name;
+  b.onclick=()=>{const s=CFG.scenes[name];
+    cam={yaw:s.yaw,pitch:s.pitch,dist:s.dist,fov:s.fov,tgt:[...s.tgt]};setScene(name);draw();};
+  scenesEl.appendChild(b);
+}
+setScene(CFG.defaultScene);
+
+const layersEl=document.getElementById('layers');
+for(const [key,label] of CFG.layers.map(d=>[d[0],d[1]])){
+  const row=document.createElement('label');row.className='ly';
+  const cb=document.createElement('input');cb.type='checkbox';cb.checked=true;
+  cb.onchange=()=>{vis[key]=cb.checked;draw();};
+  const sw=document.createElement('i');sw.className='sw';sw.style.background=COLOR[key];
+  const sp=document.createElement('span');sp.textContent=label;
+  row.append(cb,sw,sp);layersEl.appendChild(row);
+}
+document.getElementById('lblBtn').onclick=function(){
+  showLabels=!showLabels;this.textContent='Labels: '+(showLabels?'on':'off');draw();};
+
+document.getElementById('objBtn').onclick=()=>{
+  let out=['# '+CFG.title,'# Units: '+(CFG.units||'ft')+'. Y-up.'];let vi=1;
+  for(const key of Object.keys(MODEL)){
+    if(!vis[key])continue; out.push('o '+key);
+    for(const pl of MODEL[key]){const idx=[];
+      for(const p of pl){out.push(`v ${p[0].toFixed(4)} ${p[1].toFixed(4)} ${p[2].toFixed(4)}`);idx.push(vi++);}
+      out.push('l '+idx.join(' '));}
+  }
+  const blob=new Blob([out.join('\n')],{type:'text/plain'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download=(CFG.objName||'wireframe')+'.obj';a.click();URL.revokeObjectURL(a.href);
+};
+new MutationObserver(draw).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+if(window.matchMedia)matchMedia('(prefers-color-scheme: dark)').addEventListener('change',draw);
+resize();
+</script>
