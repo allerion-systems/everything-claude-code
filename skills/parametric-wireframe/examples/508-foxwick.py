@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Worked example: 508 Foxwick Ct porch & deck addition (R3 geometry).
+"""Worked example: 508 Foxwick Ct porch & deck addition (R4 geometry).
 
 Run from the skill root:
     python3 examples/508-foxwick.py
@@ -102,13 +102,13 @@ while DX0 + i*SPACING <= DX1:
     x = DX0 + i*SPACING; s.line("framing", (x,JB,0.05),(x,JB,15.0)); i += 1
 
 # ---- FIVE posts + footings (30" below grade); gable posts carry the truss --
-POSTX = [0.5, 9.0, 18.0, 24.0, 36.1]
+POSTX = [0.5, 9.0, 19.0, 31.0, 36.1]
 for x in POSTX:
     s.box("framing", x-0.25,0,14.75, x+0.25,JB-0.94,15.25)
     s.box("foundation", x-0.85,-2.5,14.4, x+0.85,-0.5,15.6)
 
 # ---- stair 9R @ ~7-1/8", 8T @ 11", 8'-0" clear, centred on the doors -------
-NR = 9; SX0,SX1 = 26.0,34.0; r = DY/NR; t = 11.0/12.0
+NR = 9; SX0,SX1 = 21.0,29.0; r = DY/NR; t = 11.0/12.0  # centered under gable
 for k in range(NR):
     yT = DY - k*r; z0 = DZ1 + k*t
     s.line("stair", (SX0,yT,z0),(SX1,yT,z0))
@@ -124,7 +124,8 @@ def rail(x0,z0,x1,z1):
     k = max(1,int(math.hypot(x1-x0,z1-z0)/6.0))
     for j in range(k+1):
         f=j/float(k); s.line("guard", (x0+f*(x1-x0),DY,z0+f*(z1-z0)),(x0+f*(x1-x0),DY+3,z0+f*(z1-z0)))
-rail(DX0,0,DX0,DZ1); rail(DX1,0,DX1,DZ1); rail(DX0,DZ1,SX0,DZ1); rail(SX1,DZ1,DX1,DZ1)
+rail(DX0,0,DX0,DZ1); rail(DX1,0,DX1,DZ1); rail(DX0,DZ1,SX0,DZ1)
+rail(SX1,DZ1,31.55,DZ1); rail(35.55,DZ1,DX1,DZ1)   # guard dies into chimney
 
 # ============================ NEW PORCH ROOF (R3) ===========================
 # Whole-deck 2:12 shed from the MAIN-wall ledger (+16'-6", under the sills),
@@ -156,7 +157,7 @@ s.line("roof", (DX0,EE-0.55,ZE),(DX1,EE-0.55,ZE))
 s.line("roof", (DX0,EE+0.15,ZE),(DX0,EE-0.55,ZE)); s.line("roof", (DX1,EE+0.15,ZE),(DX1,EE-0.55,ZE))
 
 # ---- OPEN-CEILING cross gable over the door bay (12:12) --------------------
-GB0, GB1 = 24.0, 36.1
+GB0, GB1 = 19.0, 31.0
 GCg = (GB0+GB1)/2.0
 APX = EE + (GB1-GB0)/2.0                  # 12:12 apex at the yard face
 ZFo = 5.0                                 # ridge saddles down from here to the tie
@@ -183,25 +184,25 @@ s.line("truss", (GCg,EE+0.3,TZ),((GB1+GCg)/2,(EE+APX)/2,TZ))
 s.line("roofframing", (GCg,APX-0.1,ZE),(GCg,TIE-0.1,0))                # ridge BEAM
 
 # ---- NEW freestanding stone chimney RIGHT of the gable (own footing) --------
-CX0,CX1,CZ0,CZ1 = 36.7,40.7,12.2,16.2
+CX0,CX1,CZ0,CZ1 = 31.55,35.55,12.0,16.0
 CTOP = 21.5
-s.box("chimney", CX0,DY-1.0,CZ0, CX1,CTOP,CZ1)
-s.rect("chimney", (37.7,DY+0.7,CZ0),(39.7,DY+0.7,CZ0),(39.7,DY+3.2,CZ0),(37.7,DY+3.2,CZ0))  # firebox
-s.line("chimney", (37.4,DY+4.0,CZ0),(40.0,DY+4.0,CZ0))                                       # mantel
-s.rect("chimney", (37.6,DY+4.6,CZ0),(39.8,DY+4.6,CZ0),(39.8,DY+6.2,CZ0),(37.6,DY+6.2,CZ0))   # TV
-s.box("foundation", 36.2,-2.5,11.7, 41.2,-0.2,16.7)                                          # own pad
+s.box("chimney", CX0,-0.3,CZ0, CX1,CTOP,CZ1)
+s.rect("chimney", (32.55,DY+0.7,CZ0),(34.55,DY+0.7,CZ0),(34.55,DY+3.2,CZ0),(32.55,DY+3.2,CZ0))  # firebox
+s.line("chimney", (32.25,DY+4.0,CZ0),(34.85,DY+4.0,CZ0))                                     # mantel
+s.rect("chimney", (32.65,DY+4.6,CZ0),(34.85,DY+4.6,CZ0),(34.85,DY+6.2,CZ0),(32.65,DY+6.2,CZ0)) # TV
+s.box("foundation", 30.8,-2.5,11.5, 36.3,-0.2,16.5)                                          # pad below deck
 
 # ============================ LABELS =======================================
 for txt,x,y,z,ly in [
     ("GARAGE 12:12 GABLE",-16,20,-6,"existing"), ("RESIDENCE 7:12 HIP",13,25.5,-8,"existing"),
     ("EXIST. BRICK CHIMNEY",26.5,29,-6,"existing"),
     ("DEMO BAY ROOFS — BAY WALLS REMAIN",13,12.3,2,"demo"),
-    ("NEW STONE CHIMNEY (OWN FTG)",38.7,22.4,14.5,"chimney"),
+    ("STONE CHIMNEY - RIGHT-SIDE BAY",33.55,22.4,14.5,"chimney"),
     ("DECK 36'-7\" (7' GRILL BAY + 29'-7\") @ +5'-4\"",25,DY+1.3,6,"deck"),
     ("STAIR 9R",30,2.2,22,"stair"),
     ("WHOLE SHED ROOF 2:12 · TIE +16'-6\"",8,13.9,9.5,"roof"),
-    ("OPEN-CEILING TRUSS GABLE 12:12",30,20.8,15,"truss"),
-    ("STRUCTURAL RIDGE BEAM (PE)",30,19.4,4,"roofframing")]:
+    ("OPEN-CEILING TRUSS GABLE 12:12",25,20.8,15,"truss"),
+    ("STRUCTURAL RIDGE BEAM (PE)",25,19.4,4,"roofframing")]:
     s.label(txt,x,y,z,ly)
 
 res = build(
@@ -210,9 +211,9 @@ res = build(
     template=os.path.join(os.path.dirname(__file__), "..", "templates", "viewer.html"),
     title="508 FOXWICK — WIREFRAME",
     subtitle="HERNANDEZ RESIDENCE · PORCH & DECK · LOUISVILLE KY · HOVER 22357787",
-    rev="R3 · 13 JUL 2026",
+    rev="R4 · 13 JUL 2026",
     stamp="PRELIMINARY — NOT FOR CONSTRUCTION — V.I.F.",
-    units="FT", obj_name="508-foxwick-r3-wireframe",
+    units="FT", obj_name="508-foxwick-r4-wireframe",
     hud=["<b>ROOF</b> 2:12 shed over whole deck + OPEN-CEILING 12:12 truss gable",
          "<b>DEMO</b> bay roofs only — bay walls remain · <b>EXIST.</b> per HOVER",
          "<b>DECK</b> 36'-7\" (7' + 29'-7\") @ +5'-4\" · <b>STAIR</b> 9R · tie +16'-6\""],
@@ -235,9 +236,9 @@ res = build(
         "Perspective":     dict(yaw=-0.55, pitch=0.28, dist=110, fov=42, tgt=[10,11,4]),
         "Rear elevation":  dict(yaw=0.0,   pitch=0.03, dist=300, fov=14, tgt=[8,14,0]),
         "Right side":      dict(yaw=1.5708,pitch=0.03, dist=300, fov=14, tgt=[10,13,8]),
-        "Gable + truss":   dict(yaw=-0.15, pitch=0.14, dist=70,  fov=40, tgt=[30,15,12]),
+        "Gable + truss":   dict(yaw=-0.15, pitch=0.14, dist=70,  fov=40, tgt=[25,15,12]),
         "Framing plan":    dict(yaw=0.0,   pitch=1.45, dist=150, fov=26, tgt=[12,4,7]),
-        "Section @ stair": dict(yaw=1.35,  pitch=0.10, dist=150, fov=18, tgt=[30,9,7]),
+        "Section @ stair": dict(yaw=1.35,  pitch=0.10, dist=150, fov=18, tgt=[25,9,7]),
     },
     default_scene="Perspective",
 )
