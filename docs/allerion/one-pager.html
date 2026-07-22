@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Allerion — AI infrastructure for businesses that want to run themselves</title>
+<style>
+  :root{
+    --black:#040506;
+    --olive:#5a6850;
+    --olive-bright:#7a8a6c;
+    --silver:#9da2a6;
+    --paper:#f4f4f1;
+    --line:#2a2d29;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  body{
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    background:var(--black);color:var(--paper);
+    line-height:1.5;-webkit-font-smoothing:antialiased;
+  }
+  .sheet{max-width:880px;margin:0 auto;padding:48px 56px;}
+  /* Header */
+  header{display:flex;justify-content:space-between;align-items:flex-end;
+    border-bottom:2px solid var(--olive);padding-bottom:22px;}
+  .brand{font-size:30px;font-weight:800;letter-spacing:2px;color:#fff;text-transform:uppercase}
+  .brand span{color:var(--olive-bright)}
+  .contact{text-align:right;font-size:12px;color:var(--silver);line-height:1.7}
+  .tagline{margin:30px 0 8px;font-size:27px;font-weight:700;color:#fff;letter-spacing:.3px}
+  .subtag{font-size:16px;color:var(--silver);max-width:640px}
+  /* Section */
+  h2{font-size:13px;letter-spacing:3px;text-transform:uppercase;color:var(--olive-bright);
+    margin:34px 0 16px;font-weight:700}
+  /* Pain row */
+  .pains{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .pain{background:#0d0f0d;border:1px solid var(--line);border-radius:8px;padding:16px}
+  .pain b{display:block;color:#fff;font-size:14px;margin-bottom:5px}
+  .pain p{font-size:12.5px;color:var(--silver)}
+  /* Ladder */
+  .ladder{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--line);
+    border-radius:10px;overflow:hidden}
+  .rung{padding:20px 18px;border-right:1px solid var(--line);position:relative}
+  .rung:last-child{border-right:none}
+  .rung .step{font-size:11px;letter-spacing:2px;color:var(--olive-bright);text-transform:uppercase}
+  .rung .name{font-size:19px;font-weight:800;color:#fff;margin:6px 0 2px}
+  .rung .price{font-size:15px;color:var(--paper);font-weight:600}
+  .rung .desc{font-size:12px;color:var(--silver);margin-top:8px}
+  .rung.mid{background:#0d0f0d}
+  .arrow{color:var(--olive-bright);font-weight:700}
+  /* Services */
+  .svcs{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+  .svc{display:flex;gap:10px;align-items:flex-start;font-size:13.5px}
+  .svc .dot{color:var(--olive-bright);font-weight:800;line-height:1.4}
+  .svc b{color:#fff}
+  .svc span{color:var(--silver)}
+  /* Proof + CTA */
+  .proof{background:linear-gradient(180deg,#0d0f0d,#070807);border:1px solid var(--olive);
+    border-radius:10px;padding:22px 24px;margin-top:14px}
+  .proof .q{font-size:17px;color:#fff;font-weight:600}
+  .proof .a{font-size:13.5px;color:var(--silver);margin-top:6px}
+  footer{margin-top:30px;padding-top:18px;border-top:1px solid var(--line);
+    display:flex;justify-content:space-between;align-items:center;font-size:12.5px;color:var(--silver)}
+  .cta{background:var(--olive);color:#fff;padding:11px 20px;border-radius:6px;
+    font-weight:700;font-size:14px;letter-spacing:.4px;text-decoration:none}
+  .stats{display:flex;gap:26px;margin-top:6px}
+  .stat b{color:#fff;font-size:20px;font-weight:800}
+  .stat span{display:block;font-size:11px;color:var(--silver);letter-spacing:.5px}
+  @media print{ body{background:#fff} .sheet{padding:24px 28px}
+    @page{margin:12mm} }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <header>
+    <div class="brand">ALLER<span>ION</span></div>
+    <div class="contact">
+      allerion.io &nbsp;·&nbsp; info@allerion.io<br>
+      (505) 447-6028
+    </div>
+  </header>
+
+  <div class="tagline">AI infrastructure for businesses that want to run themselves.</div>
+  <p class="subtag">We connect the tools you already own — CRM, job software, email, accounting,
+    the shoebox of PDFs — into one system that reconciles itself. You get back hours and stop
+    leaking revenue. Built for contractors and trades, priced for one.</p>
+
+  <h2>The pain we remove</h2>
+  <div class="pains">
+    <div class="pain"><b>Re-typing everything</b><p>The same job data keyed into a second system,
+      every single day.</p></div>
+    <div class="pain"><b>"Where's that file?"</b><p>An hour lost finding what you quoted a
+      customer two years ago.</p></div>
+    <div class="pain"><b>Quotes that go cold</b><p>Estimates sent, never followed up — revenue
+      walking out the door.</p></div>
+  </div>
+
+  <h2>How we work — three steps</h2>
+  <div class="ladder">
+    <div class="rung">
+      <div class="step">Step 1 · Audit</div>
+      <div class="name">Map it</div>
+      <div class="price">$1,500 <span style="color:var(--silver);font-weight:400">· credited to the build</span></div>
+      <div class="desc">We map your systems, find the leaks, and hand you a written plan with the ROI. Low risk — the fee comes straight off the build.</div>
+    </div>
+    <div class="rung mid">
+      <div class="step">Step 2 · Build <span class="arrow">→</span></div>
+      <div class="name">Install it</div>
+      <div class="price">$3K–$18K · fixed bid</div>
+      <div class="desc">The working system, installed in your own accounts. Fixed price — no runaway invoice. Larger for big legacy-data jobs.</div>
+    </div>
+    <div class="rung">
+      <div class="step">Step 3 · Retainer</div>
+      <div class="name">Run it</div>
+      <div class="price">$500–$2,500 / mo</div>
+      <div class="desc">We keep it running, tune it, and add the next workflow. Your outsourced AI department.</div>
+    </div>
+  </div>
+
+  <h2>What we install</h2>
+  <div class="svcs">
+    <div class="svc"><span class="dot">▸</span><div><b>Second-Brain Install.</b> <span>Every file, photo, estimate, email — ask it a question, get the answer in seconds.</span></div></div>
+    <div class="svc"><span class="dot">▸</span><div><b>Lead Engine.</b> <span>AI that qualifies and books inbound leads 24/7 — the receptionist that never sleeps.</span></div></div>
+    <div class="svc"><span class="dot">▸</span><div><b>CrewVoice.</b> <span>Multilingual voice for your crew. $149/mo.</span></div></div>
+    <div class="svc"><span class="dot">▸</span><div><b>Live Dashboards.</b> <span>Real job profitability and operations, visible at a glance.</span></div></div>
+  </div>
+
+  <h2>See it on your own data — 60 seconds</h2>
+  <div class="proof">
+    <div class="q">"What did we quote the Hendersons in 2022?"</div>
+    <div class="a">Hand us one folder of your old jobs. We'll have your own files answer your own
+      question, live, before you've finished your coffee. That's the install — in miniature.</div>
+  </div>
+
+  <footer>
+    <div>
+      <div class="stats">
+        <div class="stat"><b>38%</b><span>of contractors now see<br>measurable AI results (2026)</span></div>
+        <div class="stat"><b>30–50%</b><span>admin hours cut<br>in pilot firms</span></div>
+      </div>
+    </div>
+    <a class="cta" href="mailto:info@allerion.io?subject=Book%20an%20Allerion%20audit">Book your audit →</a>
+  </footer>
+
+</div>
+</body>
+</html>
