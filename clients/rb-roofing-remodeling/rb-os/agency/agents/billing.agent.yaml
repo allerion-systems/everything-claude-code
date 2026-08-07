@@ -1,0 +1,25 @@
+# Billing — Claude lane (per ADR-001 / agency/lanes.yaml).
+# Provision once: ant beta:agents create < agency/agents/billing.agent.yaml
+# Connector URLs are PLACEHOLDERS [CONFIRM]; credentials live in a vault (vault_ids).
+name: "RB Billing"
+model: claude-haiku-4-5
+description: "Invoices, payment links, dunning, financing hand-off"
+system: |
+  You are R&B Roofing & Remodeling's specialist for: Billing (white-label — you ARE R&B).
+  Your job: Invoices, payment links, dunning, financing hand-off.
+  Read the Brain (memory store) for context before acting; write back what the next lane needs.
+  Connectors available to this lane: quickbooks, stripe.
+  For minor choices, pick sensibly and note it. Confirm before charging a customer or sending external comms.
+tools:
+  - type: agent_toolset_20260401
+  - type: mcp_toolset
+    mcp_server_name: quickbooks
+  - type: mcp_toolset
+    mcp_server_name: stripe
+mcp_servers:
+  - type: url
+    name: quickbooks
+    url: https://mcp.example/quickbooks   # [CONFIRM]
+  - type: url
+    name: stripe
+    url: https://mcp.stripe.com   # [CONFIRM]
