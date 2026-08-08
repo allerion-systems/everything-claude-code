@@ -1,0 +1,36 @@
+{
+  "name": "allerion",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Vertical MCP Apps for measurable 3D buildings inside Claude, ChatGPT, and VS Code",
+  "type": "module",
+  "main": "dist/server.js",
+  "bin": {
+    "allerion": "dist/cli.js",
+    "allerion-mcp": "dist/server.js"
+  },
+  "scripts": {
+    "build": "tsc && chmod +x dist/cli.js dist/server.js dist/http-server.js",
+    "dev": "tsx watch src/server.ts",
+    "dev:http": "tsx watch src/http-server.ts",
+    "dev:viewer": "tsx watch src/static-server.ts",
+    "start": "node dist/server.js",
+    "start:http": "node dist/http-server.js",
+    "start:viewer": "node dist/static-server.js",
+    "start:all": "node dist/cli.js all",
+    "typecheck": "tsc --noEmit",
+    "test": "tsx src/smoke-test.ts"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.4",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.5.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

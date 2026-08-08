@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Allerion 5D Estimation</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="https://cesium.com/downloads/cesiumjs/releases/1.121/Build/Cesium/Widgets/widgets.css" />
+  <script src="https://cesium.com/downloads/cesiumjs/releases/1.121/Build/Cesium/Cesium.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.6/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --bg: #0a0a0d;
+      --panel: #14141a;
+      --panel-2: #1c1c24;
+      --border: #2a2a35;
+      --text: #e8e8ec;
+      --muted: #888894;
+      --material: #ff5fa7;
+      --labor: #5fdfff;
+      --equipment: #ffcc5f;
+      --total: #7df57d;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; height: 100%; background: var(--bg); color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif; font-size: 13px; }
+    body { display: grid; grid-template-rows: auto 1fr auto; height: 100vh; overflow: hidden; }
+
+    /* Header */
+    header { display: grid; grid-template-columns: 1fr auto; padding: 12px 18px; border-bottom: 1px solid var(--border); background: var(--panel); align-items: center; gap: 20px; }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 600; letter-spacing: .4px; }
+    .brand .logo { width: 22px; height: 22px; background: linear-gradient(135deg, var(--material), var(--labor)); border-radius: 5px; }
+    .brand .title { font-size: 14px; }
+    .brand .sub { color: var(--muted); font-size: 11px; font-weight: 400; }
+    .totals { display: flex; gap: 10px; }
+    .totals .card { background: var(--panel-2); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; min-width: 150px; }
+    .totals .card .label { font-size: 10px; text-transform: uppercase; letter-spacing: .8px; color: var(--muted); margin-bottom: 3px; }
+    .totals .card .val { font-size: 17px; font-weight: 600; font-variant-numeric: tabular-nums; }
+    .card.material { border-left: 3px solid var(--material); }
+    .card.labor    { border-left: 3px solid var(--labor); }
+    .card.equip    { border-left: 3px solid var(--equipment); }
+    .card.total    { border-left: 3px solid var(--total); }
+    .card.material .val { color: var(--material); }
+    .card.labor    .val { color: var(--labor); }
+    .card.equip    .val { color: var(--equipment); }
+    .card.total    .val { color: var(--total); }
+
+    /* Main grid */
+    main { display: grid; grid-template-columns: 1.5fr 1fr; gap: 1px; background: var(--border); overflow: hidden; }
+    .pane { background: var(--bg); overflow: hidden; display: flex; flex-direction: column; }
+    .pane h2 { margin: 0; padding: 10px 14px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .8px; color: var(--muted); border-bottom: 1px solid var(--border); background: var(--panel); display: flex; justify-content: space-between; align-items: center; }
+    .pane h2 .meta { color: var(--muted); font-weight: 400; text-transform: none; letter-spacing: 0; font-size: 11px; }
+    #cesiumContainer { flex: 1; min-height: 0; }
+    .table-wrap { flex: 1; overflow: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 12px; font-variant-numeric: tabular-nums; }
+    th, td { padding: 7px 10px; text-align: right; border-bottom: 1px solid var(--border); }
+    th { background: var(--panel); color: var(--muted); font-weight: 500; font-size: 10px; text-transform: uppercase; letter-spacing: .5px; position: sticky; top: 0; }
+    th.left, td.left { text-align: left; }
+    tbody tr:hover { background: var(--panel-2); }
+    tr.classification-row td { background: rgba(125, 245, 125, 0.06); font-weight: 600; }
+    td .pill { font-size: 9px; padding: 1px 5px; border-radius: 3px; background: var(--border); color: var(--muted); margin-left: 6px; }
+    td .pill.live { background: rgba(125, 245, 125, 0.18); color: #7df57d; }
+
+    /* Footer charts */
+    footer { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1px; background: var(--border); border-top: 1px solid var(--border); height: 220px; }
+    .chart-pane { background: var(--bg); padding: 12px 14px; display: flex; flex-direction: column; }
+    .chart-pane h3 { margin: 0 0 6px 0; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .6px; color: var(--muted); }
+    .chart-wrap { flex: 1; position: relative; min-height: 0; }
+    .empty { color: var(--muted); padding: 16px; font-style: italic; }
+    .source-note { padding: 8px 14px; color: var(--muted); font-size: 10px; border-top: 1px solid var(--border); background: var(--panel); display: flex; justify-content: space-between; }
+    .source-note a { color: var(--labor); text-decoration: none; }
+    .source-note a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <div class="logo"></div>
+      <div>
+        <div class="title">Allerion 5D Estimation</div>
+        <div class="sub" id="bldgAddress">Loading…</div>
+      </div>
+    </div>
+    <div class="totals">
+      <div class="card material"><div class="label">Material</div><div class="val" id="totMaterial">—</div></div>
+      <div class="card labor"><div class="label">Labor</div><div class="val" id="totLabor">—</div></div>
+      <div class="card equip"><div class="label">Equipment</div><div class="val" id="totEquip">—</div></div>
+      <div class="card total"><div class="label">Total</div><div class="val" id="totTotal">—</div></div>
+    </div>
+  </header>
+
+  <main>
+    <section class="pane">
+      <h2>Model <span class="meta" id="modelMeta">—</span></h2>
+      <div id="cesiumContainer"></div>
+    </section>
+    <section class="pane">
+      <h2>Quantity Takeoff <span class="meta" id="tableMeta">—</span></h2>
+      <div class="table-wrap">
+        <table id="costTable">
+          <thead>
+            <tr>
+              <th class="left">Classification / Element</th>
+              <th>Qty</th>
+              <th>Unit</th>
+              <th>Rate</th>
+              <th>Material</th>
+              <th>Labor</th>
+              <th>Equipment</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody><tr><td colspan="8" class="empty">Loading estimate…</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="chart-pane">
+      <h3>Cost by Classification</h3>
+      <div class="chart-wrap"><canvas id="chartClass"></canvas></div>
+    </div>
+    <div class="chart-pane">
+      <h3>Cost by Component</h3>
+      <div class="chart-wrap"><canvas id="chartComp"></canvas></div>
+    </div>
+    <div class="chart-pane">
+      <h3>Cost by Source</h3>
+      <div class="chart-wrap"><canvas id="chartSource"></canvas></div>
+    </div>
+  </footer>
+
+  <div class="source-note">
+    <span id="srcCitation">Cost rates: loading…</span>
+    <a href="https://github.com/datadrivenconstruction/OpenConstructionEstimate-DDC-CWICR" target="_blank">Data: DDC CWICR (CC-BY-4.0)</a>
+  </div>
+
+  <script type="module" src="./dashboard-5d.js"></script>
+</body>
+</html>

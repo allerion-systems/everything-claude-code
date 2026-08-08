@@ -1,0 +1,33 @@
+{
+  "name": "allerion",
+  "version": "0.0.3",
+  "description": "Vertical MCP App for measurable 3D buildings: address -> autonomous OSM takeoff -> live cost API pricing -> Bexel-style 5D Estimation dashboard rendered inline in chat.",
+  "author": {
+    "name": "Allerion",
+    "url": "https://github.com/jalleeeee/everything-claude-code/tree/main/allerion"
+  },
+  "homepage": "https://github.com/jalleeeee/everything-claude-code/tree/main/allerion",
+  "repository": "https://github.com/jalleeeee/everything-claude-code",
+  "license": "MIT",
+  "keywords": [
+    "mcp",
+    "mcp-app",
+    "3d",
+    "cesium",
+    "bim",
+    "ifc",
+    "construction",
+    "5d-estimation",
+    "quantity-takeoff",
+    "cost-estimating",
+    "bexel",
+    "openstreetmap"
+  ],
+  "mcpServers": {
+    "allerion": {
+      "command": "node",
+      "args": ["${CLAUDE_PLUGIN_ROOT}/dist/server.js"],
+      "description": "Allerion 5D Estimation - geocode, fly-to, auto-takeoff, estimate_costs, open_5d_dashboard, export_ifc"
+    }
+  }
+}
