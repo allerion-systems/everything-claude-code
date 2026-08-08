@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mason Howard Deck — Permit Drawings</title>
+<style>
+  :root { --accent: #2563eb; --dark: #1e293b; --bg: #0f172a; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); font-family: -apple-system, Arial, sans-serif; color: #e2e8f0; }
+
+  /* HEADER */
+  header {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--dark); border-bottom: 1px solid #334155;
+    padding: 0 20px;
+    display: flex; align-items: center; gap: 16px;
+    height: 56px; box-shadow: 0 2px 12px rgba(0,0,0,0.6);
+  }
+  .logo { font-size: 13px; font-weight: 700; color: #f1f5f9; white-space: nowrap; }
+  .logo span { color: var(--accent); }
+  nav { display: flex; gap: 6px; overflow-x: auto; flex: 1; }
+  nav a {
+    white-space: nowrap; padding: 6px 12px; border-radius: 6px;
+    font-size: 12px; font-weight: 600; text-decoration: none;
+    color: #94a3b8; border: 1px solid #334155;
+    transition: all 0.15s;
+  }
+  nav a:hover { background: #1e40af; color: white; border-color: #1e40af; }
+  .btn-print {
+    margin-left: auto; padding: 7px 16px; border-radius: 6px;
+    background: var(--accent); color: white; font-size: 12px;
+    font-weight: 700; border: none; cursor: pointer; white-space: nowrap;
+  }
+  .btn-print:hover { background: #1d4ed8; }
+
+  /* MAIN */
+  main { padding: 24px 20px; max-width: 1400px; margin: 0 auto; }
+
+  /* SHEET CARD */
+  .sheet {
+    margin-bottom: 32px; border-radius: 10px; overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+    border: 1px solid #1e293b;
+  }
+  .sheet-header {
+    background: var(--dark); padding: 10px 18px;
+    display: flex; align-items: center; gap: 12px;
+    border-bottom: 2px solid var(--accent);
+  }
+  .sheet-num {
+    background: var(--accent); color: white;
+    font-size: 11px; font-weight: 800; padding: 3px 8px;
+    border-radius: 4px; letter-spacing: 0.5px;
+  }
+  .sheet-title { font-size: 13px; font-weight: 700; color: #f1f5f9; letter-spacing: 0.5px; }
+  .sheet-body { background: white; }
+  .sheet-body svg { display: block; width: 100%; height: auto; }
+
+  /* ZOOM CONTROLS */
+  .zoom-bar {
+    background: #1e293b; padding: 6px 18px;
+    display: flex; align-items: center; gap: 8px;
+    border-top: 1px solid #334155;
+  }
+  .zoom-bar button {
+    background: #334155; color: #e2e8f0; border: none;
+    width: 28px; height: 28px; border-radius: 4px; cursor: pointer;
+    font-size: 16px; display: flex; align-items: center; justify-content: center;
+  }
+  .zoom-bar button:hover { background: var(--accent); }
+  .zoom-label { font-size: 11px; color: #64748b; min-width: 40px; text-align: center; }
+  .zoom-wrapper { overflow: auto; }
+  .zoom-inner { transform-origin: top left; transition: transform 0.2s; }
+
+  /* PRINT */
+  @media print {
+    header, .sheet-header, .zoom-bar { display: none !important; }
+    body { background: white; }
+    main { padding: 0; max-width: none; }
+    .sheet { box-shadow: none; border: none; border-radius: 0; margin: 0; page-break-after: always; }
+    .sheet-body { background: white; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">MASON HOWARD DECK &nbsp;|&nbsp; <span>1225 BATES CT, LOUISVILLE KY 40204</span></div>
+  <nav>
+    <a href="#sh1">SH 1</a>
+    <a href="#sh2">SH 2</a>
+    <a href="#sh3">SH 3</a>
+    <a href="#sh4">SH 4</a>
+    <a href="#sh5">SH 5</a>
+  </nav>
+  <button class="btn-print" onclick="window.print()">&#128438; Print All</button>
+</header>
+
+<main>
+
+  <div class="sheet" id="sh1">
+    <div class="sheet-header">
+      <span class="sheet-num">SH 1/5</span>
+      <span class="sheet-title">DECK FRAMING PLAN</span>
+    </div>
+    <div class="zoom-bar">
+      <button onclick="zoom(this, -1)">−</button>
+      <span class="zoom-label">100%</span>
+      <button onclick="zoom(this, 1)">+</button>
+      <button onclick="zoomReset(this)" style="width:auto;padding:0 8px;font-size:11px;">Reset</button>
+    </div>
+    <div class="zoom-wrapper">
+      <div class="zoom-inner">
+        <div class="sheet-body">
+<svg style="width:100%;height:auto;display:block;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1632 1056">
+<title>Sheet 1 – Framing Plan</title>
+<defs>
+<pattern id="s1_hwood" patternUnits="userSpaceOnUse" patternTransform="rotate(0)">
+  <line x1="0" y1="4" x2="8" y2="4" stroke="#c8a87a" stroke-width="0.6"/>
+</pattern>
+<pattern id="s1_hconc" patternUnits="userSpaceOnUse">
+  <line x1="0" y1="0" x2="10" y2="10" stroke="#999" stroke-width="0.4"/>
+  <line x1="10" y1="0" x2="0" y2="10" stroke="#999" stroke-width="0.4"/>
+</pattern>
+<pattern id="s1_hdeck" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+  <line x1="0" y1="0" x2="0" y2="6" stroke="#bbb" stroke-width="0.6"/>
+</pattern>
+<marker id="s1_arr" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+  <path d="M0,0 L8,3 L0,6 Z" fill="black"/>
+</marker>
+<marker id="s1_arrl" markerWidth="8" markerHeight="6" refX="1" refY="3" orient="auto">
+  <path d="M8,0 L0,3 L8,6 Z" fill="black"/>
+</marker>
+</defs>
+<rect fill="white"/>
+<rect x="15" y="15" fill="none" stroke="black" stroke-width="2"/>
+<text x="816" y="48" font-size="16" font-family="Arial" font-weight="bold" text-anchor="middle">SHEET 1 — DECK FRAMING PLAN</text><rect x="552" y="105" fill="#d8d8d8" stroke="black" stroke-width="2"/><text x="816" y="138" font-size="11" font-family="Arial" text-anchor="middle">(EXISTING HOUSE — 1225 BATES CT)</text><line x1="612" y1="160" x2="1020" y2="160" stroke="black" stroke-width="3.5"/><text x="607" y="156" font-size="8" font-family="Arial" text-anchor="end">LEDGER ▶</text><path d="M612,160 L1020,160 L1020,364 A144,144 0 0 1 876,508 L756,508 A144,144 0 0 1 612,364 Z" fill="url(#s1_hdeck)" stroke="black" stroke-width="2.5"/><line x1="644" y1="160" x2="644" y2="454" stroke="#444" stroke-width="0.7"/><line x1="676" y1="160" x2="676" y2="483" stroke="#444" stroke-width="0.7"/><line x1="708" y1="160" x2="708" y2="499" stroke="#444" stroke-width="0.7"/><line x1="740" y1="160" x2="740" y2="507" stroke="#444" stroke-width="0.7"/><line x1="772" y1="160" x2="772" y2="508" stroke="#444" stroke-width="0.7"/><line x1="804" y1="160" x2="804" y2="508" stroke="#444" stroke-width="0.7"/><line x1="836" y1="160" x2="836" y2="508" stroke="#444" stroke-width="0.7"/><line x1="868" y1="160" x2="868" y2="508" stroke="#444" stroke-width="0.7"/><line x1="900" y1="160" x2="900" y2="505" stroke="#444" stroke-width="0.7"/><line x1="932" y1="160" x2="932" y2="496" stroke="#444" stroke-width="0.7"/><line x1="964" y1="160" x2="964" y2="477" stroke="#444" stroke-width="0.7"/><line x1="996" y1="160" x2="996" y2="443" stroke="#444" stroke-width="0.7"/><text x="600" y="262" font-size="7" font-family="Arial" text-anchor="middle" transform="rotate(-90 600 262)">2-2x8 SIDE BEAM</text><text x="1032" y="262" font-size="7" font-family="Arial" text-anchor="middle" transform="rotate(90 1032 262)">2-2x8 SIDE BEAM</text><text x="816" y="526" font-size="8" font-family="Arial" text-anchor="middle">CURVED RIM / FASCIA (LVL OR KERFED 2x8 PT)</text><rect x="808" y="384" fill="white" stroke="black" stroke-width="1.5" stroke-dasharray="8,3"/><text x="856" y="430" font-size="8" font-family="Arial" text-anchor="middle">STAIR</text><text x="856" y="444" font-size="8" font-family="Arial" text-anchor="middle">OPNG.</text><text x="856" y="458" font-size="8" font-family="Arial" text-anchor="middle">4'-0"W</text><circle cx="612" cy="364" r="10" fill="white" stroke="black" stroke-width="1.5"/><line x1="602" y1="354" x2="622" y2="374" stroke="black" stroke-width="1.2"/><line x1="622" y1="354" x2="602" y2="374" stroke="black" stroke-width="1.2"/><text x="612" y="387" font-size="8" font-family="Arial" text-anchor="middle" font-weight="bold">P1</text><circle cx="756" cy="508" r="10" fill="white" stroke="black" stroke-width="1.5"/><line x1="746" y1="498" x2="766" y2="518" stroke="black" stroke-width="1.2"/><line x1="766" y1="498" x2="746" y2="518" stroke="black" stroke-width="1.2"/><text x="756" y="531" font-size="8" font-family="Arial" text-anchor="middle" font-weight="bold">P2</text><circle cx="816" cy="508" r="10" fill="white" stroke="black" stroke-width="1.5"/><line x1="806" y1="498" x2="826" y2="518" stroke="black" stroke-width="1.2"/><line x1="826" y1="498" x2="806" y2="518" stroke="black" stroke-width="1.2"/><text x="816" y="531" font-size="8" font-family="Arial" text-anchor="middle" font-weight="bold">P3</text><circle cx="876" cy="508" r="10" fill="white" stroke="black" stroke-width="1.5"/><line x1="866" y1="498" x2="886" y2="518" stroke="black" stroke-width="1.2"/><line x1="886" y1="498" x2="866" y2="518" stroke="black" stroke-width="1.2"/><text x="876" y="531" font-size="8" font-family="Arial" text-anchor="middle" font-weight="bold">P4</text><circle cx="1020" cy="364" r="10" fill="white" stroke="black" stroke-width="1.5"/><line x1="1010" y1="354" x2="1030" y2="374" stroke="black" stroke-width="1.2"/><line x1="1030" y1="354" x2="1010" y2="374" stroke="black" stroke-width="1.2"/><text x="1020" y="387" font-size="8" font-family="Arial" text-anchor="middle" font-weight="bold">P5</text><line x1="612" y1="132" x2="1020" y2="132" stroke="black" stroke-width="0.8" marker-start="url(#s1_arrl)" marker-end="url(#s1_arr)"/><line x1="612" y1="124" x2="612" y2="140" stroke="black" stroke-width="0.8"/><line x1="1020" y1="124" x2="1020" y2="140" stroke="black" stroke-width="0.8"/><text x="816" y="120" font-size="9" font-family="Arial" text-anchor="middle" fill="black">17'-0"</text><line x1="1065" y1="160" x2="1065" y2="364" stroke="black" stroke-width="0.8" marker-start="url(#s1_arrl)" marker-end="url(#s1_arr)"/><line x1="1057" y1="160" x2="1073" y2="160" stroke="black" stroke-width="0.8"/><line x1="1057" y1="364" x2="1073" y2="364" stroke="black" stroke-width="0.8"/><text x="1083" y="262" font-size="9" font-family="Arial" text-anchor="middle" transform="rotate(-90 1083 262)" fill="black">8'-6"</text><line x1="567" y1="160" x2="567" y2="508" stroke="black" stroke-width="0.8" marker-start="url(#s1_arrl)" marker-end="url(#s1_arr)"/><line x1="559" y1="160" x2="575" y2="160" stroke="black" stroke-width="0.8"/><line x1="559" y1="508" x2="575" y2="508" stroke="black" stroke-width="0.8"/><text x="549" y="334" font-size="9" font-family="Arial" text-anchor="middle" transform="rotate(-90 549 334)" fill="black">14'-6" MAX</text><line x1="756" y1="530" x2="876" y2="530" stroke="black" stroke-width="0.8" marker-start="url(#s1_arrl)" marker-end="url(#s1_arr)"/><line x1="756" y1="522" x2="756" y2="538" stroke="black" stroke-width="0.8"/><line x1="876" y1="522" x2="876" y2="538" stroke="black" stroke-width="0.8"/><text x="816" y="518" font-size="9" font-family="Arial" text-anchor="middle" fill="black">5'-0" STRAIGHT</text><line x1="612" y1="376" x2="756" y2="376" stroke="black" stroke-width="0.8" marker-start="url(#s1_arrl)" marker-end="url(#s1_arr)"/><line x1="612" y1="368" x2="612" y2="384" stroke="black" stroke-width="0.8"/><line x1="756" y1="368" x2="756" y2="384" stroke="black" stroke-width="0.8"/><text x="684" y="364" font-size="9" font-family="Arial" text-anchor="middle" fill="black">6'-0"</text><line x1="876" y1="376" x2="1020" y2="376" stroke="black" stroke-width="0.8" marker-start="url(#s1_arrl)" marker-end="url(#s1_arr)"/><line x1="876" y1="368" x2="876" y2="384" stroke="black" stroke-width="0.8"/><line x1="1020" y1="368" x2="1020" y2="384" stroke="black" stroke-width="0.8"/><text x="948" y="364" font-size="9" font-family="Arial" text-anchor="middle" fill="black">6'-0"</text><text x="674" y="436" font-size="8" font-family="Arial" text-anchor="middle" transform="rotate(-45 674 436)">R=6'-0"</text><text x="958" y="436" font-size="8" font-family="Arial" text-anchor="middle" transform="rotate(45 958 436)">R=6'-0"</text><circle cx="1557" cy="75" r="22" fill="none" stroke="black" stroke-width="1"/><polygon points="1557,53 1551,83 1557,75" fill="black"/><polygon points="1557,53 1563,83 1557,75" fill="white" stroke="black" stroke-width="0.5"/><text x="1557" y="48" font-size="12" font-family="Arial" text-anchor="middle" font-weight="bold">N</text><rect x="25" y="826" fill="white" stroke="black" stroke-width="1"/><text x="125" y="841" font-size="10" font-family="Arial" font-weight="bold" text-anchor="middle">LEGEND</text><rect x="35" y="851" fill="url(#s1_hdeck)" stroke="black" stroke-width="0.5"/><text x="75" y="863" font-size="9" font-family="Arial">DECK AREA</text><circle cx="50" cy="891" r="10" fill="white" stroke="black" stroke-width="1.5"/><line x1="40" y1="881" x2="60" y2="901" stroke="black" stroke-width="1.2"/><line x1="60" y1="881" x2="40" y2="901" stroke="black" stroke-width="1.2"/><text x="50" y="914" font-size="8" font-family="Arial" text-anchor="middle" font-weight="bold"></text><text x="75" y="895" font-size="9" font-family="Arial">4x4x12 POST</text><line x1="35" y1="926" x2="65" y2="926" stroke="#444" stroke-width="0.7"/><text x="75" y="930" font-size="9" font-family="Arial">2x8 JOIST @16" OC</text><line x1="35" y1="946" x2="65" y2="946" stroke="black" stroke-width="3.5"/><text x="75" y="950" font-size="9" font-family="Arial">LEDGER / BEAM</text><text x="1252" y="801" font-size="8" font-family="Arial" font-weight="bold">FRAMING NOTES:</text><text x="1252" y="815" font-size="8" font-family="Arial" font-weight="normal">1. LUMBER: #2 PT SYP INCISED, .40 RETENTION</text><text x="1252" y="829" font-size="8" font-family="Arial" font-weight="normal">2. LEDGER: 2x8 PT, 1/2" LAGS @ 16" OC STAGGERED</text><text x="1252" y="843" font-size="8" font-family="Arial" font-weight="normal">3. JOISTS: 2x8 PT SYP @ 16" OC</text><text x="1252" y="857" font-size="8" font-family="Arial" font-weight="normal">4. SIDE BEAMS: 2-2x8 PT SYP EA. SIDE</text><text x="1252" y="871" font-size="8" font-family="Arial" font-weight="normal">5. CURVED RIM: LVL OR KERFED 2x8 PT</text><text x="1252" y="885" font-size="8" font-family="Arial" font-weight="normal">6. POSTS: 4x4x12 PT (SEE SHEET 3 FTGS)</text><text x="1252" y="899" font-size="8" font-family="Arial" font-weight="normal">7. HARDWARE: SIMPSON LUS28 JOIST HANGERS</text><text x="1252" y="913" font-size="8" font-family="Arial" font-weight="normal">8. FASTENERS: HDG OR STAINLESS</text><text x="1252" y="927" font-size="8" font-family="Arial" font-weight="normal">9. DECK BOARDS: MOISTURESHIELD ELEVATE</text><text x="1252" y="941" font-size="8" font-family="Arial" font-weight="normal">   1x6 ALPINE GRAY COMPOSITE</text>
+<rect x="15" y="976" fill="white" stroke="black" stroke-width="1.5"/>
+<line x1="15" y1="1009" x2="1617" y2="1009" stroke="black" stroke-width="1"/>
+<line x1="500" y1="976" x2="500" y2="1042" stroke="black" stroke-width="1"/>
+<line x1="950" y1="976" x2="950" y2="1042" stroke="black" stroke-width="1"/>
+<line x1="1250" y1="976" x2="1250" y2="1042" stroke="black" stroke-width="1"/>
+<text x="25" y="996" font-size="10" font-family="Arial" font-weight="bold">MASON HOWARD DECK — 1225 BATES CT, LOUISVILLE KY 40204</text>
+<text x="25" y="1031" font-size="9" font-family="Arial">CONTRACTOR: R&amp;B ROOFING &amp; REMODELING | JAMES BERRY</text>
+<text x="510" y="996" font-size="10" font-family="Arial">CODE: IRC 2021 | LOUISVILLE METRO</text>
+<text x="510" y="1031" font-size="9" font-family="Arial">SCALE: 1/4"=1'-0"   DATE: 2026</text>
+<text x="960" y="996" font-size="10" font-family="Arial">FROST: 24" | WIND: 115 MPH | SNOW: 15 PSF</text>
+<text x="960" y="1031" font-size="9" font-family="Arial">SEISMIC: CAT C | EXPOSURE: B</text>
+<text x="1260" y="1001" font-size="18" font-family="Arial" font-weight="bold">SH 1/5</text>
+<text x="1260" y="1031" font-size="9" font-family="Arial">FRAMING PLAN</text>
+</svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sheet" id="sh2">
+    <div class="sheet-header">
+      <span class="sheet-num">SH 2/5</span>
+      <span class="sheet-title">ELEVATIONS</span>
+    </div>
+    <div class="zoom-bar">
+      <button onclick="zoom(this, -1)">−</button>
+      <span class="zoom-label">100%</span>
+      <button onclick="zoom(this, 1)">+</button>
+      <button onclick="zoomReset(this)" style="width:auto;padding:0 8px;font-size:11px;">Reset</button>
+    </div>
+    <div class="zoom-wrapper">
+      <div class="zoom-inner">
+        <div class="sheet-body">
+<svg style="width:100%;height:auto;display:block;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1632 1056">
+<title>Sheet 2 – Elevations</title>
+<defs>
+<pattern id="s2_hwood" patternUnits="userSpaceOnUse" patternTransform="rotate(0)">
+  <line x1="0" y1="4" x2="8" y2="4" stroke="#c8a87a" stroke-width="0.6"/>
+</pattern>
+<pattern id="s2_hconc" patternUnits="userSpaceOnUse">
+  <line x1="0" y1="0" x2="10" y2="10" stroke="#999" stroke-width="0.4"/>
+  <line x1="10" y1="0" x2="0" y2="10" stroke="#999" stroke-width="0.4"/>
+</pattern>
+<pattern id="s2_hdeck" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+  <line x1="0" y1="0" x2="0" y2="6" stroke="#bbb" stroke-width="0.6"/>
+</pattern>
+<marker id="s2_arr" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+  <path d="M0,0 L8,3 L0,6 Z" fill="black"/>
+</marker>
+<marker id="s2_arrl" markerWidth="8" markerHeight="6" refX="1" refY="3" orient="auto">
+  <path d="M8,0 L0,3 L8,6 Z" fill="black"/>
+</marker>
+</defs>
+<rect fill="white"/>
+<rect x="15" y="15" fill="none" stroke="black" stroke-width="2"/>
+<text x="816" y="48" font-size="16" font-family="Arial" font-weight="bold" text-anchor="middle">SHEET 2 — ELEVATIONS</text><text x="284" y="70" font-size="12" font-family="Arial" font-weight="bold" text-anchor="middle">FRONT ELEVATION (SOUTH FACE)</text><line x1="60" y1="580" x2="568" y2="580" stroke="black" stroke-width="2" stroke-dasharray="12,4"/><text x="55" y="584" font-size="9" font-family="Arial" text-anchor="end">GRADE</text><rect x="60" y="364" fill="#d8d8d8" stroke="black" stroke-width="1.5"/><rect x="488" y="364" fill="#d8d8d8" stroke="black" stroke-width="1.5"/><rect x="80" y="412" fill="url(#s2_hwood)" stroke="black" stroke-width="1.5"/><rect x="80" y="418" fill="#a0785a" stroke="black" stroke-width="1"/><line x1="92" y1="418" x2="92" y2="424" stroke="#7a5c3a" stroke-width="0.5"/><line x1="104" y1="418" x2="104" y2="424" stroke="#7a5c3a" stroke-width="0.5"/><line x1="116" y1="418" x2="116" y2="424" stroke="#7a5c3a" stroke-width="0.5"/><line x1="128" y1="418" x2="128" y2="424" stroke="#7a5c3a" stroke-width="0.5"/><line x1="140" y1="418" x2="140" y2="424" stroke="#7a5c3a" stroke-width="0.5"/><line x1="152" y1="418" x2="152" y2="424" stroke="#7a5c3a" stroke-width="0.5"/><line x1="164" y1="418" x2="164" y2="424" stroke="#7a5c3a" stroke-width="0.5"/><line x1="176" y1="418" x2="176" y2="424" stroke="#7a5c3a" stroke-width="0.5"/><line x1="188" y1="418" x2="188" y2="424" stroke="#7a5c3a" stroke-width="0.5"/><line x1="200" y1="418" x2="200" y2="424" stroke="#7a5c3a" stroke-width="0.5"/><line x1="212" y1="418" x2="212" y2="424" stroke="#7a5c3a" stroke-width="0.5"/><line x1="224" y1="418" x2="224" y2="424" stroke="#7a5c3a" stroke-width="0.5"/><line x1="236" y1="418" x2="236" y2="424" stroke="#7a5c3a" stroke-width="0.5"/><line x1="248" y1="418" x2="248" y2="424" stroke="#7a5c3a" stroke-width="0.5"/><line x1="260" y1="418" x2="260" y2="424" stroke="#7a5c3a" stroke-width="0.5"/><line x1="272" y1="418" x2="272" y2="424" stroke="#7a5c3a" stroke-width="0.5"/><line x1="284" y1="418" x2="284" y2="424" stroke="#7a5c3a" stroke-width="0.5"/><line x1="296" y1="418" x2="296" y2="424" stroke="#7a5c3a" stroke-width="0.5"/><line x1="308" y1="418" x2="308" y2="424" stroke="#7a5c3a" stroke-width="0.5"/><line x1="320" y1="418" x2="320" y2="424" stroke="#7a5c3a" stroke-width="0.5"/><line x1="332" y1="418" x2="332" y2="424" stroke="#7a5c3a" stroke-width="0.5"/><line x1="344" y1="418" x2="344" y2="424" stroke="#7a5c3a" stroke-width="0.5"/><line x1="356" y1="418" x2="356" y2="424" stroke="#7a5c3a" stroke-width="0.5"/><line x1="368" y1="418" x2="368" y2="424" stroke="#7a5c3a" stroke-width="0.5"/><line x1="380" y1="418" x2="380" y2="424" stroke="#7a5c3a" stroke-width="0.5"/><line x1="392" y1="418" x2="392" y2="424" stroke="#7a5c3a" stroke-width="0.5"/><line x1="404" y1="418" x2="404" y2="424" stroke="#7a5c3a" stroke-width="0.5"/><line x1="416" y1="418" x2="416" y2="424" stroke="#7a5c3a" stroke-width="0.5"/><line x1="428" y1="418" x2="428" y2="424" stroke="#7a5c3a" stroke-width="0.5"/><line x1="440" y1="418" x2="440" y2="424" stroke="#7a5c3a" stroke-width="0.5"/><line x1="452" y1="418" x2="452" y2="424" stroke="#7a5c3a" stroke-width="0.5"/><line x1="464" y1="418" x2="464" y2="424" stroke="#7a5c3a" stroke-width="0.5"/><line x1="476" y1="418" x2="476" y2="424" stroke="#7a5c3a" stroke-width="0.5"/><rect x="74" y="396" fill="url(#s2_hwood)" stroke="black" stroke-width="1"/><rect x="64" y="572" fill="#888" stroke="black" stroke-width="1"/><circle cx="80" cy="596" r="24" fill="url(#s2_hconc)" stroke="black" stroke-width="1"/><rect x="278" y="396" fill="url(#s2_hwood)" stroke="black" stroke-width="1"/><rect x="268" y="572" fill="#888" stroke="black" stroke-width="1"/><circle cx="284" cy="596" r="24" fill="url(#s2_hconc)" stroke="black" stroke-width="1"/><rect x="482" y="396" fill="url(#s2_hwood)" stroke="black" stroke-width="1"/><rect x="472" y="572" fill="#888" stroke="black" stroke-width="1"/><circle cx="488" cy="596" r="24" fill="url(#s2_hconc)" stroke="black" stroke-width="1"/><line x1="80" y1="412" x2="488" y2="412" stroke="#333" stroke-width="2.5"/><text x="284" y="407" font-size="8" font-family="Arial" text-anchor="middle">SBS 2-PLY MEMBRANE (300 SF)</text><rect x="80" y="508" fill="none" stroke="#888" stroke-width="0.8" stroke-dasharray="4,4"/><line x1="80" y1="508" x2="488" y2="580" stroke="#888" stroke-width="0.5"/><line x1="80" y1="580" x2="488" y2="508" stroke="#888" stroke-width="0.5"/><text x="90" y="544" font-size="8" font-family="Arial">LATTICE SKIRT</text><rect x="80" y="334" fill="none" stroke="black" stroke-width="1.5" stroke-dasharray="none"/><line x1="88" y1="334" x2="88" y2="418" stroke="#ccc" stroke-width="0.6"/><line x1="96" y1="334" x2="96" y2="418" stroke="#ccc" stroke-width="0.6"/><line x1="104" y1="334" x2="104" y2="418" stroke="#ccc" stroke-width="0.6"/><line x1="112" y1="334" x2="112" y2="418" stroke="#ccc" stroke-width="0.6"/><line x1="120" y1="334" x2="120" y2="418" stroke="#ccc" stroke-width="0.6"/><line x1="128" y1="334" x2="128" y2="418" stroke="#ccc" stroke-width="0.6"/><line x1="136" y1="334" x2="136" y2="418" stroke="#ccc" stroke-width="0.6"/><line x1="144" y1="334" x2="144" y2="418" stroke="#ccc" stroke-width="0.6"/><line x1="152" y1="334" x2="152" y2="418" stroke="#ccc" stroke-width="0.6"/><line x1="160" y1="334" x2="160" y2="418" stroke="#ccc" stroke-width="0.6"/><line x1="168" y1="334" x2="168" y2="418" stroke="#ccc" stroke-width="0.6"/><line x1="176" y1="334" x2="176" y2="418" stroke="#ccc" stroke-width="0.6"/><line x1="184" y1="334" x2="184" y2="418" stroke="#ccc" stroke-width="0.6"/><line x1="192" y1="334" x2="192" y2="418" stroke="#ccc" stroke-width="0.6"/><line x1="200" y1="334" x2="200" y2="418" stroke="#ccc" stroke-width="0.6"/><line x1="208" y1="334" x2="208" y2="418" stroke="#ccc" stroke-width="0.6"/><line x1="216" y1="334" x2="216" y2="418" stroke="#ccc" stroke-width="0.6"/><line x1="224" y1="334" x2="224" y2="418" stroke="#ccc" stroke-width="0.6"/><line x1="232" y1="334" x2="232" y2="418" stroke="#ccc" stroke-width="0.6"/><line x1="240" y1="334" x2="240" y2="418" stroke="#ccc" stroke-width="0.6"/><line x1="248" y1="334" x2="248" y2="418" stroke="#ccc" stroke-width="0.6"/><line x1="256" y1="334" x2="256" y2="418" stroke="#ccc" stroke-width="0.6"/><line x1="264" y1="334" x2="264" y2="418" stroke="#ccc" stroke-width="0.6"/><line x1="272" y1="334" x2="272" y2="418" stroke="#ccc" stroke-width="0.6"/><line x1="280" y1="334" x2="280" y2="418" stroke="#ccc" stroke-width="0.6"/><line x1="288" y1="334" x2="288" y2="418" stroke="#ccc" stroke-width="0.6"/><line x1="296" y1="334" x2="296" y2="418" stroke="#ccc" stroke-width="0.6"/><line x1="304" y1="334" x2="304" y2="418" stroke="#ccc" stroke-width="0.6"/><line x1="312" y1="334" x2="312" y2="418" stroke="#ccc" stroke-width="0.6"/><line x1="320" y1="334" x2="320" y2="418" stroke="#ccc" stroke-width="0.6"/><line x1="328" y1="334" x2="328" y2="418" stroke="#ccc" stroke-width="0.6"/><line x1="336" y1="334" x2="336" y2="418" stroke="#ccc" stroke-width="0.6"/><line x1="344" y1="334" x2="344" y2="418" stroke="#ccc" stroke-width="0.6"/><line x1="352" y1="334" x2="352" y2="418" stroke="#ccc" stroke-width="0.6"/><line x1="360" y1="334" x2="360" y2="418" stroke="#ccc" stroke-width="0.6"/><line x1="368" y1="334" x2="368" y2="418" stroke="#ccc" stroke-width="0.6"/><line x1="376" y1="334" x2="376" y2="418" stroke="#ccc" stroke-width="0.6"/><line x1="384" y1="334" x2="384" y2="418" stroke="#ccc" stroke-width="0.6"/><line x1="392" y1="334" x2="392" y2="418" stroke="#ccc" stroke-width="0.6"/><line x1="400" y1="334" x2="400" y2="418" stroke="#ccc" stroke-width="0.6"/><line x1="408" y1="334" x2="408" y2="418" stroke="#ccc" stroke-width="0.6"/><line x1="416" y1="334" x2="416" y2="418" stroke="#ccc" stroke-width="0.6"/><line x1="424" y1="334" x2="424" y2="418" stroke="#ccc" stroke-width="0.6"/><line x1="432" y1="334" x2="432" y2="418" stroke="#ccc" stroke-width="0.6"/><line x1="440" y1="334" x2="440" y2="418" stroke="#ccc" stroke-width="0.6"/><line x1="448" y1="334" x2="448" y2="418" stroke="#ccc" stroke-width="0.6"/><line x1="456" y1="334" x2="456" y2="418" stroke="#ccc" stroke-width="0.6"/><line x1="464" y1="334" x2="464" y2="418" stroke="#ccc" stroke-width="0.6"/><line x1="472" y1="334" x2="472" y2="418" stroke="#ccc" stroke-width="0.6"/><line x1="480" y1="334" x2="480" y2="418" stroke="#ccc" stroke-width="0.6"/><rect x="80" y="334" fill="#aaa" stroke="black" stroke-width="1"/><text x="498" y="376" font-size="8" font-family="Arial">COCKTAIL RAIL</text><rect x="80" y="408" fill="#7a5c3a" stroke="black" stroke-width="1"/><line x1="25" y1="580" x2="25" y2="424" stroke="black" stroke-width="0.8" marker-start="url(#s2_arrl)" marker-end="url(#s2_arr)"/><line x1="17" y1="580" x2="33" y2="580" stroke="black" stroke-width="0.8"/><line x1="17" y1="424" x2="33" y2="424" stroke="black" stroke-width="0.8"/><text x="7" y="502" font-size="9" font-family="Arial" text-anchor="middle" transform="rotate(-90 7 502)" fill="black">6'-6" TO DECK</text><line x1="538" y1="418" x2="538" y2="334" stroke="black" stroke-width="0.8" marker-start="url(#s2_arrl)" marker-end="url(#s2_arr)"/><line x1="530" y1="418" x2="546" y2="418" stroke="black" stroke-width="0.8"/><line x1="530" y1="334" x2="546" y2="334" stroke="black" stroke-width="0.8"/><text x="556" y="376" font-size="9" font-family="Arial" text-anchor="middle" transform="rotate(-90 556 376)" fill="black">3'-6" (42")</text><line x1="80" y1="610" x2="488" y2="610" stroke="black" stroke-width="0.8" marker-start="url(#s2_arrl)" marker-end="url(#s2_arr)"/><line x1="80" y1="602" x2="80" y2="618" stroke="black" stroke-width="0.8"/><line x1="488" y1="602" x2="488" y2="618" stroke="black" stroke-width="0.8"/><text x="284" y="624" font-size="9" font-family="Arial" text-anchor="middle" fill="black">17'-0"</text><line x1="50" y1="580" x2="50" y2="508" stroke="black" stroke-width="0.8" marker-start="url(#s2_arrl)" marker-end="url(#s2_arr)"/><line x1="42" y1="580" x2="58" y2="580" stroke="black" stroke-width="0.8"/><line x1="42" y1="508" x2="58" y2="508" stroke="black" stroke-width="0.8"/><text x="32" y="544" font-size="9" font-family="Arial" text-anchor="middle" transform="rotate(-90 32 544)" fill="black">3'-0" SKIRT</text><text x="862" y="70" font-size="12" font-family="Arial" font-weight="bold" text-anchor="middle">SIDE ELEVATION (EAST FACE)</text><line x1="668" y1="580" x2="1116" y2="580" stroke="black" stroke-width="2" stroke-dasharray="12,4"/><rect x="668" y="364" fill="#d8d8d8" stroke="black" stroke-width="1.5"/><rect x="688" y="418" fill="url(#s2_hwood)" stroke="black" stroke-width="1.5"/><rect x="886" y="396" fill="url(#s2_hwood)" stroke="black" stroke-width="1"/><circle cx="892" cy="596" r="22" fill="url(#s2_hconc)" stroke="black" stroke-width="1"/><rect x="1030" y="396" fill="url(#s2_hwood)" stroke="black" stroke-width="1"/><circle cx="1036" cy="596" r="22" fill="url(#s2_hconc)" stroke="black" stroke-width="1"/><line x1="1056" y1="424" x2="1076" y2="424" stroke="black" stroke-width="1"/><line x1="1076" y1="424" x2="1076" y2="439" stroke="black" stroke-width="1"/><line x1="1076" y1="439" x2="1096" y2="439" stroke="black" stroke-width="1"/><line x1="1096" y1="439" x2="1096" y2="454" stroke="black" stroke-width="1"/><line x1="1096" y1="454" x2="1116" y2="454" stroke="black" stroke-width="1"/><line x1="1116" y1="454" x2="1116" y2="469" stroke="black" stroke-width="1"/><line x1="1116" y1="469" x2="1136" y2="469" stroke="black" stroke-width="1"/><line x1="1136" y1="469" x2="1136" y2="484" stroke="black" stroke-width="1"/><line x1="1136" y1="484" x2="1156" y2="484" stroke="black" stroke-width="1"/><line x1="1156" y1="484" x2="1156" y2="499" stroke="black" stroke-width="1"/><line x1="1156" y1="499" x2="1176" y2="499" stroke="black" stroke-width="1"/><line x1="1176" y1="499" x2="1176" y2="514" stroke="black" stroke-width="1"/><line x1="1176" y1="514" x2="1196" y2="514" stroke="black" stroke-width="1"/><line x1="1196" y1="514" x2="1196" y2="529" stroke="black" stroke-width="1"/><line x1="1196" y1="529" x2="1216" y2="529" stroke="black" stroke-width="1"/><line x1="1216" y1="529" x2="1216" y2="544" stroke="black" stroke-width="1"/><line x1="1216" y1="544" x2="1236" y2="544" stroke="black" stroke-width="1"/><line x1="1236" y1="544" x2="1236" y2="559" stroke="black" stroke-width="1"/><line x1="1236" y1="559" x2="1256" y2="559" stroke="black" stroke-width="1"/><line x1="1256" y1="559" x2="1256" y2="574" stroke="black" stroke-width="1"/><text x="1156" y="605" font-size="8" font-family="Arial" text-anchor="middle">10 RISERS @ 7-13/16"</text><line x1="688" y1="615" x2="892" y2="615" stroke="black" stroke-width="0.8" marker-start="url(#s2_arrl)" marker-end="url(#s2_arr)"/><line x1="688" y1="607" x2="688" y2="623" stroke="black" stroke-width="0.8"/><line x1="892" y1="607" x2="892" y2="623" stroke="black" stroke-width="0.8"/><text x="790" y="629" font-size="9" font-family="Arial" text-anchor="middle" fill="black">8'-6" SIDE</text><line x1="688" y1="640" x2="1036" y2="640" stroke="black" stroke-width="0.8" marker-start="url(#s2_arrl)" marker-end="url(#s2_arr)"/><line x1="688" y1="632" x2="688" y2="648" stroke="black" stroke-width="0.8"/><line x1="1036" y1="632" x2="1036" y2="648" stroke="black" stroke-width="0.8"/><text x="862" y="654" font-size="9" font-family="Arial" text-anchor="middle" fill="black">14'-6" MAX DEPTH</text><line x1="643" y1="580" x2="643" y2="424" stroke="black" stroke-width="0.8" marker-start="url(#s2_arrl)" marker-end="url(#s2_arr)"/><line x1="635" y1="580" x2="651" y2="580" stroke="black" stroke-width="0.8"/><line x1="635" y1="424" x2="651" y2="424" stroke="black" stroke-width="0.8"/><text x="625" y="502" font-size="9" font-family="Arial" text-anchor="middle" transform="rotate(-90 625 502)" fill="black">6'-6"</text>
+<rect x="15" y="976" fill="white" stroke="black" stroke-width="1.5"/>
+<line x1="15" y1="1009" x2="1617" y2="1009" stroke="black" stroke-width="1"/>
+<line x1="500" y1="976" x2="500" y2="1042" stroke="black" stroke-width="1"/>
+<line x1="950" y1="976" x2="950" y2="1042" stroke="black" stroke-width="1"/>
+<line x1="1250" y1="976" x2="1250" y2="1042" stroke="black" stroke-width="1"/>
+<text x="25" y="996" font-size="10" font-family="Arial" font-weight="bold">MASON HOWARD DECK — 1225 BATES CT, LOUISVILLE KY 40204</text>
+<text x="25" y="1031" font-size="9" font-family="Arial">CONTRACTOR: R&amp;B ROOFING &amp; REMODELING | JAMES BERRY</text>
+<text x="510" y="996" font-size="10" font-family="Arial">CODE: IRC 2021 | LOUISVILLE METRO</text>
+<text x="510" y="1031" font-size="9" font-family="Arial">SCALE: 1/4"=1'-0"   DATE: 2026</text>
+<text x="960" y="996" font-size="10" font-family="Arial">FROST: 24" | WIND: 115 MPH | SNOW: 15 PSF</text>
+<text x="960" y="1031" font-size="9" font-family="Arial">SEISMIC: CAT C | EXPOSURE: B</text>
+<text x="1260" y="1001" font-size="18" font-family="Arial" font-weight="bold">SH 2/5</text>
+<text x="1260" y="1031" font-size="9" font-family="Arial">ELEVATIONS</text>
+</svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sheet" id="sh3">
+    <div class="sheet-header">
+      <span class="sheet-num">SH 3/5</span>
+      <span class="sheet-title">FOUNDATION PLAN</span>
+    </div>
+    <div class="zoom-bar">
+      <button onclick="zoom(this, -1)">−</button>
+      <span class="zoom-label">100%</span>
+      <button onclick="zoom(this, 1)">+</button>
+      <button onclick="zoomReset(this)" style="width:auto;padding:0 8px;font-size:11px;">Reset</button>
+    </div>
+    <div class="zoom-wrapper">
+      <div class="zoom-inner">
+        <div class="sheet-body">
+<svg style="width:100%;height:auto;display:block;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1632 1056">
+<title>Sheet 3 – Foundation Plan</title>
+<defs>
+<pattern id="s3_hwood" patternUnits="userSpaceOnUse" patternTransform="rotate(0)">
+  <line x1="0" y1="4" x2="8" y2="4" stroke="#c8a87a" stroke-width="0.6"/>
+</pattern>
+<pattern id="s3_hconc" patternUnits="userSpaceOnUse">
+  <line x1="0" y1="0" x2="10" y2="10" stroke="#999" stroke-width="0.4"/>
+  <line x1="10" y1="0" x2="0" y2="10" stroke="#999" stroke-width="0.4"/>
+</pattern>
+<pattern id="s3_hdeck" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+  <line x1="0" y1="0" x2="0" y2="6" stroke="#bbb" stroke-width="0.6"/>
+</pattern>
+<marker id="s3_arr" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+  <path d="M0,0 L8,3 L0,6 Z" fill="black"/>
+</marker>
+<marker id="s3_arrl" markerWidth="8" markerHeight="6" refX="1" refY="3" orient="auto">
+  <path d="M8,0 L0,3 L8,6 Z" fill="black"/>
+</marker>
+</defs>
+<rect fill="white"/>
+<rect x="15" y="15" fill="none" stroke="black" stroke-width="2"/>
+<text x="816" y="48" font-size="16" font-family="Arial" font-weight="bold" text-anchor="middle">SHEET 3 — FOUNDATION PLAN</text><rect x="552" y="105" fill="#d8d8d8" stroke="black" stroke-width="2"/><text x="816" y="138" font-size="11" font-family="Arial" text-anchor="middle">(EXISTING HOUSE)</text><path d="M612,160 L1020,160 L1020,364 A144,144 0 0 1 876,508 L756,508 A144,144 0 0 1 612,364 Z" fill="#f5f5f5" stroke="black" stroke-width="1.5" stroke-dasharray="8,4"/><circle cx="612" cy="364" r="36" fill="url(#s3_hconc)" stroke="black" stroke-width="1.5"/><rect x="606" y="358" fill="white" stroke="black" stroke-width="1.5"/><text x="612" y="415" font-size="9" font-family="Arial" text-anchor="middle" font-weight="bold">P1</text><text x="612" y="427" font-size="8" font-family="Arial" text-anchor="middle">18"Ø×24" DEEP</text><circle cx="756" cy="508" r="36" fill="url(#s3_hconc)" stroke="black" stroke-width="1.5"/><rect x="750" y="502" fill="white" stroke="black" stroke-width="1.5"/><text x="756" y="559" font-size="9" font-family="Arial" text-anchor="middle" font-weight="bold">P2</text><text x="756" y="571" font-size="8" font-family="Arial" text-anchor="middle">18"Ø×24" DEEP</text><circle cx="816" cy="508" r="36" fill="url(#s3_hconc)" stroke="black" stroke-width="1.5"/><rect x="810" y="502" fill="white" stroke="black" stroke-width="1.5"/><text x="816" y="559" font-size="9" font-family="Arial" text-anchor="middle" font-weight="bold">P3</text><text x="816" y="571" font-size="8" font-family="Arial" text-anchor="middle">18"Ø×24" DEEP</text><circle cx="876" cy="508" r="36" fill="url(#s3_hconc)" stroke="black" stroke-width="1.5"/><rect x="870" y="502" fill="white" stroke="black" stroke-width="1.5"/><text x="876" y="559" font-size="9" font-family="Arial" text-anchor="middle" font-weight="bold">P4</text><text x="876" y="571" font-size="8" font-family="Arial" text-anchor="middle">18"Ø×24" DEEP</text><circle cx="1020" cy="364" r="36" fill="url(#s3_hconc)" stroke="black" stroke-width="1.5"/><rect x="1014" y="358" fill="white" stroke="black" stroke-width="1.5"/><text x="1020" y="415" font-size="9" font-family="Arial" text-anchor="middle" font-weight="bold">P5</text><text x="1020" y="427" font-size="8" font-family="Arial" text-anchor="middle">18"Ø×24" DEEP</text><circle cx="828" cy="604" r="24" fill="url(#s3_hconc)" stroke="black" stroke-width="1.5"/><text x="828" y="639" font-size="9" font-family="Arial" text-anchor="middle" font-weight="bold">SP-1</text><text x="828" y="651" font-size="8" font-family="Arial" text-anchor="middle">18"Ø×12" DEEP</text><circle cx="1557" cy="75" r="22" fill="none" stroke="black" stroke-width="1"/><polygon points="1557,53 1551,83 1557,75" fill="black"/><polygon points="1557,53 1563,83 1557,75" fill="white" stroke="black" stroke-width="0.5"/><text x="1557" y="48" font-size="12" font-family="Arial" text-anchor="middle" font-weight="bold">N</text><line x1="612" y1="132" x2="1020" y2="132" stroke="black" stroke-width="0.8" marker-start="url(#s3_arrl)" marker-end="url(#s3_arr)"/><line x1="612" y1="124" x2="612" y2="140" stroke="black" stroke-width="0.8"/><line x1="1020" y1="124" x2="1020" y2="140" stroke="black" stroke-width="0.8"/><text x="816" y="120" font-size="9" font-family="Arial" text-anchor="middle" fill="black">17'-0"</text><line x1="1065" y1="160" x2="1065" y2="364" stroke="black" stroke-width="0.8" marker-start="url(#s3_arrl)" marker-end="url(#s3_arr)"/><line x1="1057" y1="160" x2="1073" y2="160" stroke="black" stroke-width="0.8"/><line x1="1057" y1="364" x2="1073" y2="364" stroke="black" stroke-width="0.8"/><text x="1083" y="262" font-size="9" font-family="Arial" text-anchor="middle" transform="rotate(-90 1083 262)" fill="black">8'-6"</text><line x1="567" y1="160" x2="567" y2="508" stroke="black" stroke-width="0.8" marker-start="url(#s3_arrl)" marker-end="url(#s3_arr)"/><line x1="559" y1="160" x2="575" y2="160" stroke="black" stroke-width="0.8"/><line x1="559" y1="508" x2="575" y2="508" stroke="black" stroke-width="0.8"/><text x="549" y="334" font-size="9" font-family="Arial" text-anchor="middle" transform="rotate(-90 549 334)" fill="black">14'-6" MAX</text><line x1="612" y1="399" x2="1020" y2="399" stroke="black" stroke-width="0.8" marker-start="url(#s3_arrl)" marker-end="url(#s3_arr)"/><line x1="612" y1="391" x2="612" y2="407" stroke="black" stroke-width="0.8"/><line x1="1020" y1="391" x2="1020" y2="407" stroke="black" stroke-width="0.8"/><text x="816" y="387" font-size="9" font-family="Arial" text-anchor="middle" fill="black">17'-0" SPAN P1–P5</text><line x1="756" y1="533" x2="876" y2="533" stroke="black" stroke-width="0.8" marker-start="url(#s3_arrl)" marker-end="url(#s3_arr)"/><line x1="756" y1="525" x2="756" y2="541" stroke="black" stroke-width="0.8"/><line x1="876" y1="525" x2="876" y2="541" stroke="black" stroke-width="0.8"/><text x="816" y="521" font-size="9" font-family="Arial" text-anchor="middle" fill="black">5'-0" P2–P4</text><text x="30" y="568" font-size="11" font-family="Arial" font-weight="bold">FOOTING SCHEDULE</text><rect x="30" y="580" fill="white" stroke="black" stroke-width="1.2"/><line x1="85" y1="580" x2="85" y2="672" stroke="black" stroke-width="0.8"/><line x1="185" y1="580" x2="185" y2="672" stroke="black" stroke-width="0.8"/><line x1="305" y1="580" x2="305" y2="672" stroke="black" stroke-width="0.8"/><line x1="420" y1="580" x2="420" y2="672" stroke="black" stroke-width="0.8"/><line x1="520" y1="580" x2="520" y2="672" stroke="black" stroke-width="0.8"/><rect x="30" y="580" fill="#ccc" stroke="none"/><line x1="30" y1="580" x2="570" y2="580" stroke="black" stroke-width="0.8"/><text x="34" y="595" font-size="9" font-family="Arial" font-weight="bold">MARK</text><text x="89" y="595" font-size="9" font-family="Arial" font-weight="bold">SIZE</text><text x="189" y="595" font-size="9" font-family="Arial" font-weight="bold">DEPTH</text><text x="309" y="595" font-size="9" font-family="Arial" font-weight="bold">CONC</text><text x="424" y="595" font-size="9" font-family="Arial" font-weight="bold">BASE</text><text x="524" y="595" font-size="9" font-family="Arial" font-weight="bold">QTY</text><line x1="30" y1="602" x2="570" y2="602" stroke="black" stroke-width="0.8"/><text x="34" y="617" font-size="9" font-family="Arial" font-weight="normal">P1-P5</text><text x="89" y="617" font-size="9" font-family="Arial" font-weight="normal">18" DIA</text><text x="189" y="617" font-size="9" font-family="Arial" font-weight="normal">24" (FROST)</text><text x="309" y="617" font-size="9" font-family="Arial" font-weight="normal">3000 PSI</text><text x="424" y="617" font-size="9" font-family="Arial" font-weight="normal">SIMP. ABA44Z</text><text x="524" y="617" font-size="9" font-family="Arial" font-weight="normal">5</text><line x1="30" y1="624" x2="570" y2="624" stroke="black" stroke-width="0.8"/><text x="34" y="639" font-size="9" font-family="Arial" font-weight="normal">PP1-PP5</text><text x="89" y="639" font-size="9" font-family="Arial" font-weight="normal">18" DIA</text><text x="189" y="639" font-size="9" font-family="Arial" font-weight="normal">24" (FROST)</text><text x="309" y="639" font-size="9" font-family="Arial" font-weight="normal">3000 PSI</text><text x="424" y="639" font-size="9" font-family="Arial" font-weight="normal">SIMP. ABA44Z</text><text x="524" y="639" font-size="9" font-family="Arial" font-weight="normal">5</text><line x1="30" y1="646" x2="570" y2="646" stroke="black" stroke-width="0.8"/><text x="34" y="661" font-size="9" font-family="Arial" font-weight="normal">SP-1</text><text x="89" y="661" font-size="9" font-family="Arial" font-weight="normal">18" DIA</text><text x="189" y="661" font-size="9" font-family="Arial" font-weight="normal">12"</text><text x="309" y="661" font-size="9" font-family="Arial" font-weight="normal">3000 PSI</text><text x="424" y="661" font-size="9" font-family="Arial" font-weight="normal">NONE</text><text x="524" y="661" font-size="9" font-family="Arial" font-weight="normal">1</text><text x="620" y="590" font-size="9" font-family="Arial" font-weight="bold">FOUNDATION NOTES:</text><text x="620" y="606" font-size="9" font-family="Arial" font-weight="normal">1. FROST DEPTH: 24" (LOUISVILLE/JEFFERSON COUNTY KY)</text><text x="620" y="622" font-size="9" font-family="Arial" font-weight="normal">2. MIN BEARING CAPACITY: 1500 PSF ASSUMED</text><text x="620" y="638" font-size="9" font-family="Arial" font-weight="normal">3. CONCRETE: 3000 PSI @ 28 DAYS, TUBE FORMS</text><text x="620" y="654" font-size="9" font-family="Arial" font-weight="normal">4. REBAR: (3) #4 BARS EA. FOOTING</text><text x="620" y="670" font-size="9" font-family="Arial" font-weight="normal">5. POST BASES: SIMPSON ABA44Z (10 TOTAL)</text><text x="620" y="686" font-size="9" font-family="Arial" font-weight="normal">6. PERGOLA POSTS (PP1-PP5): SAME FOOTING AS DECK POSTS</text><text x="620" y="702" font-size="9" font-family="Arial" font-weight="normal">7. VERIFY ALL DIMENSIONS IN FIELD BEFORE EXCAVATION</text>
+<rect x="15" y="976" fill="white" stroke="black" stroke-width="1.5"/>
+<line x1="15" y1="1009" x2="1617" y2="1009" stroke="black" stroke-width="1"/>
+<line x1="500" y1="976" x2="500" y2="1042" stroke="black" stroke-width="1"/>
+<line x1="950" y1="976" x2="950" y2="1042" stroke="black" stroke-width="1"/>
+<line x1="1250" y1="976" x2="1250" y2="1042" stroke="black" stroke-width="1"/>
+<text x="25" y="996" font-size="10" font-family="Arial" font-weight="bold">MASON HOWARD DECK — 1225 BATES CT, LOUISVILLE KY 40204</text>
+<text x="25" y="1031" font-size="9" font-family="Arial">CONTRACTOR: R&amp;B ROOFING &amp; REMODELING | JAMES BERRY</text>
+<text x="510" y="996" font-size="10" font-family="Arial">CODE: IRC 2021 | LOUISVILLE METRO</text>
+<text x="510" y="1031" font-size="9" font-family="Arial">SCALE: 1/4"=1'-0"   DATE: 2026</text>
+<text x="960" y="996" font-size="10" font-family="Arial">FROST: 24" | WIND: 115 MPH | SNOW: 15 PSF</text>
+<text x="960" y="1031" font-size="9" font-family="Arial">SEISMIC: CAT C | EXPOSURE: B</text>
+<text x="1260" y="1001" font-size="18" font-family="Arial" font-weight="bold">SH 3/5</text>
+<text x="1260" y="1031" font-size="9" font-family="Arial">FOUNDATION PLAN</text>
+</svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sheet" id="sh4">
+    <div class="sheet-header">
+      <span class="sheet-num">SH 4/5</span>
+      <span class="sheet-title">CONSTRUCTION DETAILS</span>
+    </div>
+    <div class="zoom-bar">
+      <button onclick="zoom(this, -1)">−</button>
+      <span class="zoom-label">100%</span>
+      <button onclick="zoom(this, 1)">+</button>
+      <button onclick="zoomReset(this)" style="width:auto;padding:0 8px;font-size:11px;">Reset</button>
+    </div>
+    <div class="zoom-wrapper">
+      <div class="zoom-inner">
+        <div class="sheet-body">
+<svg style="width:100%;height:auto;display:block;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1632 1056">
+<title>Sheet 4 – Construction Details</title>
+<defs>
+<pattern id="s4_hwood" patternUnits="userSpaceOnUse" patternTransform="rotate(0)">
+  <line x1="0" y1="4" x2="8" y2="4" stroke="#c8a87a" stroke-width="0.6"/>
+</pattern>
+<pattern id="s4_hconc" patternUnits="userSpaceOnUse">
+  <line x1="0" y1="0" x2="10" y2="10" stroke="#999" stroke-width="0.4"/>
+  <line x1="10" y1="0" x2="0" y2="10" stroke="#999" stroke-width="0.4"/>
+</pattern>
+<pattern id="s4_hdeck" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+  <line x1="0" y1="0" x2="0" y2="6" stroke="#bbb" stroke-width="0.6"/>
+</pattern>
+<marker id="s4_arr" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+  <path d="M0,0 L8,3 L0,6 Z" fill="black"/>
+</marker>
+<marker id="s4_arrl" markerWidth="8" markerHeight="6" refX="1" refY="3" orient="auto">
+  <path d="M8,0 L0,3 L8,6 Z" fill="black"/>
+</marker>
+</defs>
+<rect fill="white"/>
+<rect x="15" y="15" fill="none" stroke="black" stroke-width="2"/>
+<text x="816" y="48" font-size="16" font-family="Arial" font-weight="bold" text-anchor="middle">SHEET 4 — CONSTRUCTION DETAILS</text><rect x="55" y="70" fill="white" stroke="black" stroke-width="1.5"/><text x="235" y="345" font-size="10" font-family="Arial" font-weight="bold" text-anchor="middle">DET. A — FOOTING / POST BASE</text><rect x="455" y="70" fill="white" stroke="black" stroke-width="1.5"/><text x="635" y="345" font-size="10" font-family="Arial" font-weight="bold" text-anchor="middle">DET. B — LEDGER ATTACHMENT</text><rect x="855" y="70" fill="white" stroke="black" stroke-width="1.5"/><text x="1035" y="345" font-size="10" font-family="Arial" font-weight="bold" text-anchor="middle">DET. C — JOIST HANGER</text><rect x="55" y="430" fill="white" stroke="black" stroke-width="1.5"/><text x="235" y="705" font-size="10" font-family="Arial" font-weight="bold" text-anchor="middle">DET. D — GUARDRAIL POST (42")</text><rect x="455" y="430" fill="white" stroke="black" stroke-width="1.5"/><text x="635" y="705" font-size="10" font-family="Arial" font-weight="bold" text-anchor="middle">DET. E — UNDER-DECK SBS SECTION</text><rect x="855" y="430" fill="white" stroke="black" stroke-width="1.5"/><text x="1035" y="705" font-size="10" font-family="Arial" font-weight="bold" text-anchor="middle">DET. F — STAIR SECTION</text><ellipse cx="235" cy="280" rx="60" ry="20" fill="url(#s4_hconc)" stroke="black" stroke-width="1.5"/><rect x="175" y="200" fill="url(#s4_hconc)" stroke="black" stroke-width="1.5"/><ellipse cx="235" cy="200" rx="60" ry="20" fill="url(#s4_hconc)" stroke="black" stroke-width="1.5"/><line x1="215" y1="185" x2="215" y2="285" stroke="#555" stroke-width="2"/><line x1="235" y1="185" x2="235" y2="285" stroke="#555" stroke-width="2"/><line x1="255" y1="185" x2="255" y2="285" stroke="#555" stroke-width="2"/><text x="305" y="230" font-size="7" font-family="Arial">(3) #4 REBAR</text><rect x="225" y="120" fill="url(#s4_hwood)" stroke="black" stroke-width="1.5"/><rect x="217" y="192" fill="#aaa" stroke="black" stroke-width="1"/><text x="260" y="160" font-size="7" font-family="Arial">4x4x12 PT POST</text><text x="260" y="190" font-size="7" font-family="Arial">SIMP. ABA44Z</text><line x1="145" y1="200" x2="145" y2="280" stroke="black" stroke-width="0.8" marker-start="url(#s4_arrl)" marker-end="url(#s4_arr)"/><line x1="137" y1="200" x2="153" y2="200" stroke="black" stroke-width="0.8"/><line x1="137" y1="280" x2="153" y2="280" stroke="black" stroke-width="0.8"/><text x="127" y="240" font-size="9" font-family="Arial" text-anchor="middle" transform="rotate(-90 127 240)" fill="black">24" FROST DEPTH</text><text x="145" y="295" font-size="7" font-family="Arial" text-anchor="middle">FROST DEPTH</text><text x="145" y="307" font-size="7" font-family="Arial" text-anchor="middle">24" (LOUISVILLE)</text><rect x="545" y="110" fill="#d8d8d8" stroke="black" stroke-width="1.5"/><text x="590" y="145" font-size="7" font-family="Arial" text-anchor="middle">HOUSE RIM</text><rect x="635" y="115" fill="url(#s4_hwood)" stroke="black" stroke-width="1.5"/><text x="705" y="140" font-size="7" font-family="Arial">2x8 PT LEDGER</text><circle cx="655" cy="125" r="4" fill="black"/><line x1="555" y1="125" x2="660" y2="125" stroke="#333" stroke-width="2"/><circle cx="655" cy="150" r="4" fill="black"/><line x1="555" y1="150" x2="660" y2="150" stroke="#333" stroke-width="2"/><text x="705" y="165" font-size="7" font-family="Arial">1/2" LAG @ 16" OC</text><text x="705" y="177" font-size="7" font-family="Arial">STAGGERED 2 ROWS</text><rect x="635" y="110" fill="#bbb" stroke="black" stroke-width="1"/><text x="705" y="116" font-size="7" font-family="Arial">LEDGER FLASHING</text><rect x="685" y="120" fill="url(#s4_hwood)" stroke="black" stroke-width="1.5"/><text x="725" y="190" font-size="7" font-family="Arial">2x8 JOIST</text><rect x="915" y="100" fill="url(#s4_hwood)" stroke="black" stroke-width="1.5"/><text x="1035" y="95" font-size="7" font-family="Arial" text-anchor="middle">2-2x8 PT BEAM</text><rect x="1019" y="95" fill="#aaa" stroke="black" stroke-width="1.5"/><text x="1060" y="125" font-size="7" font-family="Arial">SIMP. LUS28</text><rect x="1023" y="110" fill="url(#s4_hwood)" stroke="black" stroke-width="1.5"/><text x="1035" y="245" font-size="7" font-family="Arial" text-anchor="middle">2x8 PT JOIST</text><circle cx="1019" cy="105" r="2.5" fill="black"/><circle cx="1051" cy="105" r="2.5" fill="black"/><circle cx="1019" cy="120" r="2.5" fill="black"/><circle cx="1051" cy="120" r="2.5" fill="black"/><circle cx="1019" cy="135" r="2.5" fill="black"/><circle cx="1051" cy="135" r="2.5" fill="black"/><circle cx="1019" cy="150" r="2.5" fill="black"/><circle cx="1051" cy="150" r="2.5" fill="black"/><rect x="227" y="450" fill="url(#s4_hwood)" stroke="black" stroke-width="1.5"/><text x="250" y="540" font-size="7" font-family="Arial">4x4 COMPOSITE</text><text x="250" y="552" font-size="7" font-family="Arial">SLEEVED POST</text><rect x="155" y="450" fill="#aaa" stroke="black" stroke-width="1"/><text x="235" y="445" font-size="7" font-family="Arial" text-anchor="middle">COCKTAIL RAIL (TOP)</text><line x1="165" y1="460" x2="165" y2="630" stroke="#aaa" stroke-width="2"/><line x1="179" y1="460" x2="179" y2="630" stroke="#aaa" stroke-width="2"/><line x1="193" y1="460" x2="193" y2="630" stroke="#aaa" stroke-width="2"/><line x1="207" y1="460" x2="207" y2="630" stroke="#aaa" stroke-width="2"/><line x1="221" y1="460" x2="221" y2="630" stroke="#aaa" stroke-width="2"/><line x1="235" y1="460" x2="235" y2="630" stroke="#aaa" stroke-width="2"/><line x1="249" y1="460" x2="249" y2="630" stroke="#aaa" stroke-width="2"/><line x1="263" y1="460" x2="263" y2="630" stroke="#aaa" stroke-width="2"/><line x1="277" y1="460" x2="277" y2="630" stroke="#aaa" stroke-width="2"/><line x1="291" y1="460" x2="291" y2="630" stroke="#aaa" stroke-width="2"/><line x1="305" y1="460" x2="305" y2="630" stroke="#aaa" stroke-width="2"/><rect x="145" y="625" fill="#a0785a" stroke="black" stroke-width="1"/><line x1="330" y1="633" x2="330" y2="450" stroke="black" stroke-width="0.8" marker-start="url(#s4_arrl)" marker-end="url(#s4_arr)"/><line x1="322" y1="633" x2="338" y2="633" stroke="black" stroke-width="0.8"/><line x1="322" y1="450" x2="338" y2="450" stroke="black" stroke-width="0.8"/><text x="348" y="541" font-size="9" font-family="Arial" text-anchor="middle" transform="rotate(-90 348 541)" fill="black">42" (3'-6")</text><text x="235" y="645" font-size="7" font-family="Arial" text-anchor="middle">MS DISCOVERY 1-3/8" RAIL</text><rect x="535" y="450" fill="#a0785a" stroke="black" stroke-width="0.8"/><text x="740" y="461" font-size="6.5" font-family="Arial">MOISTURESHIELD ELEVATE 1x6</text><rect x="535" y="464" fill="url(#s4_hwood)" stroke="black" stroke-width="0.8"/><text x="740" y="471" font-size="6.5" font-family="Arial">2x8 PT JOIST @ 16" OC</text><rect x="535" y="474" fill="#888" stroke="black" stroke-width="0.8"/><text x="740" y="481" font-size="6.5" font-family="Arial">SBS 2-PLY MEMBRANE</text><rect x="535" y="484" fill="#aaa" stroke="black" stroke-width="0.8"/><text x="740" y="493" font-size="6.5" font-family="Arial">ISO BOARD 2"</text><rect x="535" y="496" fill="#bbb" stroke="black" stroke-width="0.8"/><text x="740" y="501" font-size="6.5" font-family="Arial">GALV. MESH BARRIER</text><rect x="535" y="504" fill="none" stroke="black" stroke-width="0.8"/><text x="740" y="511" font-size="6.5" font-family="Arial">LATTICE PANEL (FREE STYLE CLASSIC)</text><rect x="535" y="514" fill="url(#s4_hwood)" stroke="black" stroke-width="0.8"/><text x="740" y="521" font-size="6.5" font-family="Arial">PT FRAME 2x4</text><text x="635" y="539" font-size="7" font-family="Arial" text-anchor="middle">300 SF (3 SQ.) MIN 1/4"/FT SLOPE</text><line x1="875" y1="450" x2="895" y2="450" stroke="black" stroke-width="1.2"/><line x1="895" y1="450" x2="895" y2="465" stroke="black" stroke-width="1.2"/><line x1="895" y1="465" x2="915" y2="465" stroke="black" stroke-width="1.2"/><line x1="915" y1="465" x2="915" y2="480" stroke="black" stroke-width="1.2"/><line x1="915" y1="480" x2="935" y2="480" stroke="black" stroke-width="1.2"/><line x1="935" y1="480" x2="935" y2="495" stroke="black" stroke-width="1.2"/><line x1="935" y1="495" x2="955" y2="495" stroke="black" stroke-width="1.2"/><line x1="955" y1="495" x2="955" y2="510" stroke="black" stroke-width="1.2"/><line x1="955" y1="510" x2="975" y2="510" stroke="black" stroke-width="1.2"/><line x1="975" y1="510" x2="975" y2="525" stroke="black" stroke-width="1.2"/><line x1="975" y1="525" x2="995" y2="525" stroke="black" stroke-width="1.2"/><line x1="995" y1="525" x2="995" y2="540" stroke="black" stroke-width="1.2"/><line x1="995" y1="540" x2="1015" y2="540" stroke="black" stroke-width="1.2"/><line x1="1015" y1="540" x2="1015" y2="555" stroke="black" stroke-width="1.2"/><line x1="1015" y1="555" x2="1035" y2="555" stroke="black" stroke-width="1.2"/><line x1="1035" y1="555" x2="1035" y2="570" stroke="black" stroke-width="1.2"/><line x1="1035" y1="570" x2="1055" y2="570" stroke="black" stroke-width="1.2"/><line x1="1055" y1="570" x2="1055" y2="585" stroke="black" stroke-width="1.2"/><line x1="1055" y1="585" x2="1075" y2="585" stroke="black" stroke-width="1.2"/><line x1="1075" y1="585" x2="1075" y2="600" stroke="black" stroke-width="1.2"/><polygon points="875,450 1075,600 1075,612 875,462" fill="url(#s4_hwood)" stroke="black" stroke-width="1"/><text x="975" y="630" font-size="7" font-family="Arial" text-anchor="middle">10 RISERS @ 7-13/16"  |  9 TREADS @ 10"</text><text x="975" y="644" font-size="7" font-family="Arial" text-anchor="middle">2x12 PT STRINGERS  |  4'-0" WIDE</text><text x="975" y="658" font-size="7" font-family="Arial" text-anchor="middle">18" DIA CONC. LANDING PAD (SP-1)</text><line x1="855" y1="450" x2="855" y2="600" stroke="black" stroke-width="0.8" marker-start="url(#s4_arrl)" marker-end="url(#s4_arr)"/><line x1="847" y1="450" x2="863" y2="450" stroke="black" stroke-width="0.8"/><line x1="847" y1="600" x2="863" y2="600" stroke="black" stroke-width="0.8"/><text x="837" y="525" font-size="9" font-family="Arial" text-anchor="middle" transform="rotate(-90 837 525)" fill="black">6'-6" RISE</text><line x1="875" y1="615" x2="1075" y2="615" stroke="black" stroke-width="0.8" marker-start="url(#s4_arrl)" marker-end="url(#s4_arr)"/><line x1="875" y1="607" x2="875" y2="623" stroke="black" stroke-width="0.8"/><line x1="1075" y1="607" x2="1075" y2="623" stroke="black" stroke-width="0.8"/><text x="975" y="629" font-size="9" font-family="Arial" text-anchor="middle" fill="black">8'-4" RUN</text>
+<rect x="15" y="976" fill="white" stroke="black" stroke-width="1.5"/>
+<line x1="15" y1="1009" x2="1617" y2="1009" stroke="black" stroke-width="1"/>
+<line x1="500" y1="976" x2="500" y2="1042" stroke="black" stroke-width="1"/>
+<line x1="950" y1="976" x2="950" y2="1042" stroke="black" stroke-width="1"/>
+<line x1="1250" y1="976" x2="1250" y2="1042" stroke="black" stroke-width="1"/>
+<text x="25" y="996" font-size="10" font-family="Arial" font-weight="bold">MASON HOWARD DECK — 1225 BATES CT, LOUISVILLE KY 40204</text>
+<text x="25" y="1031" font-size="9" font-family="Arial">CONTRACTOR: R&amp;B ROOFING &amp; REMODELING | JAMES BERRY</text>
+<text x="510" y="996" font-size="10" font-family="Arial">CODE: IRC 2021 | LOUISVILLE METRO</text>
+<text x="510" y="1031" font-size="9" font-family="Arial">SCALE: 1/4"=1'-0"   DATE: 2026</text>
+<text x="960" y="996" font-size="10" font-family="Arial">FROST: 24" | WIND: 115 MPH | SNOW: 15 PSF</text>
+<text x="960" y="1031" font-size="9" font-family="Arial">SEISMIC: CAT C | EXPOSURE: B</text>
+<text x="1260" y="1001" font-size="18" font-family="Arial" font-weight="bold">SH 4/5</text>
+<text x="1260" y="1031" font-size="9" font-family="Arial">CONSTRUCTION DETAILS</text>
+</svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sheet" id="sh5">
+    <div class="sheet-header">
+      <span class="sheet-num">SH 5/5</span>
+      <span class="sheet-title">NOTES & MATERIAL SCHEDULE</span>
+    </div>
+    <div class="zoom-bar">
+      <button onclick="zoom(this, -1)">−</button>
+      <span class="zoom-label">100%</span>
+      <button onclick="zoom(this, 1)">+</button>
+      <button onclick="zoomReset(this)" style="width:auto;padding:0 8px;font-size:11px;">Reset</button>
+    </div>
+    <div class="zoom-wrapper">
+      <div class="zoom-inner">
+        <div class="sheet-body">
+<svg style="width:100%;height:auto;display:block;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1632 1056">
+<title>Sheet 5 – Notes & Schedule</title>
+<defs>
+<pattern id="s5_hwood" patternUnits="userSpaceOnUse" patternTransform="rotate(0)">
+  <line x1="0" y1="4" x2="8" y2="4" stroke="#c8a87a" stroke-width="0.6"/>
+</pattern>
+<pattern id="s5_hconc" patternUnits="userSpaceOnUse">
+  <line x1="0" y1="0" x2="10" y2="10" stroke="#999" stroke-width="0.4"/>
+  <line x1="10" y1="0" x2="0" y2="10" stroke="#999" stroke-width="0.4"/>
+</pattern>
+<pattern id="s5_hdeck" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+  <line x1="0" y1="0" x2="0" y2="6" stroke="#bbb" stroke-width="0.6"/>
+</pattern>
+<marker id="s5_arr" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+  <path d="M0,0 L8,3 L0,6 Z" fill="black"/>
+</marker>
+<marker id="s5_arrl" markerWidth="8" markerHeight="6" refX="1" refY="3" orient="auto">
+  <path d="M8,0 L0,3 L8,6 Z" fill="black"/>
+</marker>
+</defs>
+<rect fill="white"/>
+<rect x="15" y="15" fill="none" stroke="black" stroke-width="2"/>
+<text x="816" y="48" font-size="16" font-family="Arial" font-weight="bold" text-anchor="middle">SHEET 5 — GENERAL NOTES &amp; MATERIAL SCHEDULE</text><text x="30" y="75" font-size="10" font-family="Arial" font-weight="bold">GENERAL NOTES — IRC 2021 / LOUISVILLE METRO AMENDMENTS</text><text x="30" y="90" font-size="8.5" font-family="Arial" font-weight="normal">1. ALL WORK SHALL COMPLY WITH IRC 2021 AND LOUISVILLE METRO CODE. CONTRACTOR SHALL OBTAIN ALL</text><text x="30" y="103" font-size="8.5" font-family="Arial" font-weight="normal">   REQUIRED PERMITS AND INSPECTIONS PRIOR TO AND DURING CONSTRUCTION.</text><text x="30" y="116" font-size="8.5" font-family="Arial" font-weight="normal">2. ALL LUMBER IN CONTACT WITH CONCRETE/EARTH: #2 PT SYP .40 RETENTION, INCISED.</text><text x="30" y="129" font-size="8.5" font-family="Arial" font-weight="normal">3. ALL STRUCTURAL LUMBER: #2 PT SYP UNLESS NOTED. IDENTIFY GRADE STAMPS AT INSPECTION.</text><text x="30" y="142" font-size="8.5" font-family="Arial" font-weight="normal">4. FROST DEPTH: 24" MINIMUM. ALL FOOTINGS BELOW FROST LINE. (LOUISVILLE/JEFFERSON CO. KY)</text><text x="30" y="155" font-size="8.5" font-family="Arial" font-weight="normal">5. CONCRETE: 3000 PSI @ 28 DAYS, TUBE FORMS. (3) #4 REBAR EACH FOOTING.</text><text x="30" y="168" font-size="8.5" font-family="Arial" font-weight="normal">6. LEDGER: 2x8 PT SYP. ATTACH WITH 1/2"x3" LAG SCREWS @ 16" OC STAGGERED 2 ROWS.</text><text x="30" y="181" font-size="8.5" font-family="Arial" font-weight="normal">   INSTALL LEDGER FLASHING (ALUMINUM OR PVC) BEFORE LEDGER. NO LEDGER OVER STUCCO/EIFS.</text><text x="30" y="194" font-size="8.5" font-family="Arial" font-weight="normal">7. JOISTS: 2x8 PT SYP @ 16" OC. SIMPSON LUS28 JOIST HANGERS AT LEDGER AND BEAMS.</text><text x="30" y="207" font-size="8.5" font-family="Arial" font-weight="normal">8. DECK BOARDS: MOISTURESHIELD ELEVATE 1x6 ALPINE GRAY COMPOSITE. INSTALL PER MFGR.</text><text x="30" y="220" font-size="8.5" font-family="Arial" font-weight="normal">   BORDER: 42 LF CONTRASTING COMPOSITE. FASCIA: VISION SMOKE GRAY.</text><text x="30" y="233" font-size="8.5" font-family="Arial" font-weight="normal">9. GUARDRAIL: 42" HEIGHT REQUIRED (DECK >30" ABOVE GRADE — IRC R312).</text><text x="30" y="246" font-size="8.5" font-family="Arial" font-weight="normal">   MOISTURESHIELD DISCOVERY 1-3/8" COCKTAIL RAIL, GRAY. MAX 4" BALUSTER SPACING.</text><text x="30" y="259" font-size="8.5" font-family="Arial" font-weight="normal">10. STAIR: 4'-0" WIDE, 10 RISERS @ 7-13/16", 9 TREADS @ 10" COMPOSITE.</text><text x="30" y="272" font-size="8.5" font-family="Arial" font-weight="normal">    2x12 PT STRINGERS (2 EA.). MIN HEADROOM 6'-8".</text><text x="30" y="285" font-size="8.5" font-family="Arial" font-weight="normal">11. UNDER-DECK WATERPROOFING: SBS 2-PLY MODIFIED BITUMEN (300 SF / 3 SQ.).</text><text x="30" y="298" font-size="8.5" font-family="Arial" font-weight="normal">    MIN SLOPE 1/4"/FT TO DRAIN. ISO BOARD 2" RIGID INSULATION BELOW MEMBRANE.</text><text x="30" y="311" font-size="8.5" font-family="Arial" font-weight="normal">12. LATTICE SKIRT: MOISTURESHIELD FREE STYLE CLASSIC DIAMOND CLAY, 80 SF.</text><text x="30" y="324" font-size="8.5" font-family="Arial" font-weight="normal">    GALVANIZED ANIMAL MESH BARRIER BEHIND LATTICE.</text><text x="30" y="337" font-size="8.5" font-family="Arial" font-weight="normal">13. PERGOLA: 4x4x12 PT POSTS (5 EA.), SAME FOOTING SPEC AS DECK POSTS.</text><text x="30" y="350" font-size="8.5" font-family="Arial" font-weight="normal">14. FASTENERS: HOT-DIPPED GALVANIZED OR STAINLESS STEEL THROUGHOUT.</text><text x="30" y="363" font-size="8.5" font-family="Arial" font-weight="normal">15. ALL DIMENSIONS FIELD VERIFIED BEFORE FRAMING. NOTIFY ENGINEER OF DISCREPANCIES.</text><text x="30" y="376" font-size="8.5" font-family="Arial" font-weight="normal">16. ELECTRICAL NOT IN SCOPE OF THIS PERMIT. SEE ELECTRICAL PERMIT IF REQUIRED.</text><text x="30" y="389" font-size="8.5" font-family="Arial" font-weight="normal">17. CALL 811 (UNDERGROUND UTILITY LOCATE) BEFORE EXCAVATION. MIN 48 HRS PRIOR.</text><text x="30" y="402" font-size="8.5" font-family="Arial" font-weight="normal">18. SEISMIC DESIGN CATEGORY C, WIND 115 MPH (EXP. B), GROUND SNOW 15 PSF.</text><text x="30" y="415" font-size="8.5" font-family="Arial" font-weight="normal">    PER IRC TABLE R301.2(1) — LOUISVILLE/JEFFERSON COUNTY KY.</text><text x="30" y="428" font-size="8.5" font-family="Arial" font-weight="normal">19. DEMO: REMOVE EXISTING DECK BOARDS AND MATERIALS PER LOCAL DISPOSAL REQS.</text><text x="30" y="441" font-size="8.5" font-family="Arial" font-weight="normal">20. OWNER / CONTRACTOR TO VERIFY ALL PRODUCT COLORS AND SELECTIONS PRIOR TO ORDER.</text><text x="30" y="474" font-size="11" font-family="Arial" font-weight="bold">MATERIAL SCHEDULE</text><rect x="30" y="490" fill="white" stroke="black" stroke-width="1.2"/><line x1="90" y1="490" x2="90" y2="862" stroke="black" stroke-width="0.8"/><line x1="230" y1="490" x2="230" y2="862" stroke="black" stroke-width="0.8"/><line x1="550" y1="490" x2="550" y2="862" stroke="black" stroke-width="0.8"/><line x1="630" y1="490" x2="630" y2="862" stroke="black" stroke-width="0.8"/><line x1="30" y1="490" x2="690" y2="490" stroke="black" stroke-width="0.6"/><rect x="30" y="490" fill="#ccc"/><text x="34" y="502" font-size="8" font-family="Arial" font-weight="bold">MARK</text><text x="94" y="502" font-size="8" font-family="Arial" font-weight="bold">DESCRIPTION</text><text x="234" y="502" font-size="8" font-family="Arial" font-weight="bold">SPEC / PRODUCT</text><text x="554" y="502" font-size="8" font-family="Arial" font-weight="bold">QTY</text><text x="634" y="502" font-size="8" font-family="Arial" font-weight="bold">UNIT</text><line x1="30" y1="506" x2="690" y2="506" stroke="black" stroke-width="0.6"/><text x="34" y="518" font-size="8" font-family="Arial" font-weight="normal">S-1</text><text x="94" y="518" font-size="8" font-family="Arial" font-weight="normal">DECK JOISTS</text><text x="234" y="518" font-size="8" font-family="Arial" font-weight="normal">2x8 PT SYP #2 @ 16" OC</text><text x="554" y="518" font-size="8" font-family="Arial" font-weight="normal">13</text><text x="634" y="518" font-size="8" font-family="Arial" font-weight="normal">EA</text><line x1="30" y1="522" x2="690" y2="522" stroke="black" stroke-width="0.6"/><text x="34" y="534" font-size="8" font-family="Arial" font-weight="normal">S-2</text><text x="94" y="534" font-size="8" font-family="Arial" font-weight="normal">LEDGER</text><text x="234" y="534" font-size="8" font-family="Arial" font-weight="normal">2x8 PT SYP</text><text x="554" y="534" font-size="8" font-family="Arial" font-weight="normal">17</text><text x="634" y="534" font-size="8" font-family="Arial" font-weight="normal">LF</text><line x1="30" y1="538" x2="690" y2="538" stroke="black" stroke-width="0.6"/><text x="34" y="550" font-size="8" font-family="Arial" font-weight="normal">S-3</text><text x="94" y="550" font-size="8" font-family="Arial" font-weight="normal">SIDE BEAMS</text><text x="234" y="550" font-size="8" font-family="Arial" font-weight="normal">2-2x8 PT SYP</text><text x="554" y="550" font-size="8" font-family="Arial" font-weight="normal">2×17</text><text x="634" y="550" font-size="8" font-family="Arial" font-weight="normal">LF</text><line x1="30" y1="554" x2="690" y2="554" stroke="black" stroke-width="0.6"/><text x="34" y="566" font-size="8" font-family="Arial" font-weight="normal">S-4</text><text x="94" y="566" font-size="8" font-family="Arial" font-weight="normal">DECK POSTS</text><text x="234" y="566" font-size="8" font-family="Arial" font-weight="normal">4x4x12 PT SYP</text><text x="554" y="566" font-size="8" font-family="Arial" font-weight="normal">5</text><text x="634" y="566" font-size="8" font-family="Arial" font-weight="normal">EA</text><line x1="30" y1="570" x2="690" y2="570" stroke="black" stroke-width="0.6"/><text x="34" y="582" font-size="8" font-family="Arial" font-weight="normal">S-5</text><text x="94" y="582" font-size="8" font-family="Arial" font-weight="normal">PERGOLA POSTS</text><text x="234" y="582" font-size="8" font-family="Arial" font-weight="normal">4x4x12 PT SYP</text><text x="554" y="582" font-size="8" font-family="Arial" font-weight="normal">5</text><text x="634" y="582" font-size="8" font-family="Arial" font-weight="normal">EA</text><line x1="30" y1="586" x2="690" y2="586" stroke="black" stroke-width="0.6"/><text x="34" y="598" font-size="8" font-family="Arial" font-weight="normal">S-6</text><text x="94" y="598" font-size="8" font-family="Arial" font-weight="normal">JOIST HANGERS</text><text x="234" y="598" font-size="8" font-family="Arial" font-weight="normal">SIMPSON LUS28 HDG</text><text x="554" y="598" font-size="8" font-family="Arial" font-weight="normal">13</text><text x="634" y="598" font-size="8" font-family="Arial" font-weight="normal">EA</text><line x1="30" y1="602" x2="690" y2="602" stroke="black" stroke-width="0.6"/><text x="34" y="614" font-size="8" font-family="Arial" font-weight="normal">S-7</text><text x="94" y="614" font-size="8" font-family="Arial" font-weight="normal">POST BASES</text><text x="234" y="614" font-size="8" font-family="Arial" font-weight="normal">SIMPSON ABA44Z HDG</text><text x="554" y="614" font-size="8" font-family="Arial" font-weight="normal">10</text><text x="634" y="614" font-size="8" font-family="Arial" font-weight="normal">EA</text><line x1="30" y1="618" x2="690" y2="618" stroke="black" stroke-width="0.6"/><text x="34" y="630" font-size="8" font-family="Arial" font-weight="normal">S-8</text><text x="94" y="630" font-size="8" font-family="Arial" font-weight="normal">LAG SCREWS</text><text x="234" y="630" font-size="8" font-family="Arial" font-weight="normal">1/2"×3" HDG</text><text x="554" y="630" font-size="8" font-family="Arial" font-weight="normal">~26</text><text x="634" y="630" font-size="8" font-family="Arial" font-weight="normal">EA</text><line x1="30" y1="634" x2="690" y2="634" stroke="black" stroke-width="0.6"/><text x="34" y="646" font-size="8" font-family="Arial" font-weight="normal">S-9</text><text x="94" y="646" font-size="8" font-family="Arial" font-weight="normal">CONCRETE</text><text x="234" y="646" font-size="8" font-family="Arial" font-weight="normal">3000 PSI TUBE MIX</text><text x="554" y="646" font-size="8" font-family="Arial" font-weight="normal">11</text><text x="634" y="646" font-size="8" font-family="Arial" font-weight="normal">CY</text><line x1="30" y1="650" x2="690" y2="650" stroke="black" stroke-width="0.6"/><text x="34" y="662" font-size="8" font-family="Arial" font-weight="normal">D-1</text><text x="94" y="662" font-size="8" font-family="Arial" font-weight="normal">DECK BOARDS</text><text x="234" y="662" font-size="8" font-family="Arial" font-weight="normal">MS ELEVATE 1x6 ALPINE GRAY</text><text x="554" y="662" font-size="8" font-family="Arial" font-weight="normal">~240</text><text x="634" y="662" font-size="8" font-family="Arial" font-weight="normal">LF</text><line x1="30" y1="666" x2="690" y2="666" stroke="black" stroke-width="0.6"/><text x="34" y="678" font-size="8" font-family="Arial" font-weight="normal">D-2</text><text x="94" y="678" font-size="8" font-family="Arial" font-weight="normal">BORDER</text><text x="234" y="678" font-size="8" font-family="Arial" font-weight="normal">MS ELEVATE 1x6 CONTRAST</text><text x="554" y="678" font-size="8" font-family="Arial" font-weight="normal">42</text><text x="634" y="678" font-size="8" font-family="Arial" font-weight="normal">LF</text><line x1="30" y1="682" x2="690" y2="682" stroke="black" stroke-width="0.6"/><text x="34" y="694" font-size="8" font-family="Arial" font-weight="normal">D-3</text><text x="94" y="694" font-size="8" font-family="Arial" font-weight="normal">FASCIA</text><text x="234" y="694" font-size="8" font-family="Arial" font-weight="normal">MS VISION SMOKE GRAY</text><text x="554" y="694" font-size="8" font-family="Arial" font-weight="normal">38</text><text x="634" y="694" font-size="8" font-family="Arial" font-weight="normal">LF</text><line x1="30" y1="698" x2="690" y2="698" stroke="black" stroke-width="0.6"/><text x="34" y="710" font-size="8" font-family="Arial" font-weight="normal">R-1</text><text x="94" y="710" font-size="8" font-family="Arial" font-weight="normal">GUARDRAIL</text><text x="234" y="710" font-size="8" font-family="Arial" font-weight="normal">MS DISCOVERY 1-3/8" COCKTAIL</text><text x="554" y="710" font-size="8" font-family="Arial" font-weight="normal">50</text><text x="634" y="710" font-size="8" font-family="Arial" font-weight="normal">LF</text><line x1="30" y1="714" x2="690" y2="714" stroke="black" stroke-width="0.6"/><text x="34" y="726" font-size="8" font-family="Arial" font-weight="normal">R-2</text><text x="94" y="726" font-size="8" font-family="Arial" font-weight="normal">BALUSTERS</text><text x="234" y="726" font-size="8" font-family="Arial" font-weight="normal">MS DISCOVERY COMPOSITE</text><text x="554" y="726" font-size="8" font-family="Arial" font-weight="normal">~95</text><text x="634" y="726" font-size="8" font-family="Arial" font-weight="normal">EA</text><line x1="30" y1="730" x2="690" y2="730" stroke="black" stroke-width="0.6"/><text x="34" y="742" font-size="8" font-family="Arial" font-weight="normal">R-3</text><text x="94" y="742" font-size="8" font-family="Arial" font-weight="normal">RAIL POSTS</text><text x="234" y="742" font-size="8" font-family="Arial" font-weight="normal">4x4 COMPOSITE SLEEVED</text><text x="554" y="742" font-size="8" font-family="Arial" font-weight="normal">8</text><text x="634" y="742" font-size="8" font-family="Arial" font-weight="normal">EA</text><line x1="30" y1="746" x2="690" y2="746" stroke="black" stroke-width="0.6"/><text x="34" y="758" font-size="8" font-family="Arial" font-weight="normal">U-1</text><text x="94" y="758" font-size="8" font-family="Arial" font-weight="normal">SBS MEMBRANE</text><text x="234" y="758" font-size="8" font-family="Arial" font-weight="normal">SBS 2-PLY MOD BITUMEN</text><text x="554" y="758" font-size="8" font-family="Arial" font-weight="normal">3</text><text x="634" y="758" font-size="8" font-family="Arial" font-weight="normal">SQ</text><line x1="30" y1="762" x2="690" y2="762" stroke="black" stroke-width="0.6"/><text x="34" y="774" font-size="8" font-family="Arial" font-weight="normal">U-2</text><text x="94" y="774" font-size="8" font-family="Arial" font-weight="normal">ISO BOARD</text><text x="234" y="774" font-size="8" font-family="Arial" font-weight="normal">2" RIGID INSULATION</text><text x="554" y="774" font-size="8" font-family="Arial" font-weight="normal">3</text><text x="634" y="774" font-size="8" font-family="Arial" font-weight="normal">SQ</text><line x1="30" y1="778" x2="690" y2="778" stroke="black" stroke-width="0.6"/><text x="34" y="790" font-size="8" font-family="Arial" font-weight="normal">U-3</text><text x="94" y="790" font-size="8" font-family="Arial" font-weight="normal">LATTICE</text><text x="234" y="790" font-size="8" font-family="Arial" font-weight="normal">MS FREE STYLE CLASSIC DIAMOND CLAY</text><text x="554" y="790" font-size="8" font-family="Arial" font-weight="normal">80</text><text x="634" y="790" font-size="8" font-family="Arial" font-weight="normal">SF</text><line x1="30" y1="794" x2="690" y2="794" stroke="black" stroke-width="0.6"/><text x="34" y="806" font-size="8" font-family="Arial" font-weight="normal">U-4</text><text x="94" y="806" font-size="8" font-family="Arial" font-weight="normal">MESH BARRIER</text><text x="234" y="806" font-size="8" font-family="Arial" font-weight="normal">GALV. ANIMAL MESH 1/4"</text><text x="554" y="806" font-size="8" font-family="Arial" font-weight="normal">80</text><text x="634" y="806" font-size="8" font-family="Arial" font-weight="normal">SF</text><line x1="30" y1="810" x2="690" y2="810" stroke="black" stroke-width="0.6"/><text x="34" y="822" font-size="8" font-family="Arial" font-weight="normal">T-1</text><text x="94" y="822" font-size="8" font-family="Arial" font-weight="normal">STAIR STRINGERS</text><text x="234" y="822" font-size="8" font-family="Arial" font-weight="normal">2x12 PT SYP</text><text x="554" y="822" font-size="8" font-family="Arial" font-weight="normal">2</text><text x="634" y="822" font-size="8" font-family="Arial" font-weight="normal">EA</text><line x1="30" y1="826" x2="690" y2="826" stroke="black" stroke-width="0.6"/><text x="34" y="838" font-size="8" font-family="Arial" font-weight="normal">T-2</text><text x="94" y="838" font-size="8" font-family="Arial" font-weight="normal">STAIR TREADS</text><text x="234" y="838" font-size="8" font-family="Arial" font-weight="normal">MS COMPOSITE 1" 48"</text><text x="554" y="838" font-size="8" font-family="Arial" font-weight="normal">9</text><text x="634" y="838" font-size="8" font-family="Arial" font-weight="normal">EA</text><line x1="30" y1="842" x2="690" y2="842" stroke="black" stroke-width="0.6"/><text x="34" y="854" font-size="8" font-family="Arial" font-weight="normal">T-3</text><text x="94" y="854" font-size="8" font-family="Arial" font-weight="normal">LANDING PAD</text><text x="234" y="854" font-size="8" font-family="Arial" font-weight="normal">18" DIA CONC. TUBE</text><text x="554" y="854" font-size="8" font-family="Arial" font-weight="normal">1</text><text x="634" y="854" font-size="8" font-family="Arial" font-weight="normal">EA</text>
+<rect x="15" y="976" fill="white" stroke="black" stroke-width="1.5"/>
+<line x1="15" y1="1009" x2="1617" y2="1009" stroke="black" stroke-width="1"/>
+<line x1="500" y1="976" x2="500" y2="1042" stroke="black" stroke-width="1"/>
+<line x1="950" y1="976" x2="950" y2="1042" stroke="black" stroke-width="1"/>
+<line x1="1250" y1="976" x2="1250" y2="1042" stroke="black" stroke-width="1"/>
+<text x="25" y="996" font-size="10" font-family="Arial" font-weight="bold">MASON HOWARD DECK — 1225 BATES CT, LOUISVILLE KY 40204</text>
+<text x="25" y="1031" font-size="9" font-family="Arial">CONTRACTOR: R&amp;B ROOFING &amp; REMODELING | JAMES BERRY</text>
+<text x="510" y="996" font-size="10" font-family="Arial">CODE: IRC 2021 | LOUISVILLE METRO</text>
+<text x="510" y="1031" font-size="9" font-family="Arial">SCALE: 1/4"=1'-0"   DATE: 2026</text>
+<text x="960" y="996" font-size="10" font-family="Arial">FROST: 24" | WIND: 115 MPH | SNOW: 15 PSF</text>
+<text x="960" y="1031" font-size="9" font-family="Arial">SEISMIC: CAT C | EXPOSURE: B</text>
+<text x="1260" y="1001" font-size="18" font-family="Arial" font-weight="bold">SH 5/5</text>
+<text x="1260" y="1031" font-size="9" font-family="Arial">NOTES &amp; SCHEDULE</text>
+</svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+function getZoomState(btn) {
+  const wrapper = btn.closest('.sheet').querySelector('.zoom-inner');
+  const label = btn.closest('.zoom-bar').querySelector('.zoom-label');
+  return { wrapper, label };
+}
+function zoom(btn, dir) {
+  const { wrapper, label } = getZoomState(btn);
+  const cur = parseFloat(wrapper.dataset.zoom || 1);
+  const next = Math.max(0.25, Math.min(4, cur + dir * 0.25));
+  wrapper.dataset.zoom = next;
+  wrapper.style.transform = `scale(${next})`;
+  wrapper.parentElement.style.height = (wrapper.scrollHeight * next) + 'px';
+  label.textContent = Math.round(next * 100) + '%';
+}
+function zoomReset(btn) {
+  const { wrapper, label } = getZoomState(btn);
+  wrapper.dataset.zoom = 1;
+  wrapper.style.transform = 'scale(1)';
+  wrapper.parentElement.style.height = '';
+  label.textContent = '100%';
+}
+</script>
+</body>
+</html>
