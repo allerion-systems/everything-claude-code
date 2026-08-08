@@ -142,6 +142,15 @@
         "CONFLUENCE_API_TOKEN": "YOUR_CONFLUENCE_TOKEN_HERE"
       },
       "description": "Confluence Cloud integration — search pages, retrieve content, explore spaces"
+    },
+    "google-building-measure": {
+      "command": "node",
+      "args": ["mcp-servers/google-building-measure/src/index.js"],
+      "env": {
+        "GOOGLE_MAPS_API_KEY": "YOUR_GOOGLE_MAPS_KEY_HERE",
+        "ANTHROPIC_API_KEY": "YOUR_ANTHROPIC_KEY_HERE"
+      },
+      "description": "Building takeoff from an address — roof area, gutter lineal feet, footprint, wall sq ft, and window/door counts. Uses Google Solar API + Static Maps + Street View + Claude vision. See mcp-servers/google-building-measure/README.md."
     }
   },
   "_comments": {

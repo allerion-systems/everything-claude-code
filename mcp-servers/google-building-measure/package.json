@@ -1,0 +1,22 @@
+{
+  "name": "google-building-measure-mcp",
+  "version": "0.2.0",
+  "description": "MCP server that generates Roofr-style building takeoffs from any address: roof sqft, facet count, lineal feet per edge type (eaves/ridges/hips/valleys/rakes/flashings), pitch breakdown, and full material calculator.",
+  "type": "module",
+  "main": "src/index.js",
+  "bin": {
+    "google-building-measure-mcp": "src/index.js"
+  },
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.40.0",
+    "@modelcontextprotocol/sdk": "^1.0.4"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "MIT"
+}
