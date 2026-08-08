@@ -128,6 +128,11 @@
       "url": "http://localhost:18801/mcp",
       "description": "Multi-agent orchestration — dispatch parallel Claude Code agents in isolated worktrees. Plan projects, auto-chain missions, read structured reports. Repo: https://github.com/LEC-AI/claude-devfleet"
     },
+    "hermes": {
+      "command": "hermes",
+      "args": ["mcp", "serve"],
+      "description": "Hermes Agent (Nous Research) — autonomous agent with persistent memory, learned skills, and messaging-platform gateways (Telegram, Discord, Slack, WhatsApp, Signal, email). Stdio MCP server; requires `hermes` on PATH. Install: curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash. See skills/hermes-agent."
+    },
     "token-optimizer": {
       "command": "npx",
       "args": ["-y", "token-optimizer-mcp"],
