@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Allerion Systems — AI Consultancy for Louisville's Boldest Companies</title>
+    <meta
+      name="description"
+      content="Allerion Systems is Louisville's AI-native consultancy. We design AI strategy, build custom enterprise systems, and ship SaaS and automation that compounds. Book a strategy call."
+    />
+    <meta property="og:title" content="Allerion Systems — AI Consultancy" />
+    <meta
+      property="og:description"
+      content="AI strategy, custom enterprise systems, and SaaS — built for healthcare, logistics, manufacturing, and finance. Louisville's AI-native boutique."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://allerion.io/" />
+    <link rel="canonical" href="https://allerion.io/" />
+    <style>
+      :root {
+        --bg: #0a0f1a;
+        --bg2: #0e1422;
+        --text: #eef2f8;
+        --muted: #9aa6bb;
+        --muted2: #6f7c93;
+        --line: rgba(255, 255, 255, 0.09);
+        --line2: rgba(255, 255, 255, 0.16);
+        --panel: rgba(255, 255, 255, 0.035);
+        --max: 1160px;
+      }
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      html { scroll-behavior: smooth; }
+      body {
+        font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(1200px 620px at 50% -12%, #18233a 0%, transparent 60%),
+          radial-gradient(900px 520px at 88% 8%, #131c30 0%, transparent 55%),
+          var(--bg);
+        line-height: 1.65;
+        -webkit-font-smoothing: antialiased;
+      }
+      a { color: inherit; text-decoration: none; }
+      .wrap { max-width: var(--max); margin: 0 auto; padding: 0 24px; }
+      .eyebrow {
+        display: inline-block; font-size: 0.7rem; letter-spacing: 0.3em;
+        text-transform: uppercase; color: var(--muted2);
+        border: 1px solid var(--line); border-radius: 999px; padding: 7px 15px;
+      }
+
+      /* Nav */
+      .nav { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(12px);
+        background: rgba(10, 15, 26, 0.62); border-bottom: 1px solid var(--line); }
+      .nav__in { display: flex; align-items: center; justify-content: space-between; height: 74px; }
+      .brand { display: inline-flex; align-items: center; gap: 12px; }
+      .brand b { letter-spacing: 0.16em; font-weight: 700; font-size: 1.02rem; }
+      .brand small { color: var(--muted); font-weight: 400; }
+      .navlinks { display: flex; align-items: center; gap: 26px; }
+      .navlinks a { color: var(--muted); font-size: 0.9rem; transition: color .2s; }
+      .navlinks a:hover { color: var(--text); }
+      .btn { display: inline-flex; align-items: center; gap: 8px; padding: 13px 22px;
+        border-radius: 999px; font-weight: 600; font-size: 0.93rem; cursor: pointer;
+        border: 1px solid transparent; transition: transform .15s, background .2s, border-color .2s; }
+      .btn:hover { transform: translateY(-1px); }
+      .btn--p { background: linear-gradient(180deg, #fff, #dde4f0); color: #0a0f1a; }
+      .btn--g { border-color: var(--line2); color: var(--text); }
+      .btn--g:hover { background: rgba(255,255,255,.05); }
+      .btn--sm { padding: 10px 16px; }
+      @media (max-width: 760px) { .navlinks a:not(.btn) { display: none; } }
+
+      /* Hero */
+      .hero { text-align: center; padding: 104px 0 72px; }
+      .hero h1 { font-size: clamp(2.5rem, 6.2vw, 4.4rem); font-weight: 700;
+        letter-spacing: -0.025em; line-height: 1.04; margin: 26px auto 20px; max-width: 980px; }
+      .hero h1 .sheen { background: linear-gradient(180deg, #fff, #aeb9cc);
+        -webkit-background-clip: text; background-clip: text; color: transparent; }
+      .hero p.sub { max-width: 680px; margin: 0 auto 34px; color: var(--muted); font-size: 1.16rem; }
+      .hero__cta { display: flex; gap: 13px; justify-content: center; flex-wrap: wrap; }
+      .hero__note { margin-top: 18px; color: var(--muted2); font-size: 0.82rem; }
+
+      /* Stat bar */
+      .stats { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+        background: var(--bg2); }
+      .stats__in { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; }
+      .stat { padding: 34px 18px; text-align: center; border-right: 1px solid var(--line); }
+      .stat:last-child { border-right: none; }
+      .stat b { display: block; font-size: 1.9rem; letter-spacing: -0.02em; }
+      .stat span { color: var(--muted); font-size: 0.82rem; letter-spacing: 0.04em; }
+      @media (max-width: 760px) { .stats__in { grid-template-columns: repeat(2, 1fr); }
+        .stat:nth-child(2) { border-right: none; } .stat:nth-child(1), .stat:nth-child(2) { border-bottom: 1px solid var(--line); } }
+
+      /* Section scaffold */
+      section { padding: 88px 0; }
+      .head { text-align: center; margin-bottom: 54px; }
+      .head h2 { font-size: clamp(1.9rem, 4vw, 2.7rem); letter-spacing: -0.015em; margin: 14px 0 12px; }
+      .head p { color: var(--muted); max-width: 600px; margin: 0 auto; }
+
+      /* Services */
+      .grid3 { display: grid; gap: 20px; grid-template-columns: repeat(2, 1fr); }
+      @media (max-width: 880px) { .grid3 { grid-template-columns: 1fr; } }
+      .card { background: var(--panel); border: 1px solid var(--line); border-radius: 16px;
+        padding: 32px; transition: transform .2s, border-color .2s; }
+      .card:hover { transform: translateY(-3px); border-color: var(--line2); }
+      .card .ic { width: 46px; height: 46px; display: grid; place-items: center; border-radius: 12px;
+        background: rgba(255,255,255,.06); border: 1px solid var(--line); font-size: 1.25rem; margin-bottom: 18px; }
+      .card h3 { font-size: 1.25rem; margin-bottom: 9px; }
+      .card p { color: var(--muted); font-size: 0.96rem; }
+      .card ul { margin: 14px 0 0 0; list-style: none; }
+      .card li { color: var(--muted); font-size: 0.9rem; padding-left: 20px; position: relative; margin: 6px 0; }
+      .card li::before { content: "›"; position: absolute; left: 4px; color: #aeb9cc; }
+
+      /* Industries */
+      .inds { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+      @media (max-width: 880px) { .inds { grid-template-columns: repeat(2, 1fr); } }
+      .ind { border: 1px solid var(--line); border-radius: 14px; padding: 24px; background: var(--panel); }
+      .ind b { display: block; margin-bottom: 6px; }
+      .ind span { color: var(--muted); font-size: 0.88rem; }
+
+      /* Process */
+      .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+      @media (max-width: 880px) { .steps { grid-template-columns: 1fr; } }
+      .step { border-left: 2px solid var(--line); padding: 4px 0 4px 20px; }
+      .step .n { font-size: 0.78rem; letter-spacing: 0.2em; color: var(--muted2); }
+      .step h4 { margin: 6px 0; font-size: 1.1rem; }
+      .step p { color: var(--muted); font-size: 0.92rem; }
+
+      /* Pricing */
+      .tiers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; align-items: stretch; }
+      @media (max-width: 880px) { .tiers { grid-template-columns: 1fr; } }
+      .tier { background: var(--panel); border: 1px solid var(--line); border-radius: 18px;
+        padding: 32px; display: flex; flex-direction: column; }
+      .tier.feat { border-color: var(--line2); background: rgba(255,255,255,.06); position: relative; }
+      .tier.feat::after { content: "MOST POPULAR"; position: absolute; top: 18px; right: 18px;
+        font-size: 0.6rem; letter-spacing: 0.18em; color: #0a0f1a; background: #cdd7e8;
+        padding: 4px 9px; border-radius: 999px; font-weight: 700; }
+      .tier h3 { font-size: 1.15rem; }
+      .tier .price { font-size: 2.1rem; font-weight: 700; letter-spacing: -0.02em; margin: 12px 0 4px; }
+      .tier .price small { font-size: 0.9rem; color: var(--muted); font-weight: 400; }
+      .tier .desc { color: var(--muted); font-size: 0.92rem; min-height: 44px; }
+      .tier ul { list-style: none; margin: 18px 0; flex: 1; }
+      .tier li { color: var(--muted); font-size: 0.9rem; padding-left: 22px; position: relative; margin: 9px 0; }
+      .tier li::before { content: "✓"; position: absolute; left: 0; color: #7ee0a8; }
+
+      /* CTA */
+      .cta { background: linear-gradient(180deg, #0e1422, #0a0f1a); border: 1px solid var(--line);
+        border-radius: 22px; padding: 56px 40px; text-align: center; }
+      .cta h2 { font-size: clamp(1.8rem, 4vw, 2.6rem); letter-spacing: -0.015em; margin-bottom: 12px; }
+      .cta p { color: var(--muted); max-width: 540px; margin: 0 auto 28px; }
+
+      /* Footer */
+      .foot { border-top: 1px solid var(--line); padding: 44px 0; margin-top: 30px; }
+      .foot__in { display: flex; justify-content: space-between; gap: 18px; flex-wrap: wrap; align-items: center; }
+      .foot a { color: var(--muted); font-size: 0.86rem; }
+      .foot a:hover { color: var(--text); }
+      .foot small { color: var(--muted2); }
+
+      .mark { width: 38px; height: 38px; }
+    </style>
+  </head>
+  <body>
+    <!-- NAV -->
+    <header class="nav">
+      <div class="wrap nav__in">
+        <a class="brand" href="#top">
+          <svg class="mark" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M50 10 L18 86 L31 86 L50 40 Z" fill="#e7edf6" />
+            <path d="M50 10 L82 86 L69 86 L50 40 Z" fill="#e7edf6" />
+            <rect x="33" y="70" width="34" height="9" rx="1.5" fill="#e7edf6" />
+          </svg>
+          <b>ALLERION <small>SYSTEMS</small></b>
+        </a>
+        <nav class="navlinks">
+          <a href="#services">Services</a>
+          <a href="#industries">Industries</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#contact" class="btn btn--p btn--sm">Book a strategy call</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- HERO -->
+    <a id="top"></a>
+    <section class="hero">
+      <div class="wrap">
+        <span class="eyebrow">Louisville's AI-native consultancy</span>
+        <h1>We turn AI into <span class="sheen">enterprise systems</span> that compound.</h1>
+        <p class="sub">
+          Allerion Systems builds the AI strategy, custom software, and automation that move
+          real numbers — for healthcare, logistics, manufacturing, and finance teams across
+          Kentucky and beyond. Less hype. Shipped systems.
+        </p>
+        <div class="hero__cta">
+          <a class="btn btn--p" href="#contact">Book a strategy call</a>
+          <a class="btn btn--g" href="#services">See what we build</a>
+        </div>
+        <p class="hero__note">Trusted approach for the same sectors powering Humana &amp; UPS Worldport — applied to companies your size.</p>
+      </div>
+    </section>
+
+    <!-- STATS -->
+    <div class="stats">
+      <div class="wrap stats__in">
+        <div class="stat"><b>4–6 wks</b><span>strategy to first shipped system</span></div>
+        <div class="stat"><b>10×</b><span>faster delivery with AI-native builds</span></div>
+        <div class="stat"><b>100%</b><span>senior-built — no offshore handoffs</span></div>
+        <div class="stat"><b>24/7</b><span>automations that run while you sleep</span></div>
+      </div>
+    </div>
+
+    <!-- SERVICES -->
+    <section id="services">
+      <div class="wrap">
+        <div class="head">
+          <span class="eyebrow">What we do</span>
+          <h2>Four ways we put AI to work</h2>
+          <p>From a 2-week strategy sprint to a production enterprise platform — one senior team, end to end.</p>
+        </div>
+        <div class="grid3">
+          <div class="card">
+            <div class="ic">◆</div>
+            <h3>AI Strategy &amp; Roadmap</h3>
+            <p>We find the single highest-ROI place AI belongs in your business — then hand you a costed, sequenced roadmap your team can actually execute.</p>
+            <ul>
+              <li>Opportunity &amp; ROI assessment</li>
+              <li>Build-vs-buy &amp; vendor selection</li>
+              <li>Data readiness &amp; risk review</li>
+            </ul>
+          </div>
+          <div class="card">
+            <div class="ic">⬡</div>
+            <h3>Custom Enterprise Systems</h3>
+            <p>Production software built around your operations — integrated with the tools you already run, owned entirely by you.</p>
+            <ul>
+              <li>Internal platforms &amp; dashboards</li>
+              <li>ERP / EHR / WMS integrations</li>
+              <li>Secure, US-hosted, compliant</li>
+            </ul>
+          </div>
+          <div class="card">
+            <div class="ic">▲</div>
+            <h3>SaaS Product Development</h3>
+            <p>Have a product idea? We design, build, and launch your SaaS — from first prototype to billing, with Stripe wired in from day one.</p>
+            <ul>
+              <li>MVP in weeks, not quarters</li>
+              <li>Subscription billing &amp; payments</li>
+              <li>Built to scale to your first 1,000 users</li>
+            </ul>
+          </div>
+          <div class="card">
+            <div class="ic">⚡</div>
+            <h3>AI Automation &amp; Agents</h3>
+            <p>Custom agents, MCP servers, and workflow automation that take repetitive work off your team — connected to your real systems.</p>
+            <ul>
+              <li>Document &amp; intake automation</li>
+              <li>Custom AI agents &amp; copilots</li>
+              <li>MCP servers for your tools</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- INDUSTRIES -->
+    <section id="industries">
+      <div class="wrap">
+        <div class="head">
+          <span class="eyebrow">Built for Louisville's economy</span>
+          <h2>Sectors we know cold</h2>
+          <p>The industries that drive this region are the ones where AI pays back fastest. We speak their language.</p>
+        </div>
+        <div class="inds">
+          <div class="ind"><b>Healthcare</b><span>Intake, prior-auth, and clinical-ops automation built for HIPAA realities.</span></div>
+          <div class="ind"><b>Logistics</b><span>Routing, forecasting, and exception handling for high-volume operations.</span></div>
+          <div class="ind"><b>Manufacturing</b><span>Predictive maintenance, quality, and document-heavy workflow automation.</span></div>
+          <div class="ind"><b>Finance &amp; Pro Services</b><span>Underwriting support, reporting, and back-office copilots.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROCESS -->
+    <section>
+      <div class="wrap">
+        <div class="head">
+          <span class="eyebrow">How we work</span>
+          <h2>From idea to shipped — in weeks</h2>
+        </div>
+        <div class="steps">
+          <div class="step"><span class="n">01 · DIAGNOSE</span><h4>Find the constraint</h4><p>We pinpoint the one workflow where AI moves the most money, fastest.</p></div>
+          <div class="step"><span class="n">02 · DESIGN</span><h4>Costed roadmap</h4><p>A clear plan with scope, timeline, and ROI — no surprises.</p></div>
+          <div class="step"><span class="n">03 · BUILD</span><h4>Ship the system</h4><p>Senior engineers build it AI-native and integrate it into your stack.</p></div>
+          <div class="step"><span class="n">04 · COMPOUND</span><h4>Measure &amp; expand</h4><p>We track the gain, then deploy the next system on top of it.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRICING -->
+    <section id="pricing">
+      <div class="wrap">
+        <div class="head">
+          <span class="eyebrow">Engagements</span>
+          <h2>Pick your starting point</h2>
+          <p>Transparent, productized entry points. Custom enterprise builds are scoped after your strategy call.</p>
+        </div>
+        <div class="tiers">
+          <div class="tier">
+            <h3>Strategy Sprint</h3>
+            <div class="price">$4,500<small> one-time</small></div>
+            <div class="desc">A 2-week deep dive that ends with a costed AI roadmap you own.</div>
+            <ul>
+              <li>Opportunity &amp; ROI assessment</li>
+              <li>Prioritized, costed roadmap</li>
+              <li>Build-vs-buy recommendations</li>
+              <li>90-minute executive readout</li>
+              <li>Credited toward any build</li>
+            </ul>
+            <a class="btn btn--g" href="#contact">Start here</a>
+          </div>
+          <div class="tier feat">
+            <h3>Fractional AI Team</h3>
+            <div class="price">$9,500<small> / month</small></div>
+            <div class="desc">Your embedded senior AI team — strategy plus continuous shipping.</div>
+            <ul>
+              <li>Dedicated senior engineer + lead</li>
+              <li>Ship new systems every sprint</li>
+              <li>Automations, agents &amp; integrations</li>
+              <li>Priority Slack access</li>
+              <li>Month-to-month, cancel anytime</li>
+            </ul>
+            <a class="btn btn--p" href="#contact">Book a call</a>
+          </div>
+          <div class="tier">
+            <h3>Enterprise Build</h3>
+            <div class="price">Custom</div>
+            <div class="desc">A full custom platform or SaaS product, scoped to your operation.</div>
+            <ul>
+              <li>Dedicated delivery team</li>
+              <li>Custom enterprise system or SaaS</li>
+              <li>Deep integrations &amp; compliance</li>
+              <li>SLA &amp; ongoing support</li>
+              <li>Fixed-scope or retainer</li>
+            </ul>
+            <a class="btn btn--g" href="#contact">Talk to us</a>
+          </div>
+        </div>
+        <p style="text-align:center;color:var(--muted2);font-size:0.82rem;margin-top:22px;">
+          Indicative pricing to anchor the conversation — final scope is set on your strategy call.
+        </p>
+      </div>
+    </section>
+
+    <!-- CTA / CONTACT -->
+    <section id="contact">
+      <div class="wrap">
+        <div class="cta">
+          <span class="eyebrow">Let's build</span>
+          <h2>Find your highest-ROI AI move in 30 minutes.</h2>
+          <p>Tell us where you want AI to take your business. We'll show you exactly where it pays back first — no pitch, no jargon.</p>
+          <div class="hero__cta">
+            <a class="btn btn--p" href="mailto:support@allerionsystems.com?subject=AI%20Strategy%20Call%20%E2%80%94%20Allerion%20Systems">Email to book a call</a>
+            <a class="btn btn--g" href="#pricing">See engagements</a>
+          </div>
+          <p class="hero__note">support@allerionsystems.com · Louisville, Kentucky</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="foot">
+      <div class="wrap foot__in">
+        <a class="brand" href="#top">
+          <svg class="mark" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M50 10 L18 86 L31 86 L50 40 Z" fill="#e7edf6" />
+            <path d="M50 10 L82 86 L69 86 L50 40 Z" fill="#e7edf6" />
+            <rect x="33" y="70" width="34" height="9" rx="1.5" fill="#e7edf6" />
+          </svg>
+          <b>ALLERION <small>SYSTEMS</small></b>
+        </a>
+        <nav style="display:flex;gap:22px;flex-wrap:wrap;align-items:center;">
+          <a href="#services">Services</a>
+          <a href="#pricing">Pricing</a>
+          <a href="./privacy.html">Privacy Policy</a>
+          <a href="mailto:support@allerionsystems.com">Contact</a>
+        </nav>
+        <small>© 2026 ALLERION LLC · dba Allerion Systems</small>
+      </div>
+    </footer>
+  </body>
+</html>
