@@ -1,0 +1,73 @@
+{
+  "$comment": "Entity profiles for the govcon watcher. One entry per company that pursues federal work. Fill in uei/cage as registrations activate. setAsideEligible uses SAM set-aside codes: '' (unrestricted), SBA (total small business), SBP (partial SB), SDVOSBC/SDVOSBS (SDVOSB set-aside/sole-source), VSA/VSS (VOSB), 8A/8AN, WOSB/WOSBSS, EDWOSB/EDWOSBSS, HZC/HZS (HUBZone).",
+  "entities": [
+    {
+      "id": "allerion-tech",
+      "name": "Allerion Technologies LLC",
+      "uei": "",
+      "cage": "",
+      "samStatus": "registration in progress",
+      "socioeconomic": ["small-business"],
+      "setAsideEligible": ["", "SBA", "SBP"],
+      "preferSetAsides": ["SBA"],
+      "naics": ["541511", "541512", "541519", "541690", "518210"],
+      "keywords": [
+        "software development",
+        "artificial intelligence",
+        "data analytics",
+        "IT support services",
+        "laptops workstations",
+        "servers storage",
+        "network equipment",
+        "cloud migration"
+      ],
+      "exclude": ["janitorial", "office space", "demolition"],
+      "notes": "Confirm exact IRS legal name before quoting. Product resale is in scope: on small-business set-asides for products the nonmanufacturer rule applies (supply a US small manufacturer's product or a waived class)."
+    },
+    {
+      "id": "allerion-llc",
+      "name": "Allerion LLC",
+      "uei": "",
+      "cage": "",
+      "samStatus": "registration in progress",
+      "socioeconomic": ["small-business"],
+      "setAsideEligible": ["", "SBA", "SBP"],
+      "preferSetAsides": ["SBA"],
+      "naics": ["561730", "238910", "115310", "113310", "237990"],
+      "keywords": [
+        "land clearing",
+        "grounds maintenance",
+        "mowing",
+        "brush removal",
+        "forestry mulching",
+        "fencing installation",
+        "erosion control",
+        "right-of-way clearing",
+        "grazing lease",
+        "timber"
+      ],
+      "exclude": [],
+      "notes": "Land-focused entity. PLACEHOLDER NAICS/keywords — tune to the actual acreage, equipment, and services offered."
+    },
+    {
+      "id": "hac",
+      "name": "HAC (Wills)",
+      "uei": "",
+      "cage": "",
+      "samStatus": "unknown",
+      "socioeconomic": ["small-business", "sdvosb"],
+      "setAsideEligible": ["", "SBA", "SBP", "SDVOSBC", "SDVOSBS", "VSA", "VSS"],
+      "preferSetAsides": ["SDVOSBC", "SDVOSBS", "VSA", "VSS"],
+      "naics": ["236220", "238160", "238220", "561210"],
+      "keywords": [
+        "SDVOSB",
+        "facility maintenance",
+        "renovation",
+        "building repair",
+        "construction services"
+      ],
+      "exclude": [],
+      "notes": "PLACEHOLDER: fill in full legal name, UEI/CAGE, and real capabilities. SDVOSB set-asides require current SBA VetCert certification — verify before bidding SDVOSBC/SDVOSBS work."
+    }
+  ]
+}

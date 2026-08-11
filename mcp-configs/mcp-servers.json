@@ -2,7 +2,10 @@
   "mcpServers": {
     "github": {
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-github"
+      ],
       "env": {
         "GITHUB_PERSONAL_ACCESS_TOKEN": "YOUR_GITHUB_PAT_HERE"
       },
@@ -10,7 +13,10 @@
     },
     "firecrawl": {
       "command": "npx",
-      "args": ["-y", "firecrawl-mcp"],
+      "args": [
+        "-y",
+        "firecrawl-mcp"
+      ],
       "env": {
         "FIRECRAWL_API_KEY": "YOUR_FIRECRAWL_KEY_HERE"
       },
@@ -18,17 +24,27 @@
     },
     "supabase": {
       "command": "npx",
-      "args": ["-y", "@supabase/mcp-server-supabase@latest", "--project-ref=YOUR_PROJECT_REF"],
+      "args": [
+        "-y",
+        "@supabase/mcp-server-supabase@latest",
+        "--project-ref=YOUR_PROJECT_REF"
+      ],
       "description": "Supabase database operations"
     },
     "memory": {
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-memory"],
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-memory"
+      ],
       "description": "Persistent memory across sessions"
     },
     "sequential-thinking": {
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"],
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sequential-thinking"
+      ],
       "description": "Chain-of-thought reasoning"
     },
     "vercel": {
@@ -38,7 +54,10 @@
     },
     "railway": {
       "command": "npx",
-      "args": ["-y", "@railway/mcp-server"],
+      "args": [
+        "-y",
+        "@railway/mcp-server"
+      ],
       "description": "Railway deployments"
     },
     "cloudflare-docs": {
@@ -68,40 +87,64 @@
     },
     "exa-web-search": {
       "command": "npx",
-      "args": ["-y", "exa-mcp-server"],
+      "args": [
+        "-y",
+        "exa-mcp-server"
+      ],
       "env": {
         "EXA_API_KEY": "YOUR_EXA_API_KEY_HERE"
       },
-      "description": "Web search, research, and data ingestion via Exa API — prefer task-scoped use for broader research after GitHub search and primary docs"
+      "description": "Web search, research, and data ingestion via Exa API \u2014 prefer task-scoped use for broader research after GitHub search and primary docs"
     },
     "context7": {
       "command": "npx",
-      "args": ["-y", "@upstash/context7-mcp@latest"],
-      "description": "Live documentation lookup — use with /docs command and documentation-lookup skill (resolve-library-id, query-docs)."
+      "args": [
+        "-y",
+        "@upstash/context7-mcp@latest"
+      ],
+      "description": "Live documentation lookup \u2014 use with /docs command and documentation-lookup skill (resolve-library-id, query-docs)."
     },
     "magic": {
       "command": "npx",
-      "args": ["-y", "@magicuidesign/mcp@latest"],
+      "args": [
+        "-y",
+        "@magicuidesign/mcp@latest"
+      ],
       "description": "Magic UI components"
     },
     "filesystem": {
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/path/to/your/projects"],
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/path/to/your/projects"
+      ],
       "description": "Filesystem operations (set your path)"
     },
     "insaits": {
       "command": "python3",
-      "args": ["-m", "insa_its.mcp_server"],
-      "description": "AI-to-AI security monitoring — anomaly detection, credential exposure, hallucination checks, forensic tracing. 23 anomaly types, OWASP MCP Top 10 coverage. 100% local. Install: pip install insa-its"
+      "args": [
+        "-m",
+        "insa_its.mcp_server"
+      ],
+      "description": "AI-to-AI security monitoring \u2014 anomaly detection, credential exposure, hallucination checks, forensic tracing. 23 anomaly types, OWASP MCP Top 10 coverage. 100% local. Install: pip install insa-its"
     },
     "playwright": {
       "command": "npx",
-      "args": ["-y", "@playwright/mcp", "--browser", "chrome"],
+      "args": [
+        "-y",
+        "@playwright/mcp",
+        "--browser",
+        "chrome"
+      ],
       "description": "Browser automation and testing via Playwright"
     },
     "fal-ai": {
       "command": "npx",
-      "args": ["-y", "fal-ai-mcp-server"],
+      "args": [
+        "-y",
+        "fal-ai-mcp-server"
+      ],
       "env": {
         "FAL_KEY": "YOUR_FAL_KEY_HERE"
       },
@@ -109,7 +152,10 @@
     },
     "browserbase": {
       "command": "npx",
-      "args": ["-y", "@browserbasehq/mcp-server-browserbase"],
+      "args": [
+        "-y",
+        "@browserbasehq/mcp-server-browserbase"
+      ],
       "env": {
         "BROWSERBASE_API_KEY": "YOUR_BROWSERBASE_KEY_HERE"
       },
@@ -126,22 +172,35 @@
     "devfleet": {
       "type": "http",
       "url": "http://localhost:18801/mcp",
-      "description": "Multi-agent orchestration — dispatch parallel Claude Code agents in isolated worktrees. Plan projects, auto-chain missions, read structured reports. Repo: https://github.com/LEC-AI/claude-devfleet"
+      "description": "Multi-agent orchestration \u2014 dispatch parallel Claude Code agents in isolated worktrees. Plan projects, auto-chain missions, read structured reports. Repo: https://github.com/LEC-AI/claude-devfleet"
     },
     "token-optimizer": {
       "command": "npx",
-      "args": ["-y", "token-optimizer-mcp"],
+      "args": [
+        "-y",
+        "token-optimizer-mcp"
+      ],
       "description": "Token optimization for 95%+ context reduction via content deduplication and compression"
     },
     "confluence": {
       "command": "npx",
-      "args": ["-y", "confluence-mcp-server"],
+      "args": [
+        "-y",
+        "confluence-mcp-server"
+      ],
       "env": {
         "CONFLUENCE_BASE_URL": "YOUR_CONFLUENCE_URL_HERE",
         "CONFLUENCE_EMAIL": "YOUR_EMAIL_HERE",
         "CONFLUENCE_API_TOKEN": "YOUR_CONFLUENCE_TOKEN_HERE"
       },
-      "description": "Confluence Cloud integration — search pages, retrieve content, explore spaces"
+      "description": "Confluence Cloud integration \u2014 search pages, retrieve content, explore spaces"
+    },
+    "sam-gov": {
+      "command": "node",
+      "args": [
+        "scripts/govcon/mcp-server.js"
+      ],
+      "description": "SAM.gov opportunity search, notice detail, and USAspending market comps (public APIs, no key)"
     }
   },
   "_comments": {
