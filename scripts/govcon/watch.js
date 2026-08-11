@@ -36,6 +36,8 @@ function priority(entity, detail) {
   let score = 0;
   if ((entity.preferSetAsides || []).includes(detail.setAside)) score += 3;
   if ((entity.naics || []).includes(detail.naics)) score += 2;
+  // Home-state boost: placeOfPerformance renders as "City, ST"
+  if ((entity.popStates || []).some((st) => (detail.placeOfPerformance || '').endsWith(`, ${st}`))) score += 2;
   const hay = `${detail.title} ${detail.description}`.toLowerCase();
   score += (entity.keywords || []).filter((k) => hay.includes(k.toLowerCase())).length;
   return score;

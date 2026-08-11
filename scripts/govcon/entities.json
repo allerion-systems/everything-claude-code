@@ -7,10 +7,24 @@
       "uei": "",
       "cage": "",
       "samStatus": "registration in progress",
-      "socioeconomic": ["small-business"],
-      "setAsideEligible": ["", "SBA", "SBP"],
-      "preferSetAsides": ["SBA"],
-      "naics": ["541511", "541512", "541519", "541690", "518210"],
+      "socioeconomic": [
+        "small-business"
+      ],
+      "setAsideEligible": [
+        "",
+        "SBA",
+        "SBP"
+      ],
+      "preferSetAsides": [
+        "SBA"
+      ],
+      "naics": [
+        "541511",
+        "541512",
+        "541519",
+        "541690",
+        "518210"
+      ],
       "keywords": [
         "software development",
         "artificial intelligence",
@@ -21,7 +35,11 @@
         "network equipment",
         "cloud migration"
       ],
-      "exclude": ["janitorial", "office space", "demolition"],
+      "exclude": [
+        "janitorial",
+        "office space",
+        "demolition"
+      ],
       "notes": "Confirm exact IRS legal name before quoting. Product resale is in scope: on small-business set-asides for products the nonmanufacturer rule applies (supply a US small manufacturer's product or a waived class)."
     },
     {
@@ -30,10 +48,24 @@
       "uei": "",
       "cage": "",
       "samStatus": "registration in progress",
-      "socioeconomic": ["small-business"],
-      "setAsideEligible": ["", "SBA", "SBP"],
-      "preferSetAsides": ["SBA"],
-      "naics": ["561730", "238910", "115310", "113310", "237990"],
+      "socioeconomic": [
+        "small-business"
+      ],
+      "setAsideEligible": [
+        "",
+        "SBA",
+        "SBP"
+      ],
+      "preferSetAsides": [
+        "SBA"
+      ],
+      "naics": [
+        "561730",
+        "238910",
+        "115310",
+        "113310",
+        "237990"
+      ],
       "keywords": [
         "land clearing",
         "grounds maintenance",
@@ -47,7 +79,10 @@
         "timber"
       ],
       "exclude": [],
-      "notes": "Land-focused entity. PLACEHOLDER NAICS/keywords — tune to the actual acreage, equipment, and services offered."
+      "notes": "Land-focused entity. PLACEHOLDER NAICS/keywords \u2014 tune to the actual acreage, equipment, and services offered.",
+      "popStates": [
+        "OK"
+      ]
     },
     {
       "id": "hac",
@@ -55,19 +90,46 @@
       "uei": "",
       "cage": "",
       "samStatus": "unknown",
-      "socioeconomic": ["small-business", "sdvosb"],
-      "setAsideEligible": ["", "SBA", "SBP", "SDVOSBC", "SDVOSBS", "VSA", "VSS"],
-      "preferSetAsides": ["SDVOSBC", "SDVOSBS", "VSA", "VSS"],
-      "naics": ["236220", "238160", "238220", "561210"],
+      "socioeconomic": [
+        "small-business",
+        "sdvosb"
+      ],
+      "setAsideEligible": [
+        "",
+        "SBA",
+        "SBP",
+        "SDVOSBC",
+        "SDVOSBS",
+        "VSA",
+        "VSS"
+      ],
+      "preferSetAsides": [
+        "SDVOSBC",
+        "SDVOSBS",
+        "VSA",
+        "VSS"
+      ],
+      "naics": [
+        "236220",
+        "238160",
+        "238220",
+        "561210"
+      ],
       "keywords": [
         "SDVOSB",
+        "building repair",
+        "construction services",
         "facility maintenance",
         "renovation",
-        "building repair",
-        "construction services"
+        "roof repair",
+        "roof replacement",
+        "roofing"
       ],
       "exclude": [],
-      "notes": "PLACEHOLDER: fill in full legal name, UEI/CAGE, and real capabilities. SDVOSB set-asides require current SBA VetCert certification — verify before bidding SDVOSBC/SDVOSBS work."
+      "notes": "PLACEHOLDER: fill in full legal name, UEI/CAGE, and real capabilities. SDVOSB set-asides require current SBA VetCert certification \u2014 verify before bidding SDVOSBC/SDVOSBS work.",
+      "popStates": [
+        "OK"
+      ]
     }
   ]
 }
