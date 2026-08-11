@@ -86,7 +86,7 @@
     },
     {
       "id": "hac",
-      "name": "HAC (Wills)",
+      "name": "HAC Contracting",
       "uei": "",
       "cage": "",
       "samStatus": "unknown",
@@ -126,10 +126,46 @@
         "roofing"
       ],
       "exclude": [],
-      "notes": "PLACEHOLDER: fill in full legal name, UEI/CAGE, and real capabilities. SDVOSB set-asides require current SBA VetCert certification \u2014 verify before bidding SDVOSBC/SDVOSBS work.",
+      "notes": "SDVOSB. Fill in UEI/CAGE and confirm SBA VetCert is current before bidding SDVOSBC/SDVOSBS work. Real capabilities/NAICS still to be confirmed with owner (Wills).",
       "popStates": [
         "OK"
       ]
+    },
+    {
+      "id": "brady-co",
+      "name": "Brady Betts company (name TBD)",
+      "uei": "",
+      "cage": "",
+      "samStatus": "not registered yet",
+      "socioeconomic": [
+        "small-business"
+      ],
+      "setAsideEligible": [
+        "",
+        "SBA",
+        "SBP"
+      ],
+      "preferSetAsides": [
+        "SBA"
+      ],
+      "naics": [
+        "238160",
+        "236118",
+        "238910"
+      ],
+      "keywords": [
+        "roofing",
+        "roof replacement",
+        "storm damage repair",
+        "siding",
+        "gutters",
+        "exterior repair"
+      ],
+      "exclude": [],
+      "popStates": [
+        "OK"
+      ],
+      "notes": "PLACEHOLDER: Brady Betts's company \u2014 legal name, EIN, capabilities TBD. Oklahoma sales focus. Register in SAM.gov before any offers (free \u2014 see skills/sam-registration)."
     }
   ]
 }
