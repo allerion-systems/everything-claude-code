@@ -1,0 +1,56 @@
+{
+  "window": { "minDays": 3, "maxDays": 60 },
+  "entities": [
+    {
+      "id": "allerion-tech",
+      "name": "ALLERION TECHNOLOGIES LLC",
+      "uei": "KHLLHCKASEH7",
+      "cage": "23WX9",
+      "samStatus": "active",
+      "active": true,
+      "eligibleSetAsides": ["NONE", "SBA", "SBP"],
+      "noticeTypes": ["o", "k"],
+      "lanes": {
+        "tech-supply": [
+          "laptop", "desktop computer", "monitor display", "network switch",
+          "tablet", "printer toner", "video conference", "workstation",
+          "projector", "hard drive", "server"
+        ],
+        "ppe-safety": [
+          "safety gloves", "safety vest", "hard hat", "first aid kit",
+          "respirator", "safety boots", "safety glasses", "fall protection"
+        ],
+        "construction-materials": [
+          "lumber", "aggregate gravel", "fencing", "roofing material",
+          "concrete supply", "culvert", "pipe fittings"
+        ]
+      }
+    },
+    {
+      "id": "allerion-llc",
+      "name": "ALLERION LLC",
+      "uei": "Q8EBFAWWVAJ7",
+      "samStatus": "incomplete",
+      "active": false,
+      "note": "SAM registration incomplete since May 2026 and pending deletion. Complete or retire the registration before pursuing anything under this entity.",
+      "eligibleSetAsides": ["NONE", "SBA"],
+      "noticeTypes": ["o", "k"],
+      "lanes": {
+        "land": ["mowing", "land clearing", "snow removal", "grounds maintenance", "tree removal"]
+      }
+    },
+    {
+      "id": "hac",
+      "name": "HAC (SDVOSB track)",
+      "uei": "",
+      "samStatus": "verify",
+      "active": true,
+      "note": "SDVOSB verification in progress. Never claim SDVOSB status on an offer until SBA VetCert lists the certification as active.",
+      "eligibleSetAsides": ["NONE", "SBA", "SDVOSBC", "VSA"],
+      "noticeTypes": ["o", "k"],
+      "lanes": {
+        "construction": ["construction repair", "renovation", "crane", "facility maintenance", "roofing"]
+      }
+    }
+  ]
+}
