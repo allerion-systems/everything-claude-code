@@ -134,6 +134,46 @@ function runTests() {
     assert.ok(model.project.address.includes('Austin'));
   });
 
+  t('explicit units always win: --units in converts a neutral model authored in inches', () => {
+    // regression: the looksNeutral fast path used to ignore options.units
+    // entirely, leaving an inch-authored neutral model 12x too large.
+    const inches = {
+      roof: {
+        planes: [{ id: 'A', pitch: '6/12', vertices: [[0, 0], [480, 0], [480, 168], [0, 168]] }],
+        edges: [{ type: 'eave', from: [0, 0], to: [480, 0] }]
+      },
+      walls: {
+        footprint: [[0, 0], [480, 0], [480, 336], [0, 336]],
+        height: 96,
+        facades: [{ from: [0, 0], to: [480, 0], openings: [{ type: 'window', width: 36, height: 48, sill: 36, offset: 24 }] }]
+      },
+      deck: { origin: [144, 336], direction: [0, 1], width: 192, depth: 144, height: 30 }
+    };
+    const model = pm.normalize(inches, { units: 'in' });
+    const box = pm.bbox(model.roof.planes.flatMap(p => p.vertices));
+    assert.ok(Math.abs(box.width - 40) < 1e-6, `expected 40ft wide, got ${box.width}`);
+    assert.strictEqual(model.walls.height, 8);
+    assert.strictEqual(model.walls.facades[0].openings[0].width, 3);
+    assert.strictEqual(model.deck.width, 16);
+    assert.deepStrictEqual(model.roof.edges[0].to, [40, 0]);
+  });
+
+  t('explicit --units ft overrides the inch-detection size heuristic', () => {
+    const hover = {
+      roof: { facets: [{ pitch: '4/12', points: [{ x: 0, y: 0 }, { x: 480, y: 0 }, { x: 480, y: 336 }, { x: 0, y: 336 }] }] }
+    };
+    const model = pm.normalize(hover, { units: 'ft' });
+    const box = pm.bbox(model.roof.planes[0].vertices);
+    assert.ok(Math.abs(box.width - 480) < 1e-6, `480 units stays 480 ft with --units ft, got ${box.width}`);
+  });
+
+  t('unknown units values are rejected with a clear error', () => {
+    assert.throws(
+      () => pm.normalize(JSON.parse(JSON.stringify(fixture)), { units: 'yd' }),
+      /Unknown units "yd"/
+    );
+  });
+
   t('throws NEEDS_ADAPTER with guidance on unrecognized payloads', () => {
     assert.throws(
       () => pm.normalize({ some: 'unrelated json' }),
@@ -146,6 +186,15 @@ function runTests() {
       () => pm.normalize({ roof: { planes: [{ id: 'A', vertices: [[0, 0], [1, 1]] }] } }),
       /at least 3 vertices/
     );
+  });
+
+  console.log('\nHOVER API helpers:');
+
+  t('photoLimit honors an explicit 0 (no ||-style default clobbering)', () => {
+    const { photoLimit, DEFAULT_MAX_PHOTOS } = require('../../scripts/hover/hover-api');
+    assert.strictEqual(photoLimit(0), 0, 'explicit --max-photos 0 must disable downloads');
+    assert.strictEqual(photoLimit(undefined), DEFAULT_MAX_PHOTOS);
+    assert.strictEqual(photoLimit(5), 5);
   });
 
   console.log('\nSheet generation:');

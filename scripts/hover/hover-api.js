@@ -30,6 +30,29 @@
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
+const { formatAddress } = require('./plan-model');
+
+const DEFAULT_MAX_PHOTOS = 24;
+const PHOTO_CONCURRENCY = 6;
+
+/** How many capture photos to download; an explicit 0 disables the download. */
+function photoLimit(maxPhotos) {
+  return maxPhotos === undefined || maxPhotos === null ? DEFAULT_MAX_PHOTOS : maxPhotos;
+}
+
+/** Map with bounded concurrency, preserving order of results. */
+async function mapLimit(items, limit, fn) {
+  const results = new Array(items.length);
+  let next = 0;
+  const worker = async () => {
+    while (next < items.length) {
+      const i = next++;
+      results[i] = await fn(items[i], i);
+    }
+  };
+  await Promise.all(Array.from({ length: Math.min(limit, items.length) }, worker));
+  return results;
+}
 
 const BASE = process.env.HOVER_API_BASE || 'https://hover.to';
 const CREDS_PATH = process.env.HOVER_CREDENTIALS_FILE ||
@@ -130,13 +153,6 @@ async function api(pathname, { expect = 'json' } = {}) {
 // Commands
 // ---------------------------------------------------------------------------
 
-function formatAddress(address) {
-  if (!address) return '';
-  if (typeof address === 'string') return address;
-  return [address.line_1 || address.street, address.city, address.region || address.state, address.postal_code || address.zip_code]
-    .filter(Boolean).join(', ');
-}
-
 async function cmdJobs(searchTerms) {
   const params = new URLSearchParams({ per: '50', sort_by: 'updated_at', sort_order: 'DESC' });
   if (searchTerms.length) params.set('search', searchTerms.join(' '));
@@ -235,21 +251,22 @@ async function cmdPull(jobId, options) {
     // Capture photos: HOVER measures walls/roofs but NOT decks - the photos
     // are how the agent picks up deck dimensions (scale from measured
     // elements in frame). Cap the download to keep pulls fast.
-    const images = (model.images || []).slice(0, options.maxPhotos || 24);
+    const images = (model.images || []).slice(0, photoLimit(options.maxPhotos));
     if (images.length > 0) {
       const photoDir = path.join(modelDir, 'photos');
       fs.mkdirSync(photoDir, { recursive: true });
-      let downloaded = 0;
-      for (const image of images) {
-        if (!image.url) continue;
+      // Photos are independent: download a bounded batch in parallel.
+      const results = await mapLimit(images, PHOTO_CONCURRENCY, async image => {
+        if (!image.url) return 0;
         try {
           const res = await fetch(image.url);
           if (!res.ok) throw new Error(`HTTP ${res.status}`);
           const buf = Buffer.from(await res.arrayBuffer());
           fs.writeFileSync(path.join(photoDir, `photo-${image.id}.${extFromUrl(image.url, 'jpg')}`), buf);
-          downloaded++;
-        } catch (_err) { /* skip unavailable photos */ }
-      }
+          return 1;
+        } catch (_err) { return 0; /* skip unavailable photos */ }
+      });
+      const downloaded = results.reduce((sum, ok) => sum + ok, 0);
       console.log(`  model ${model.id}: ${downloaded}/${images.length} capture photos -> ${photoDir}`);
     }
   }
@@ -266,13 +283,23 @@ async function cmdWhoami() {
 
 // ---------------------------------------------------------------------------
 
+function numericArg(name, raw, { integer = false, min = -Infinity } = {}) {
+  const value = Number(raw);
+  if (raw === undefined || raw === '' || !Number.isFinite(value) ||
+      (integer && !Number.isInteger(value)) || value < min) {
+    console.error(`Invalid value for ${name}: "${raw}" - expected a${integer ? 'n integer' : ' number'}${min > -Infinity ? ` >= ${min}` : ''}`);
+    process.exit(2);
+  }
+  return value;
+}
+
 function parseArgs(argv) {
   const args = { _: [] };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === '--dest') args.dest = argv[++i];
     else if (a === '--versions') args.versions = argv[++i].split(',').map(s => s.trim());
-    else if (a === '--max-photos') args.maxPhotos = Number(argv[++i]);
+    else if (a === '--max-photos') args.maxPhotos = numericArg('--max-photos', argv[++i], { integer: true, min: 0 });
     else args._.push(a);
   }
   return args;
@@ -298,4 +325,4 @@ async function main() {
 
 if (require.main === module) main();
 
-module.exports = { getAccessToken, api, collectArtifactUrls, extFromUrl, formatAddress };
+module.exports = { getAccessToken, api, collectArtifactUrls, extFromUrl, formatAddress, photoLimit, DEFAULT_MAX_PHOTOS };

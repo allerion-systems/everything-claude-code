@@ -73,26 +73,50 @@ async function elevationAt(lat, lon) {
   return value;
 }
 
+/** Map with bounded concurrency, preserving order of results. */
+async function mapLimit(items, limit, fn) {
+  const results = new Array(items.length);
+  let next = 0;
+  const worker = async () => {
+    while (next < items.length) {
+      const i = next++;
+      results[i] = await fn(items[i], i);
+    }
+  };
+  await Promise.all(Array.from({ length: Math.min(limit, items.length) }, worker));
+  return results;
+}
+
+const ELEVATION_CONCURRENCY = 8;
+
 async function sampleTopo({ lat, lon, sizeFt = 200, stepFt = 25 }) {
   const coords = gridCoords(sizeFt, stepFt);
   const ftPerDegLon = FT_PER_DEG_LAT * Math.cos((lat * Math.PI) / 180);
-  const elevations = [];
-  for (const row of coords) {
-    const rowElevs = [];
-    for (const [dxFt, dyFt] of row) {
-      rowElevs.push(await elevationAt(lat + dyFt / FT_PER_DEG_LAT, lon + dxFt / ftPerDegLon));
-    }
-    elevations.push(rowElevs);
-  }
+  // Each sample point is independent: query USGS in bounded parallel batches.
+  const flat = coords.flat();
+  const values = await mapLimit(flat, ELEVATION_CONCURRENCY, ([dxFt, dyFt]) =>
+    elevationAt(lat + dyFt / FT_PER_DEG_LAT, lon + dxFt / ftPerDegLon));
+  const cols = coords[0].length;
+  const elevations = coords.map((row, r) => values.slice(r * cols, (r + 1) * cols));
   const { datumFt, grid } = toRelativeGrid(elevations);
-  return { lat, lon, sizeFt, stepFt, cols: coords[0].length, rows: coords.length, datumFt, grid };
+  return { lat, lon, sizeFt, stepFt, cols, rows: coords.length, datumFt, grid };
+}
+
+function numericArg(name, raw, { min = -Infinity } = {}) {
+  const value = Number(raw);
+  if (raw === undefined || raw === '' || !Number.isFinite(value) || value < min) {
+    console.error(`Invalid value for ${name}: "${raw}" - expected a number${min > -Infinity ? ` >= ${min}` : ''}`);
+    process.exit(2);
+  }
+  return value;
 }
 
 function parseArgs(argv) {
   const args = { _: [] };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
-    if (a === '--size' || a === '--step' || a === '--lat' || a === '--lon') args[a.slice(2)] = Number(argv[++i]);
+    if (a === '--size' || a === '--step') args[a.slice(2)] = numericArg(a, argv[++i], { min: 1 });
+    else if (a === '--lat' || a === '--lon') args[a.slice(2)] = numericArg(a, argv[++i]);
     else if (a === '--out') args.out = argv[++i];
     else args._.push(a);
   }

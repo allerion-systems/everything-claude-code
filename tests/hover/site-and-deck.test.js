@@ -12,7 +12,7 @@ const fs = require('fs');
 const { spawnSync } = require('child_process');
 
 const pm = require('../../scripts/hover/plan-model');
-const { generate, buildDeckPlan } = require('../../scripts/hover/generate-plans');
+const { generate, buildDeckPlan, deckRect } = require('../../scripts/hover/generate-plans');
 const { generateSketchupCode } = require('../../scripts/hover/sketchup-code');
 const { gridCoords, toRelativeGrid } = require('../../scripts/hover/site-topo');
 const { osmToFootprints, starterPlanModel } = require('../../scripts/hover/site-scout');
@@ -123,6 +123,44 @@ function runTests() {
     assert.ok(outputs[3].svg.includes('DECK FRAMING PLAN'));
   });
 
+  t('deck lateral axis is a true perpendicular (not a reflection) for any direction', () => {
+    // regression: lateral used to be [d[1], d[0]] (a reflection), which for a
+    // non-cardinal direction like [3,4] collapses the deck toward a line.
+    const clone = JSON.parse(JSON.stringify(fixture));
+    clone.deck = { origin: [12, 28], direction: [3, 4], width: 10, depth: 8, height: 2.5 };
+    const model = pm.normalize(clone);
+    const { A, B, C, D, d, lateral } = deckRect(model.deck);
+    const dot = d[0] * lateral[0] + d[1] * lateral[1];
+    assert.ok(Math.abs(dot) < 1e-9, `lateral not perpendicular to direction (dot=${dot})`);
+    const area = pm.polygonArea([A, B, C, D]);
+    assert.ok(Math.abs(area - 80) < 1e-6, `deck rect area should be 10x8=80, got ${area}`);
+  });
+
+  t('deck lateral keeps the established side for cardinal directions', () => {
+    // direction [0,1] (north) must keep lateral [1,0] (east) so existing
+    // models render on the same side as before the perpendicular fix
+    const { lateral } = deckRect(deckModel.deck);
+    assert.deepStrictEqual(lateral, [1, 0]);
+  });
+
+  t('invalid deck.direction is rejected with a clear error naming the input', () => {
+    for (const bad of ['north', [0, 0], [1], ['a', 'b']]) {
+      const clone = JSON.parse(JSON.stringify(fixture));
+      clone.deck = { origin: [12, 28], direction: bad, width: 16, depth: 12 };
+      assert.throws(
+        () => pm.normalize(clone),
+        err => err.code === 'INVALID_PLAN_MODEL' &&
+          /deck\.direction/.test(err.message) &&
+          err.message.includes(JSON.stringify(bad)),
+        `expected INVALID_PLAN_MODEL for direction ${JSON.stringify(bad)}`
+      );
+    }
+    // non-unit vectors are normalized rather than rejected
+    const clone = JSON.parse(JSON.stringify(fixture));
+    clone.deck = { origin: [12, 28], direction: [0, 2], width: 16, depth: 12 };
+    assert.deepStrictEqual(pm.normalize(clone).deck.direction, [0, 1]);
+  });
+
   t('models without a deck still produce the 3-sheet set', () => {
     const outputs = generate(pm.normalize(JSON.parse(JSON.stringify(fixture))));
     assert.deepStrictEqual(outputs.map(o => o.sheet.sheetNo), ['S-1', 'S-2', 'S-3']);
@@ -145,7 +183,8 @@ function runTests() {
     assert.ok(code.includes('Deck_Platform'));
     assert.ok(code.includes('Deck_Post_'));
     assert.ok(code.includes('RAIL_SIDES'));
-    assert.ok(code.includes('!= "S"') === false || true);
+    // ledger side (deck direction [0,1] -> house to the south) gets no rail
+    assert.ok(code.includes('s != "S"'), 'ledger side "S" must be excluded from RAIL_SIDES');
     assert.ok(code.includes('"deck": True'));
     assert.ok(code.includes('"terrain": True'));
   });
