@@ -1,5 +1,5 @@
 ---
-description: Chat-driven construction drawings from HOVER. List/pull any HOVER project and generate permit-ready roof plans, roof framing plans, and wall framing sheets (DXF + printable SVG).
+description: Chat-driven construction drawings from HOVER. List/pull any HOVER project and generate permit-ready roof plans, roof framing plans, wall framing sheets, and deck framing plans (DXF + printable SVG).
 ---
 
 # HOVER Command
@@ -15,7 +15,7 @@ existing HOVER account.
 /hover setup                      # configure HOVER API credentials
 /hover projects [search]          # list/search your HOVER jobs
 /hover pull <job id or address>   # download measurements + CAD artifacts
-/hover plans <job id> [specs]     # generate S-1/S-2/S-3 drawing set
+/hover plans <job id> [specs]     # generate S-1/S-2/S-3 (and S-4 deck) drawing set
 /hover model <job id>             # build a live 3D SketchUp model (.skp)
 ```
 
@@ -38,8 +38,11 @@ reroof, 2x10 rafters at 16 inches`.
      valley callouts, framing notes
    - **S-3 WALL FRAMING ELEVATIONS & SCHEDULES** — stud layouts, openings,
      header schedule
+   - **S-4 DECK FRAMING PLAN** (when the plan model includes a `deck`) —
+     ledger, joists, beam, posts, IRC R507 notes
    Each sheet is emitted as `.dxf` (AutoCAD/LibreCAD/DraftSight) and `.svg`
-   (ARCH D title-block sheet — print to PDF at the labeled scale).
+   (ARCH D title-block sheet — print to PDF at the labeled scale). Select a
+   subset with `--sheets roof,roof-framing,walls,deck`.
 5. **Model in SketchUp** (`/hover model`) — the **sketchup-modeler** agent
    feeds deterministic build code from `scripts/hover/sketchup-code.js` into
    the Trimble SketchUp MCP connector and returns a downloadable `.skp`

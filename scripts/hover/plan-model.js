@@ -64,6 +64,8 @@ function unit(a) {
   return [a[0] / l, a[1] / l];
 }
 function perp(a) { return [-a[1], a[0]]; }
+/** Clockwise perpendicular: rotates [x,y] 90° to [y,-x] (NOT a reflection). */
+function perpCW(a) { return [a[1], a[0] === 0 ? 0 : -a[0]]; }
 
 function bbox(points) {
   let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
@@ -76,14 +78,19 @@ function bbox(points) {
   return { minX, minY, maxX, maxY, width: maxX - minX, height: maxY - minY };
 }
 
-function polygonArea(points) {
+/** Signed area (positive for counter-clockwise winding). */
+function signedArea(points) {
   let sum = 0;
   for (let i = 0; i < points.length; i++) {
     const [x1, y1] = points[i];
     const [x2, y2] = points[(i + 1) % points.length];
     sum += x1 * y2 - x2 * y1;
   }
-  return Math.abs(sum) / 2;
+  return sum / 2;
+}
+
+function polygonArea(points) {
+  return Math.abs(signedArea(points));
 }
 
 function centroid(points) {
@@ -136,6 +143,36 @@ function clipLineToPolygon(point, dir, polygon) {
     }
   }
   return segments;
+}
+
+/** `"6/12"` or `"6:12"` -> 6 (inches of rise per foot of run); null when unparseable. */
+function parsePitch(pitch) {
+  const m = /(\d+(?:\.\d+)?)\s*[/:]\s*12/.exec(String(pitch || ''));
+  return m ? Number(m[1]) : null;
+}
+
+/**
+ * Longest eave edge belonging to a roof plane (both endpoints within 0.5 ft
+ * of a plane vertex), falling back to the plane's longest side. Returns
+ * [[x,y],[x,y]].
+ */
+function findEaveForPlane(plane, edges) {
+  const onPlane = edge =>
+    plane.vertices.some(v => dist(v, edge.from) < 0.5) &&
+    plane.vertices.some(v => dist(v, edge.to) < 0.5);
+  let best = null, bestLen = -1;
+  for (const e of (edges || []).filter(e => e.type === 'eave' && onPlane(e))) {
+    const l = dist(e.from, e.to);
+    if (l > bestLen) { bestLen = l; best = [e.from, e.to]; }
+  }
+  if (best) return best;
+  for (let i = 0; i < plane.vertices.length; i++) {
+    const a = plane.vertices[i];
+    const b = plane.vertices[(i + 1) % plane.vertices.length];
+    const l = dist(a, b);
+    if (l > bestLen) { bestLen = l; best = [a, b]; }
+  }
+  return best;
 }
 
 /** 24.5208 -> `24'-6 1/4"` (nearest 1/4"). */
@@ -228,9 +265,19 @@ function validatePlanModel(model) {
  * should then transform the source JSON into the neutral schema itself.
  */
 function normalize(input, options = {}) {
+  const units = options.units;
+  if (units !== undefined && units !== 'ft' && units !== 'in') {
+    const err = new Error(`Unknown units "${units}" - expected "ft" or "in"`);
+    err.code = 'INVALID_PLAN_MODEL';
+    throw err;
+  }
   let model;
   if (looksNeutral(input)) {
     model = input;
+    // Explicit units always win: a neutral model authored in inches is
+    // converted here. (The size heuristic only ever applies to HOVER
+    // payloads when no units are specified - see fromHover.)
+    if (units === 'in') scaleModelUnits(model, 1 / 12);
   } else {
     model = fromHover(input, options);
   }
@@ -264,6 +311,18 @@ function normalize(input, options = {}) {
       err.code = 'INVALID_PLAN_MODEL';
       throw err;
     }
+    if (deck.direction === undefined || deck.direction === null) {
+      deck.direction = [0, 1];
+    } else if (!isPoint(deck.direction) || len(deck.direction) === 0) {
+      const err = new Error(
+        `deck.direction ${JSON.stringify(deck.direction)} is invalid - expected a ` +
+        'nonzero [x,y] vector pointing away from the house (e.g. [0,1] for a deck extending north)'
+      );
+      err.code = 'INVALID_PLAN_MODEL';
+      throw err;
+    } else {
+      deck.direction = unit(deck.direction);
+    }
     deck.origin = isPoint(deck.origin) ? deck.origin : [0, 0];
     deck.height = Number.isFinite(deck.height) ? deck.height : 2.5;
     deck.joist = Object.assign({ size: '2x8', spacingIn: 16 }, deck.joist || {});
@@ -274,6 +333,46 @@ function normalize(input, options = {}) {
   }
 
   return validatePlanModel(model);
+}
+
+/**
+ * Multiply every coordinate/length in a neutral plan model by `k`
+ * (e.g. 1/12 to convert inches to the decimal feet the pipeline expects).
+ * Directions (deck.direction) are unitless and left alone.
+ */
+function scaleModelUnits(model, k) {
+  const scalePt = p => [p[0] * k, p[1] * k];
+  if (model.roof) {
+    (model.roof.planes || []).forEach(plane => {
+      if (Array.isArray(plane.vertices)) plane.vertices = plane.vertices.map(scalePt);
+    });
+    (model.roof.edges || []).forEach(edge => {
+      if (isPoint(edge.from)) edge.from = scalePt(edge.from);
+      if (isPoint(edge.to)) edge.to = scalePt(edge.to);
+    });
+  }
+  const walls = model.walls;
+  if (walls) {
+    if (Array.isArray(walls.footprint)) walls.footprint = walls.footprint.map(scalePt);
+    if (Number.isFinite(walls.height)) walls.height *= k;
+    (walls.facades || []).forEach(facade => {
+      if (isPoint(facade.from)) facade.from = scalePt(facade.from);
+      if (isPoint(facade.to)) facade.to = scalePt(facade.to);
+      (facade.openings || []).forEach(opening => {
+        for (const key of ['width', 'height', 'sill', 'offset']) {
+          if (Number.isFinite(opening[key])) opening[key] *= k;
+        }
+      });
+    });
+  }
+  const deck = model.deck;
+  if (deck) {
+    if (isPoint(deck.origin)) deck.origin = scalePt(deck.origin);
+    for (const key of ['width', 'depth', 'height']) {
+      if (Number.isFinite(deck[key])) deck[key] *= k;
+    }
+  }
+  return model;
 }
 
 function looksNeutral(input) {
@@ -371,7 +470,7 @@ function fromHover(json, options = {}) {
   return {
     project: {
       name: json.name || json.job_name || '',
-      address: formatHoverAddress(json.address),
+      address: formatAddress(json.address),
       jobId: String(json.job_id || json.id || '')
     },
     roof: { planes, edges },
@@ -429,7 +528,8 @@ function toPoint(raw) {
   return null;
 }
 
-function formatHoverAddress(address) {
+/** HOVER-style address object (or plain string) -> single display line. */
+function formatAddress(address) {
   if (!address) return '';
   if (typeof address === 'string') return address;
   return [address.line_1 || address.street, address.city, address.region || address.state, address.postal_code || address.zip_code]
@@ -452,7 +552,9 @@ module.exports = {
   normalize,
   validatePlanModel,
   fromHover,
+  formatAddress,
   // geometry helpers
-  sub, add, scale, len, dist, unit, perp,
-  bbox, polygonArea, centroid, pointInPolygon, clipLineToPolygon, ftIn
+  sub, add, scale, len, dist, unit, perp, perpCW,
+  bbox, signedArea, polygonArea, centroid, pointInPolygon, clipLineToPolygon, ftIn,
+  parsePitch, findEaveForPlane
 };

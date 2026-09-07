@@ -15,7 +15,8 @@ origin: community
 # HOVER Construction Drawings
 
 Turn a HOVER capture into a drawing set — S-1 Roof Plan, S-2 Roof Framing
-Plan, S-3 Wall Framing Elevations & Schedules — through chat, at zero
+Plan, S-3 Wall Framing Elevations & Schedules, plus S-4 Deck Framing Plan
+when the model includes a deck — through chat, at zero
 marginal cost (plain Node, no external services beyond the user's HOVER
 account).
 
@@ -49,8 +50,9 @@ The pipeline is three dependency-free Node scripts (Node 18+):
 3. **Generate** — `node scripts/hover/generate-plans.js <model.json> --out
    <dir> --date <today>` renders each sheet as model-space DXF (feet) and an
    ARCH D SVG plot sheet with border, title block, legend, schedules, notes,
-   and the NOT FOR CONSTRUCTION disclaimer. Drafting conventions live in
-   `references/drafting-standards.md`.
+   and the NOT FOR CONSTRUCTION disclaimer. `--sheets` selects a subset from
+   `roof,roof-framing,walls,deck` (default: all). Drafting conventions live
+   in `references/drafting-standards.md`.
 4. **Model (optional)** — `node scripts/hover/sketchup-code.js <model.json>
    [--topo site-topo.json]` emits ready-to-run build code for the Trimble
    SketchUp MCP connector (walls, roof, deck, and USGS terrain); the

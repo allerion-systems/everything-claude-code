@@ -30,37 +30,8 @@ const pm = require('./plan-model');
 const WALL_THICKNESS_IN = 5; // connector convention: walls are always 5" thick
 
 function parsePitchRise(pitch) {
-  const m = /(\d+(?:\.\d+)?)\s*[/:]\s*12/.exec(String(pitch || ''));
-  return m ? Number(m[1]) : 0;
-}
-
-function signedArea(points) {
-  let sum = 0;
-  for (let i = 0; i < points.length; i++) {
-    const [x1, y1] = points[i];
-    const [x2, y2] = points[(i + 1) % points.length];
-    sum += x1 * y2 - x2 * y1;
-  }
-  return sum / 2;
-}
-
-function findEaveLine(plane, edges) {
-  const onPlane = edge =>
-    plane.vertices.some(v => pm.dist(v, edge.from) < 0.5) &&
-    plane.vertices.some(v => pm.dist(v, edge.to) < 0.5);
-  let best = null, bestLen = -1;
-  for (const e of edges.filter(e => e.type === 'eave' && onPlane(e))) {
-    const l = pm.dist(e.from, e.to);
-    if (l > bestLen) { bestLen = l; best = [e.from, e.to]; }
-  }
-  if (best) return best;
-  for (let i = 0; i < plane.vertices.length; i++) {
-    const a = plane.vertices[i];
-    const b = plane.vertices[(i + 1) % plane.vertices.length];
-    const l = pm.dist(a, b);
-    if (l > bestLen) { bestLen = l; best = [a, b]; }
-  }
-  return best;
+  const rise = pm.parsePitch(pitch);
+  return rise === null ? 0 : rise;
 }
 
 function distToLine(point, [a, b]) {
@@ -78,7 +49,7 @@ const f = n => Number(n.toFixed(3));
 function wallSpecs(model) {
   const walls = model.walls;
   if (!walls || !(walls.facades || []).length) return [];
-  const ccw = walls.footprint ? signedArea(walls.footprint) > 0 : true;
+  const ccw = walls.footprint ? pm.signedArea(walls.footprint) > 0 : true;
   const heightIn = walls.height * 12;
 
   return walls.facades.map(facade => {
@@ -120,7 +91,7 @@ function roofSpecs(model) {
   const baseIn = (model.walls ? model.walls.height : 8) * 12;
   return model.roof.planes.map(plane => {
     const rise = parsePitchRise(plane.pitch);
-    const eave = findEaveLine(plane, model.roof.edges);
+    const eave = pm.findEaveForPlane(plane, model.roof.edges);
     const verts = plane.vertices.map(v => [
       f(v[0] * 12),
       f(v[1] * 12),
@@ -160,7 +131,7 @@ function deckSpec(model) {
   const deck = model.deck;
   if (!deck) return null;
   const d = Array.isArray(deck.direction) ? deck.direction : [0, 1];
-  const lateral = [d[1], d[0]];
+  const lateral = pm.perpCW(d);
   const A = deck.origin;
   const corner = [
     Math.min(A[0], A[0] + lateral[0] * deck.width + d[0] * deck.depth),

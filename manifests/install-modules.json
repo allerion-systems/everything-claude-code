@@ -498,8 +498,12 @@
     {
       "id": "construction-domain",
       "kind": "skills",
-      "description": "Construction domain skills: HOVER photogrammetry integration and framing/roof plan drawing generation.",
+      "description": "Construction domain: HOVER photogrammetry pipeline scripts, drawing/model agents, /hover command, and the framing/roof plan drawing skill.",
       "paths": [
+        "agents/construction-drafter.md",
+        "agents/sketchup-modeler.md",
+        "commands/hover.md",
+        "scripts/hover",
         "skills/hover-construction-drawings"
       ],
       "targets": [

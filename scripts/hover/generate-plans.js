@@ -15,7 +15,7 @@
  *   --out <dir>       Output directory (default: ./construction-drawings)
  *   --units <ft|in>   Force source units when input is HOVER JSON
  *   --date <text>     Date printed in the title block
- *   --sheets <list>   Comma list from: roof,roof-framing,walls (default: all)
+ *   --sheets <list>   Comma list from: roof,roof-framing,walls,deck (default: all)
  *
  * Zero dependencies. Node 18+.
  */
@@ -303,11 +303,6 @@ function drawTable(c, x, yTop, colWidths, rows, th) {
   return y;
 }
 
-function parsePitch(pitch) {
-  const m = /(\d+(?:\.\d+)?)\s*[/:]\s*12/.exec(String(pitch || ''));
-  return m ? Number(m[1]) : null;
-}
-
 const EDGE_LAYER = {
   ridge: 'A-ROOF-RIDG',
   hip: 'A-ROOF-HIP',
@@ -368,7 +363,7 @@ function buildRoofPlan(model) {
   let totalPlan = 0, totalSlope = 0;
   for (const plane of model.roof.planes) {
     const planArea = pm.polygonArea(plane.vertices);
-    const rise = parsePitch(plane.pitch);
+    const rise = pm.parsePitch(plane.pitch);
     const factor = rise === null ? 1 : Math.sqrt(1 + (rise / 12) ** 2);
     totalPlan += planArea;
     totalSlope += planArea * factor;
@@ -388,28 +383,6 @@ function buildRoofPlan(model) {
   return { file: 'roof-plan', title: 'ROOF PLAN', sheetNo: 'S-1', canvas: c };
 }
 
-function findEaveForPlane(plane, edges) {
-  const onPlane = edge =>
-    plane.vertices.some(v => pm.dist(v, edge.from) < 0.5) &&
-    plane.vertices.some(v => pm.dist(v, edge.to) < 0.5);
-  const eaves = edges.filter(e => e.type === 'eave' && onPlane(e));
-  const pool = eaves.length ? eaves : [];
-  let best = null, bestLen = -1;
-  for (const e of pool) {
-    const l = pm.dist(e.from, e.to);
-    if (l > bestLen) { bestLen = l; best = [e.from, e.to]; }
-  }
-  if (best) return best;
-  // fallback: longest polygon side
-  for (let i = 0; i < plane.vertices.length; i++) {
-    const a = plane.vertices[i];
-    const b = plane.vertices[(i + 1) % plane.vertices.length];
-    const l = pm.dist(a, b);
-    if (l > bestLen) { bestLen = l; best = [a, b]; }
-  }
-  return best;
-}
-
 function buildRoofFraming(model) {
   const c = new Canvas();
   const allPts = model.roof.planes.flatMap(p => p.vertices);
@@ -421,7 +394,7 @@ function buildRoofFraming(model) {
 
   for (const plane of model.roof.planes) {
     c.poly('A-ROOF-OTLN', plane.vertices, true);
-    const [ea, eb] = findEaveForPlane(plane, model.roof.edges);
+    const [ea, eb] = pm.findEaveForPlane(plane, model.roof.edges);
     const axis = pm.unit(pm.sub(eb, ea));
     const rafterDir = pm.perp(axis);
     const ts = plane.vertices.map(v => {
@@ -583,7 +556,7 @@ function buildWallFraming(model) {
 
 function deckRect(deck) {
   const d = Array.isArray(deck.direction) ? deck.direction : [0, 1];
-  const lateral = [d[1], d[0]];
+  const lateral = pm.perpCW(d);
   const A = deck.origin;
   const B = pm.add(A, pm.scale(lateral, deck.width));
   const C = pm.add(B, pm.scale(d, deck.depth));
@@ -709,7 +682,7 @@ function main() {
   const args = parseArgs(process.argv.slice(2));
   const inputPath = args._[0];
   if (!inputPath) {
-    console.error('Usage: node scripts/hover/generate-plans.js <plan-model.json> [--out dir] [--units ft|in] [--date "..."] [--sheets roof,roof-framing,walls]');
+    console.error('Usage: node scripts/hover/generate-plans.js <plan-model.json> [--out dir] [--units ft|in] [--date "..."] [--sheets roof,roof-framing,walls,deck]');
     process.exit(2);
   }
 

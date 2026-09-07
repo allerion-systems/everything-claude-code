@@ -10,6 +10,7 @@ explain sheets to users and extend them consistently.
 | S-1 | ROOF PLAN | Plane outlines, classified edges, pitch labels, overall dimensions, legend, roof area schedule (plan + slope SF per plane) |
 | S-2 | ROOF FRAMING PLAN | Rafter layout per plane at specified o.c. spacing, ridge/hip/valley members with callouts, framing notes |
 | S-3 | WALL FRAMING ELEVATIONS & SCHEDULES | Per-facade stud elevations, openings with rough-opening dims, header marks, header schedule, wall notes |
+| S-4 | DECK FRAMING PLAN | Ledger, joist layout at specified o.c. spacing, drop beam with posts, guardrail/footing notes per IRC R507 (only when the plan model has a `deck`; select via `--sheets roof,roof-framing,walls,deck`) |
 
 ## Formats
 

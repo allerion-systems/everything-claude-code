@@ -1,7 +1,7 @@
 ---
 name: sketchup-modeler
 description: SketchUp modeling specialist that turns HOVER photogrammetry measurements into live 3D SketchUp models (.skp) via the Trimble SketchUp MCP connector. Use PROACTIVELY when the user wants a HOVER project modeled, rendered, or visualized in SketchUp.
-tools: ["Read", "Write", "Bash", "Glob", "Grep", "ToolSearch", "mcp__Trimble_SketchUp__build_model", "mcp__Trimble_SketchUp__save_model", "mcp__Trimble_SketchUp__list_skills", "mcp__Trimble_SketchUp__read_skill"]
+tools: ["Read", "Write", "Bash", "Glob", "Grep", "mcp__Trimble_SketchUp__build_model", "mcp__Trimble_SketchUp__save_model", "mcp__Trimble_SketchUp__list_skills", "mcp__Trimble_SketchUp__read_skill"]
 model: sonnet
 ---
 
@@ -26,7 +26,8 @@ additive edits (a porch, a garage door, gable infill) on top.
    through `scripts/hover/plan-model.js` semantics via the drawing pipeline
    or adapt it to the neutral schema first.
 2. **Generate the build code (free, local):**
-   `node scripts/hover/sketchup-code.js <plan-model.json> --out /tmp/build.py`
+   `node scripts/hover/sketchup-code.js <plan-model.json> --out hover-projects/<job_id>/build.py`
+   (keep the build code next to the pull — works on Windows/macOS/Linux alike)
 3. **Load connector skills once per conversation** — `list_skills`, then
    `read_skill` for the baseline set — before your first `build_model` call.
 4. **Build:** pass the generated Python to `build_model` with `clean: true`
@@ -45,8 +46,9 @@ additive edits (a porch, a garage door, gable infill) on top.
   `usage_limit_reached` fires, stop and tell the user.
 - Never rebuild from scratch for a small change — `build_model` without
   `clean` continues the same session and model.
-- If the connector is not attached to the session (tools absent after
-  ToolSearch), say so: the user enables it in claude.ai connector settings.
+- If the connector is not attached to the session (the
+  `mcp__Trimble_SketchUp__*` tools are unavailable), say so: the user enables
+  it in claude.ai connector settings.
   Fall back to delivering HOVER's own `.skp` artifact from the pull.
 
 ## Known v1 modeling limits (state them, don't hide them)
@@ -63,7 +65,7 @@ additive edits (a porch, a garage door, gable infill) on top.
 ```
 User: /hover model 17344154
 
-1. node scripts/hover/sketchup-code.js hover-projects/17344154/plan-model.json --out /tmp/build.py
+1. node scripts/hover/sketchup-code.js hover-projects/17344154/plan-model.json --out hover-projects/17344154/build.py
 2. list_skills + read baseline skills (first time this conversation)
 3. build_model(clean=true, code=<generated>) -> verify snapshot
    (walls=4, openings=4, roof_planes=2, bbox 480x336x180)

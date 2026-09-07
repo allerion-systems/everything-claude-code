@@ -105,11 +105,20 @@ function starterPlanModel(address, footprint) {
   };
 }
 
+function numericArg(name, raw, { min = -Infinity } = {}) {
+  const value = Number(raw);
+  if (raw === undefined || raw === '' || !Number.isFinite(value) || value < min) {
+    console.error(`Invalid value for ${name}: "${raw}" - expected a number${min > -Infinity ? ` >= ${min}` : ''}`);
+    process.exit(2);
+  }
+  return value;
+}
+
 function parseArgs(argv) {
   const args = { _: [] };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
-    if (a === '--size' || a === '--step') args[a.slice(2)] = Number(argv[++i]);
+    if (a === '--size' || a === '--step') args[a.slice(2)] = numericArg(a, argv[++i], { min: 1 });
     else if (a === '--out') args.out = argv[++i];
     else args._.push(a);
   }
