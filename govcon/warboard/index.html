@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Allerion War Room</title>
+<meta name="description" content="Federal contracting pursuit board for Allerion Technologies LLC.">
+<meta name="theme-color" content="#06080a" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#e9e7e0" media="(prefers-color-scheme: light)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="War Room">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png" sizes="192x192" type="image/png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header>
+  <div class="wrap appbar">
+    <div class="brand">
+      <svg width="26" height="26" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <path d="M3 22h7l6-12 6 12h7" stroke="var(--olive)" stroke-width="2.75"
+              stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <h1>ALLERION WAR ROOM<small>FEDERAL CONTRACTING OPS</small></h1>
+    </div>
+    <nav aria-label="Views">
+      <button class="navb on" data-nav="board">Board</button>
+      <button class="navb" data-nav="intel">Intel</button>
+      <button class="navb" data-nav="brief">Brief</button>
+    </nav>
+    <div class="bar-right">
+      <span class="ent"><span class="mono">KHLLHCKASEH7</span> · CAGE <span class="mono">23WX9</span>
+        · <span class="sam-ok">SAM ● ACTIVE</span></span>
+      <span id="net-state" class="net" data-state="online">online</span>
+      <button class="btn ghost" id="install-btn" hidden>Install</button>
+    </div>
+  </div>
+  <div class="toast" id="update-toast" hidden>
+    A new board version is ready. <button class="btn" id="reload-btn">Reload</button>
+  </div>
+</header>
+
+<main class="wrap">
+  <section data-view="board" class="on" aria-label="Pursuit board">
+    <div class="tiles" id="tiles"></div>
+    <div class="board-head">
+      <h2>Pursuit Board</h2>
+      <span class="hint">drag cards between stages · tap a card for mission control</span>
+      <button class="btn" id="add-btn">+ Add pursuit</button>
+    </div>
+    <div class="kanban" id="kanban"></div>
+    <div class="rules">
+      <b>Standing orders:</b> a human sends every quote — nothing here submits to SAM.gov or a
+      contracting officer. No certification is ever claimed that the entity doesn't hold. Pricing comes
+      from live supplier quotes, never memory. Offers require an active SAM registration (FAR 52.204-7).
+      <br><b>Open blocker — construction &amp; fabrication cards:</b> the SAM registration carries
+      IT/software NAICS only (541511/541512/541519/541690/518210). A set-aside offer needs a
+      small-business size representation under the solicitation's own NAICS, so
+      <b>236210 · 236220 · 238160 · 327390 · 332311 · 332439</b> must be added in SAM.gov before any of
+      those cards can be submitted. On trade work, FAR 52.219-14 also requires the prime to self-perform
+      15% (general) / 25% (specialty) of cost with its own employees — which is why this board tracks
+      pools and fabricated products rather than standalone trade jobs.
+    </div>
+    <footer>
+      Solicitation data: SAM.gov public records, pulled <span id="data-date">—</span>.
+      Board state is stored on this device. <span id="storage-note"></span>
+    </footer>
+  </section>
+
+  <section data-view="intel" aria-label="Intelligence">
+    <div class="duo">
+      <div class="chart-card">
+        <h3>Deadline Runway</h3>
+        <p class="sub">Days remaining to quote deadline · computed live</p>
+        <div class="hbar" id="runway"></div>
+        <p class="grid-note">Red = under 5 days (supplier pricing must land today). Amber = under 10.
+          Pursuits with no posted date are omitted.</p>
+      </div>
+      <div class="chart-card">
+        <h3>Board Composition</h3>
+        <p class="sub">Open pursuits by stage</p>
+        <div class="hbar" id="stagechart"></div>
+        <p class="grid-note">HUNT is unqualified leads. A card earns its way rightward only when the
+          previous stage's requirements are delivered.</p>
+      </div>
+    </div>
+  </section>
+
+  <section data-view="brief" aria-label="Daily brief">
+    <div class="brief" id="brief"></div>
+  </section>
+</main>
+
+<div class="scrim" id="scrim"><div class="modal" role="dialog" aria-modal="true" id="modal"></div></div>
+<div class="tip" id="tip" role="status"></div>
+
+<script src="app.js"></script>
+</body>
+</html>

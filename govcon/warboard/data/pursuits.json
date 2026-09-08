@@ -1,0 +1,1161 @@
+{
+ "generated": "2026-09-08",
+ "source": "SAM.gov public records",
+ "pursuits": [
+  {
+   "id": "va",
+   "sol": "36C25526Q0652",
+   "agency": "VA · Kansas City VAMC",
+   "title": "BCMA Laptop Carts, Keyboards & Mice",
+   "due": "2026-09-14T16:00:00-05:00",
+   "dueLabel": "Sep 14 · 4:00 PM CT",
+   "tbd": false,
+   "flagship": false,
+   "setAside": "Total Small Business",
+   "tags": [
+    "Re-solicitation",
+    "FOB Destination",
+    "NMR: small mfr"
+   ],
+   "poc": "amanda.williams16@va.gov",
+   "note": "<b>The tell:</b> last round produced no award — they need a vendor. Non-powered medical carts ≤20\"×28\", internal power strip, medical-grade peripherals for the BCMA rollout.",
+   "link": "https://sam.gov/opp/c8ceb6d48dab4c2380f864e5fd9438a8/view",
+   "reqs": [
+    {
+     "label": "Pull RFQ item schedule & quantities",
+     "owner": "Analyst"
+    },
+    {
+     "label": "Small-manufacturer cart quote (clears NMR)",
+     "owner": "Human"
+    },
+    {
+     "label": "Build pricing + quote letter",
+     "owner": "Closer"
+    },
+    {
+     "label": "Submit the quote",
+     "owner": "Human"
+    }
+   ],
+   "stage": "PRICE"
+  },
+  {
+   "id": "usfs",
+   "sol": "1240BD26Q0093",
+   "agency": "USDA Forest Service",
+   "title": "Culvert Supply — Gifford Pinchot NF",
+   "due": "2026-09-14T14:00:00-07:00",
+   "dueLabel": "Sep 14 · 2:00 PM PT",
+   "tbd": false,
+   "flagship": false,
+   "setAside": "Total Small Business",
+   "tags": [
+    "Materials only",
+    "FOB Dest · Cougar WA"
+   ],
+   "poc": "jorge.somoza@usda.gov",
+   "note": "Aluminized steel culverts, bands, gaskets — zero construction labor. The amendment moved freight into the price; competitors will misprice it.",
+   "link": "https://sam.gov/opp/08e114b661254066813cdcbc9d848cc0/view",
+   "reqs": [
+    {
+     "label": "Two manufacturer quotes (verify small-biz status)",
+     "owner": "Human"
+    },
+    {
+     "label": "Flatbed freight quote to Cougar WA",
+     "owner": "Human"
+    },
+    {
+     "label": "Pricing sheet + quote letter",
+     "owner": "Closer"
+    },
+    {
+     "label": "Submit the quote",
+     "owner": "Human"
+    }
+   ],
+   "stage": "PRICE"
+  },
+  {
+   "id": "bop",
+   "sol": "15B80026Q00000010",
+   "agency": "DOJ · Bureau of Prisons",
+   "title": "50× iPad Air 13″ M4 + 50× ZAGG Folios",
+   "due": "2026-09-15T10:00:00-04:00",
+   "dueLabel": "Sep 15 · 10:00 AM ET",
+   "tbd": false,
+   "flagship": false,
+   "setAside": "Unrestricted",
+   "tags": [
+    "≈ $47K",
+    "30 days ARO",
+    "Aurora CO"
+   ],
+   "poc": "c3burns@bop.gov",
+   "note": "Exact SKUs from the SOW: iPad Air 13″ (M4) 128 GB ×50, ZAGG103414557 ×50. Sealed US stock, serials on packing list. Thin margin — bid it for the <b>DOJ past-performance credential</b>.",
+   "link": "https://sam.gov/opp/3020348a7511406299ea981ac23728ac/view",
+   "reqs": [
+    {
+     "label": "Ingram Micro / Apple business quote",
+     "owner": "Human"
+    },
+    {
+     "label": "Price + shipping + validity + delivery schedule",
+     "owner": "Closer"
+    },
+    {
+     "label": "Submit the quote",
+     "owner": "Human"
+    }
+   ],
+   "stage": "PRICE"
+  },
+  {
+   "id": "state",
+   "sol": "19GV1026Q0022",
+   "agency": "State · US Embassy Conakry",
+   "title": "33× Desktops, Monitors & Mounts",
+   "due": "2026-09-17T23:59:00Z",
+   "dueLabel": "Sep 17 · 23:59 UTC",
+   "tbd": false,
+   "flagship": false,
+   "setAside": "Unrestricted",
+   "tags": [
+    "Overseas post",
+    "220 V",
+    "No NMR"
+   ],
+   "poc": "kamanof@state.gov",
+   "note": "Overseas micro-buys draw two or three quotes. Spec says “or equivalent.” The 220 V line scares off amateurs — modern PSUs are 100–240 V auto-sensing; say so in the quote.",
+   "link": "https://sam.gov/opp/cebff0a2d0b045018a6e44a7f7edde65/view",
+   "reqs": [
+    {
+     "label": "Pull attachment: delivery terms & evaluation basis",
+     "owner": "Analyst"
+    },
+    {
+     "label": "Dell/Lenovo distributor quote (register the deal)",
+     "owner": "Human"
+    },
+    {
+     "label": "Freight to Conakry (DDP or per RFQ terms)",
+     "owner": "Human"
+    },
+    {
+     "label": "Submit the quote",
+     "owner": "Human"
+    }
+   ],
+   "stage": "ANALYZE"
+  },
+  {
+   "id": "fws",
+   "sol": "140FS326Q0169",
+   "agency": "US Fish & Wildlife Service",
+   "title": "Aggregate Supply — Cache River NWR",
+   "due": "2026-09-18T15:00:00-04:00",
+   "dueLabel": "Sep 18 · 3:00 PM ET",
+   "tbd": false,
+   "flagship": false,
+   "setAside": "Total Small Business",
+   "tags": [
+    "3-buy family",
+    "Eastern Arkansas"
+   ],
+   "poc": "merenica_banks@fws.gov",
+   "note": "Commodity gravel delivered to the refuge. Win one and become the incumbent for the whole family — Big Lake &amp; Wapanocca run from the same office.",
+   "link": "https://sam.gov/opp/0b63d115529e4a76b53a248305a99239/view",
+   "reqs": [
+    {
+     "label": "Tonnage & gradation spec from solicitation",
+     "owner": "Analyst"
+    },
+    {
+     "label": "Two quarry quotes near Augusta/Turrell AR",
+     "owner": "Human"
+    },
+    {
+     "label": "Per-ton haul rate",
+     "owner": "Human"
+    },
+    {
+     "label": "Submit the quote",
+     "owner": "Human"
+    }
+   ],
+   "stage": "ANALYZE"
+  },
+  {
+   "id": "faa",
+   "sol": "697DCK-25-R-00368",
+   "agency": "FAA · SAVES Program",
+   "title": "Toner & Consumables — Agency-Wide IDIQ",
+   "due": "2026-09-21T17:00:00-04:00",
+   "dueLabel": "Sep 21 · 5:00 PM ET",
+   "tbd": false,
+   "flagship": true,
+   "setAside": "Total Small Business",
+   "tags": [
+    "FLAGSHIP",
+    "LPTA",
+    "756 line items",
+    "Recurring revenue"
+   ],
+   "poc": "kay.f.morello@faa.gov",
+   "note": "<b>Lowest priced technically acceptable</b> — a pure sourcing game. Q&amp;A closed Aug 27: bid what’s written. Price the “Most Commonly Ordered Qty’s” sheet sharpest; that’s where evaluation weight lives.",
+   "link": "https://sam.gov/opp/74ea17da2b2746759bbdcf37a86dd700/view",
+   "reqs": [
+    {
+     "label": "Distributor accounts: TD Synnex · Ingram · D&H · Clover",
+     "owner": "Human"
+    },
+    {
+     "label": "Verify SBA class waiver list for consumables (NMR)",
+     "owner": "Analyst"
+    },
+    {
+     "label": "Price Attachment 2 worksheet from live cost",
+     "owner": "Closer"
+    },
+    {
+     "label": "Past-performance refs (Atts. 3–4) — commercial counts",
+     "owner": "Human"
+    },
+    {
+     "label": "Submit per SIR instructions",
+     "owner": "Human"
+    }
+   ],
+   "stage": "ANALYZE"
+  },
+  {
+   "id": "gsatools",
+   "sol": "47QSSC26Q0281",
+   "agency": "GSA · Supply Chain Mgmt",
+   "title": "Tool Requirements (Misc.)",
+   "due": "2026-09-08T12:00:00-04:00",
+   "dueLabel": "Sep 8 · 12:00 PM ET",
+   "tbd": false,
+   "flagship": false,
+   "setAside": "Total Small Business",
+   "tags": [
+    "NEW",
+    "Catalog resell",
+    "3 days"
+   ],
+   "poc": "kylie.ferraz@gsa.gov",
+   "note": "GSA buying miscellaneous hand tools — the purest catalog-resell play on the board. Pull the item list, quote from a tool distributor, done.",
+   "link": "https://sam.gov/opp/e6eb2840224c4936a6f9cdeec03071aa/view",
+   "reqs": [
+    {
+     "label": "Pull item list & quantities",
+     "owner": "Analyst"
+    },
+    {
+     "label": "Distributor quote (tools)",
+     "owner": "Human"
+    },
+    {
+     "label": "Pricing + quote letter",
+     "owner": "Closer"
+    },
+    {
+     "label": "Submit the quote",
+     "owner": "Human"
+    }
+   ],
+   "stage": "HUNT"
+  },
+  {
+   "id": "wapa1",
+   "sol": "89503426QWA001323",
+   "agency": "DOE · Western Area Power Admin",
+   "title": "161 kV Crossarm Kit Hardware — Restock",
+   "due": "2026-09-08T15:00:00-04:00",
+   "dueLabel": "Sep 8 · 3:00 PM ET",
+   "tbd": false,
+   "flagship": false,
+   "setAside": "Unrestricted",
+   "tags": [
+    "NEW",
+    "Hardware only",
+    "Utility lane"
+   ],
+   "poc": "pfeifle@wapa.gov",
+   "note": "Hardware-only stores replenishment. Utility distributors (Wesco/Anixter, Border States, Irby) quote line hardware same-day. Same buyer as the pole restock below — one email covers both.",
+   "link": "https://sam.gov/opp/b84e3a68376248f48845a9e7274b2432/view",
+   "reqs": [
+    {
+     "label": "Pull the kit hardware line list",
+     "owner": "Analyst"
+    },
+    {
+     "label": "Utility-distributor quote",
+     "owner": "Human"
+    },
+    {
+     "label": "Pricing + quote letter",
+     "owner": "Closer"
+    },
+    {
+     "label": "Submit the quote",
+     "owner": "Human"
+    }
+   ],
+   "stage": "HUNT"
+  },
+  {
+   "id": "wapa2",
+   "sol": "89503426QWA001317",
+   "agency": "DOE · Western Area Power Admin",
+   "title": "T-Line Wood Pole Restock",
+   "due": "2026-09-08T15:00:00-04:00",
+   "dueLabel": "Sep 8 · 3:00 PM ET",
+   "tbd": false,
+   "flagship": false,
+   "setAside": "Total Small Business",
+   "tags": [
+    "NEW",
+    "Same buyer as crossarms"
+   ],
+   "poc": "pfeifle@wapa.gov",
+   "note": "Wood transmission poles to restock stores — same contracting officer as the crossarm kits. Quote both and become WAPA's line-hardware small-biz.",
+   "link": "https://sam.gov/opp/2764935bb4394b61bb0c89bde6d316c8/view",
+   "reqs": [
+    {
+     "label": "Pole class/length spec from RFQ",
+     "owner": "Analyst"
+    },
+    {
+     "label": "Pole supplier + freight quote",
+     "owner": "Human"
+    },
+    {
+     "label": "Pricing + quote letter",
+     "owner": "Closer"
+    },
+    {
+     "label": "Submit the quote",
+     "owner": "Human"
+    }
+   ],
+   "stage": "HUNT"
+  },
+  {
+   "id": "shelving",
+   "sol": "F2Z295",
+   "agency": "USAF · 22 MXG (McConnell AFB)",
+   "title": "Shelving Units — Maintenance Group",
+   "due": "2026-09-08T12:00:00-04:00",
+   "dueLabel": "Sep 8 · 12:00 PM ET",
+   "tbd": false,
+   "flagship": false,
+   "setAside": "Total Small Business",
+   "tags": [
+    "NEW",
+    "Commodity",
+    "In catalog"
+   ],
+   "poc": "james.gomez.9@us.af.mil",
+   "note": "Industrial steel shelving for the maintenance group — literally SKU ALN-CM-005 in the Allerion Supply catalog. Quote from stock specs.",
+   "link": "https://sam.gov/opp/1554817f09984c6b925aef45a92ba586/view",
+   "reqs": [
+    {
+     "label": "Pull dimensions & quantities",
+     "owner": "Analyst"
+    },
+    {
+     "label": "Distributor quote (shelving)",
+     "owner": "Human"
+    },
+    {
+     "label": "Pricing + quote letter",
+     "owner": "Closer"
+    },
+    {
+     "label": "Submit the quote",
+     "owner": "Human"
+    }
+   ],
+   "stage": "HUNT"
+  },
+  {
+   "id": "fittest",
+   "sol": "36C24126Q0681",
+   "agency": "VA · NCO 1 (VISN 1)",
+   "title": "PortaCount Respirator Fit Tester (Model 8048)",
+   "due": "2026-09-09T07:00:00-04:00",
+   "dueLabel": "Sep 9 · 7:00 AM ET",
+   "tbd": false,
+   "flagship": false,
+   "setAside": "Unrestricted",
+   "tags": [
+    "NEW",
+    "Brand-name",
+    "Single SKU"
+   ],
+   "poc": "Julie.Lemire1@va.gov",
+   "note": "Brand-name TSI PortaCount 8048 with tablet — a single-SKU drop-ship from a TSI distributor. Confirm brand-name-only vs or-equal in the RFQ.",
+   "link": "https://sam.gov/opp/aa98d5385c2e4a18bb17850a57339379/view",
+   "reqs": [
+    {
+     "label": "Confirm brand-name/or-equal terms",
+     "owner": "Analyst"
+    },
+    {
+     "label": "TSI distributor quote",
+     "owner": "Human"
+    },
+    {
+     "label": "Quote letter + delivery terms",
+     "owner": "Closer"
+    },
+    {
+     "label": "Submit the quote",
+     "owner": "Human"
+    }
+   ],
+   "stage": "HUNT"
+  },
+  {
+   "id": "fallpro",
+   "sol": "W50S9426QSY19",
+   "agency": "Air National Guard · 143 LRS",
+   "title": "Fall Protection Systems",
+   "due": "2026-09-09T17:00:00-04:00",
+   "dueLabel": "Sep 9 · 5:00 PM ET",
+   "tbd": false,
+   "flagship": false,
+   "setAside": "Total Small Business",
+   "tags": [
+    "NEW",
+    "PPE lane",
+    "In catalog"
+   ],
+   "poc": "sandra.e.yazidjian.mil@army.mil",
+   "note": "Fall-protection systems for the 143d Logistics Readiness Squadron — squarely in the PPE lane (3M DBI-SALA / Guardian distributor quote).",
+   "link": "https://sam.gov/opp/79849593574d45558baacfbb742930e8/view",
+   "reqs": [
+    {
+     "label": "Pull system spec & quantities",
+     "owner": "Analyst"
+    },
+    {
+     "label": "DBI-SALA/Guardian distributor quote",
+     "owner": "Human"
+    },
+    {
+     "label": "Pricing + quote letter",
+     "owner": "Closer"
+    },
+    {
+     "label": "Submit the quote",
+     "owner": "Human"
+    }
+   ],
+   "stage": "HUNT"
+  },
+  {
+   "id": "biglake",
+   "sol": "140FS326Q0157",
+   "agency": "US Fish & Wildlife Service",
+   "title": "Aggregate — Big Lake NWR (AR)",
+   "due": "2026-09-09T12:00:00-04:00",
+   "dueLabel": "Sep 9 · 12:00 PM ET",
+   "tbd": false,
+   "flagship": false,
+   "setAside": "Total Small Business",
+   "tags": [
+    "NEW",
+    "The family play",
+    "Same office as Cache River"
+   ],
+   "poc": "jeremy_tyler@ios.doi.gov",
+   "note": "<b>Called it:</b> the Cache River card predicted Big Lake would drop from the same office — here it is. Same quarry quotes, second bite at the 3-buy family.",
+   "link": "https://sam.gov/opp/0ab8057ef07c4f669fbb9f24e9f70cf8/view",
+   "reqs": [
+    {
+     "label": "Tonnage & gradation spec",
+     "owner": "Analyst"
+    },
+    {
+     "label": "Reuse Cache River quarry quotes",
+     "owner": "Human"
+    },
+    {
+     "label": "Per-ton haul rate to Big Lake",
+     "owner": "Human"
+    },
+    {
+     "label": "Submit the quote",
+     "owner": "Human"
+    }
+   ],
+   "stage": "HUNT"
+  },
+  {
+   "id": "roofinsp",
+   "sol": "12444526Q0073",
+   "agency": "USDA Forest Service · Madison WI",
+   "title": "Bi-Yearly Roof Inspections",
+   "due": "2026-09-09T14:00:00-04:00",
+   "dueLabel": "Sep 9 · 2:00 PM ET",
+   "tbd": false,
+   "flagship": false,
+   "setAside": "Total Small Business",
+   "tags": [
+    "SERVICE",
+    "Merit play",
+    "Recurring by definition"
+   ],
+   "poc": "mikaela.laney@usda.gov",
+   "note": "<b>The merit play:</b> roof inspections — the roofing background IS the qualification. Bi-yearly means the contract renews itself. Services margin, no product cost.",
+   "link": "https://sam.gov/opp/4b0c30aa22834251a09c1b5931a269f7/view",
+   "reqs": [
+    {
+     "label": "Pull scope: bldg count, report format",
+     "owner": "Analyst"
+    },
+    {
+     "label": "Inspection methodology + quals write-up",
+     "owner": "Human"
+    },
+    {
+     "label": "Price per-visit + travel",
+     "owner": "Closer"
+    },
+    {
+     "label": "Submit the quote",
+     "owner": "Human"
+    }
+   ],
+   "stage": "HUNT"
+  },
+  {
+   "id": "ricelake",
+   "sol": "140FS226Q0161",
+   "agency": "US Fish & Wildlife · Rice Lake NWR",
+   "title": "BPA — Road Grading & Snow Removal",
+   "due": "2026-09-07T16:00:00-04:00",
+   "dueLabel": "Sep 7 · 4:00 PM ET",
+   "tbd": false,
+   "flagship": false,
+   "setAside": "Total Small Business",
+   "tags": [
+    "SERVICE",
+    "BPA = standing account",
+    "2 days"
+   ],
+   "poc": "dana_arnold@ios.doi.gov",
+   "note": "A BPA is a standing charge account — win once, get called all season. Prime it, sub a local MN operator with the grader, keep the spread.",
+   "link": "https://sam.gov/opp/d70882c497a54d7a8955f8320734089e/view",
+   "reqs": [
+    {
+     "label": "Pull BPA terms & call rates",
+     "owner": "Analyst"
+    },
+    {
+     "label": "Local operator sub quote (MN)",
+     "owner": "Human"
+    },
+    {
+     "label": "Rate sheet + quote letter",
+     "owner": "Closer"
+    },
+    {
+     "label": "Submit the quote",
+     "owner": "Human"
+    }
+   ],
+   "stage": "HUNT"
+  },
+  {
+   "id": "refuse",
+   "sol": "W912P726QA012",
+   "agency": "USACE · Coyote Valley Dam (CA)",
+   "title": "Refuse & Recycling Collection Services",
+   "due": "2026-09-08T16:00:00-04:00",
+   "dueLabel": "Sep 8 · 4:00 PM ET",
+   "tbd": false,
+   "flagship": false,
+   "setAside": "Unrestricted",
+   "tags": [
+    "SERVICE",
+    "Recurring",
+    "Sub the hauler"
+   ],
+   "poc": "shelby.yancey@usace.army.mil",
+   "note": "Simple recurring logistics: local hauler does the route, Allerion primes the contract and the compliance. Price = sub rate + margin.",
+   "link": "https://sam.gov/opp/800f8db2f7594c0f80fb338c886eb92b/view",
+   "reqs": [
+    {
+     "label": "Pull pickup schedule & container specs",
+     "owner": "Analyst"
+    },
+    {
+     "label": "Local hauler sub quote",
+     "owner": "Human"
+    },
+    {
+     "label": "Pricing + quote letter",
+     "owner": "Closer"
+    },
+    {
+     "label": "Submit the quote",
+     "owner": "Human"
+    }
+   ],
+   "stage": "HUNT"
+  },
+  {
+   "id": "hauling",
+   "sol": "W91QF426QA030",
+   "agency": "Army · Fort Leavenworth KS",
+   "title": "Hauling & Disposal — Lead-Impacted Soil",
+   "due": "2026-09-08T15:00:00-04:00",
+   "dueLabel": "Sep 8 · 3:00 PM ET",
+   "tbd": false,
+   "flagship": false,
+   "setAside": "Total Small Business",
+   "tags": [
+    "SERVICE",
+    "Logistics middleman",
+    "Amend 02"
+   ],
+   "poc": "eric.p.grande.civ@army.mil",
+   "note": "Pure logistics-middleman play: sub licensed hazmat trucking + approved disposal facility. Verify manifest/licensing requirements in the amendment before pricing.",
+   "link": "https://sam.gov/opp/d626f728a567404b876b74a1abbf4358/view",
+   "reqs": [
+    {
+     "label": "Pull Amend 02: quantities, manifests, licensing",
+     "owner": "Analyst"
+    },
+    {
+     "label": "Hazmat trucking + disposal facility quotes",
+     "owner": "Human"
+    },
+    {
+     "label": "Pricing + quote letter",
+     "owner": "Closer"
+    },
+    {
+     "label": "Submit the quote",
+     "owner": "Human"
+    }
+   ],
+   "stage": "HUNT"
+  },
+  {
+   "id": "tinker",
+   "sol": "FA8137-26-R-0040",
+   "agency": "USAF · Tinker AFB (OK)",
+   "title": "2026 Multiple Award Construction Contract (MACC)",
+   "due": "2026-09-25T13:00:00-05:00",
+   "dueLabel": "Sep 25 · 1:00 PM CT",
+   "tbd": false,
+   "flagship": false,
+   "setAside": "Partial Small Business",
+   "tags": [
+    "VEHICLE",
+    "HOME STATE",
+    "NAICS 236210",
+    "Amended Sep 3"
+   ],
+   "poc": "hailie.reyes@us.af.mil; david.logue.1@us.af.mil",
+   "note": "<b>The home-turf on-ramp.</b> Oklahoma installation, partial small-business, and the Sep 3 amendment moved the proposal date while the government works through outstanding RFIs — that usually means another extension. Getting into this pool is worth more than any single roof on the board.",
+   "link": "https://sam.gov/opp/9e9018f9ad964b469d370e9efbb7fd0f/view",
+   "reqs": [
+    {
+     "label": "Add NAICS 236210 + size rep in SAM.gov",
+     "owner": "Human"
+    },
+    {
+     "label": "Pull RFP §L/M: submission format & evaluation factors",
+     "owner": "Analyst"
+    },
+    {
+     "label": "Bonding capacity letter from surety",
+     "owner": "Human"
+    },
+    {
+     "label": "Teaming partner with self-perform crews",
+     "owner": "Human"
+    },
+    {
+     "label": "Past performance narratives",
+     "owner": "Closer"
+    },
+    {
+     "label": "Submit the proposal",
+     "owner": "Human"
+    }
+   ],
+   "stage": "HUNT"
+  },
+  {
+   "id": "fermiroof",
+   "sol": "ISD_384529_DA",
+   "agency": "DOE · Fermilab (Batavia, IL)",
+   "title": "Roof Maintenance & Repair Services IDIQ",
+   "due": "2026-09-15T17:00:00-05:00",
+   "dueLabel": "Sep 15 · 5:00 PM CT",
+   "tbd": false,
+   "flagship": false,
+   "setAside": "Total Small Business",
+   "tags": [
+    "VEHICLE",
+    "NAICS 238160",
+    "Amend 02",
+    "Pre-proposal held Aug 20"
+   ],
+   "poc": "damico@fnal.gov",
+   "note": "Multi-year roofing IDIQ at a national lab — the recurring-revenue shape this board favors. <b>Caution:</b> the pre-proposal meeting was Aug 20 and Amendment 02 answered offeror questions; read both attachments before deciding, since non-attendance is sometimes weighted.",
+   "link": "https://sam.gov/opp/0a6c9899edd84ad29ea7c73c7ec775d4/view",
+   "reqs": [
+    {
+     "label": "Add NAICS 238160 + size rep in SAM.gov",
+     "owner": "Human"
+    },
+    {
+     "label": "Read Amend 01/02 + pre-proposal deck",
+     "owner": "Analyst"
+    },
+    {
+     "label": "Roofing sub with IL licensing",
+     "owner": "Human"
+    },
+    {
+     "label": "Rate sheet + quals package",
+     "owner": "Closer"
+    },
+    {
+     "label": "Submit the proposal",
+     "owner": "Human"
+    }
+   ],
+   "stage": "HUNT"
+  },
+  {
+   "id": "roofmatoc",
+   "sol": "W9128F26RA069",
+   "agency": "USACE · Omaha District",
+   "title": "$99M Small Business Roofing MATOC",
+   "due": "",
+   "dueLabel": "Solicitation expected — was targeted on/about Sep 3",
+   "tbd": true,
+   "flagship": false,
+   "setAside": "Total Small Business",
+   "tags": [
+    "VEHICLE",
+    "$99M · 5 awardees",
+    "5 years",
+    "CO & WY"
+   ],
+   "poc": "Ginger.L.Gruber@usace.army.mil; Euemduan.C.Osmera@usace.army.mil",
+   "note": "<b>The prize.</b> Firm-fixed-price DB/DBB IDIQ, $99M shared capacity, targeted pool of five, roofing FSRM across Colorado and Wyoming. Pre-solicitation said on/about 3 Sep — <b>check whether the solicitation has posted</b>, because the clock starts the day it does.",
+   "link": "https://sam.gov/opp/c0ec789867ba43df917070ecba803e45/view",
+   "reqs": [
+    {
+     "label": "Confirm whether solicitation has posted",
+     "owner": "Analyst"
+    },
+    {
+     "label": "Add NAICS 238160 + size rep in SAM.gov",
+     "owner": "Human"
+    },
+    {
+     "label": "Bonding capacity for $99M-class IDIQ",
+     "owner": "Human"
+    },
+    {
+     "label": "CO/WY roofing teaming partner",
+     "owner": "Human"
+    },
+    {
+     "label": "Past performance package",
+     "owner": "Closer"
+    }
+   ],
+   "stage": "HUNT"
+  },
+  {
+   "id": "tyndall",
+   "sol": "FA481926R0029",
+   "agency": "USAF · Tyndall AFB (FL)",
+   "title": "Airfield Civil Works IDIQ",
+   "due": "2026-09-28T10:00:00-05:00",
+   "dueLabel": "Sep 28 · 10:00 AM CT",
+   "tbd": false,
+   "flagship": false,
+   "setAside": "Total Small Business",
+   "tags": [
+    "VEHICLE",
+    "NAICS 237310",
+    "Official solicitation"
+   ],
+   "poc": "frances.montgomery@us.af.mil; joseph.petersen.3@us.af.mil",
+   "note": "Live solicitation (not a pre-sol) for airfield civil works at Tyndall. Heavy civil is furthest from Allerion's self-perform ability, so this is a <b>teaming-only</b> pursuit — worth it if a qualified paving prime wants a small-business partner.",
+   "link": "https://sam.gov/opp/d2154a4c26ff480c8426c2483a39e795/view",
+   "reqs": [
+    {
+     "label": "Pull §L/M and required capability statements",
+     "owner": "Analyst"
+    },
+    {
+     "label": "Decide prime vs. sub posture",
+     "owner": "Human"
+    },
+    {
+     "label": "Airfield paving teaming partner",
+     "owner": "Human"
+    },
+    {
+     "label": "Submit or join a team",
+     "owner": "Human"
+    }
+   ],
+   "stage": "HUNT"
+  },
+  {
+   "id": "sacmatoc",
+   "sol": "W9123826RA014",
+   "agency": "USACE · Sacramento District",
+   "title": "$465M Small Business Construction MATOC",
+   "due": "",
+   "dueLabel": "Pre-solicitation — no date posted",
+   "tbd": true,
+   "flagship": false,
+   "setAside": "Total Small Business",
+   "tags": [
+    "VEHICLE",
+    "$465M",
+    "DB/DBB",
+    "NAICS 236220"
+   ],
+   "poc": "amber.l.scyoc@usace.army.mil",
+   "note": "The largest small-business construction pool in this sweep — DB/DBB IDIQ across SPK's military boundary. No solicitation date yet. Track it and be registered under 236220 before it drops, because these on-ramps close fast once posted.",
+   "link": "https://sam.gov/opp/33fd47e71e504e8ea49869ab59f5a8fd/view",
+   "reqs": [
+    {
+     "label": "Watch for solicitation posting",
+     "owner": "Analyst"
+    },
+    {
+     "label": "Add NAICS 236220 + size rep in SAM.gov",
+     "owner": "Human"
+    },
+    {
+     "label": "CA teaming partner + bonding",
+     "owner": "Human"
+    }
+   ],
+   "stage": "HUNT"
+  },
+  {
+   "id": "malmstrom",
+   "sol": "FA4626-26-R-0007",
+   "agency": "USAF · Malmstrom AFB (MT)",
+   "title": "Vertical Construction MAC",
+   "due": "",
+   "dueLabel": "Pre-solicitation — no date posted",
+   "tbd": true,
+   "flagship": false,
+   "setAside": "Total Small Business",
+   "tags": [
+    "VEHICLE",
+    "Missile field",
+    "NAICS 236220"
+   ],
+   "poc": "cody.babinecz@us.af.mil; colleen.goad.1@us.af.mil",
+   "note": "DB/DBB renovation and construction for Malmstrom, its Launch Facilities and Missile Alert Facilities. Missile-field work carries access and clearance overhead most small firms skip — which is exactly why the pool stays small.",
+   "link": "https://sam.gov/opp/30410a5355d243899c07074f04277831/view",
+   "reqs": [
+    {
+     "label": "Watch for solicitation posting",
+     "owner": "Analyst"
+    },
+    {
+     "label": "Add NAICS 236220 + size rep in SAM.gov",
+     "owner": "Human"
+    },
+    {
+     "label": "Assess site-access/clearance requirements",
+     "owner": "Analyst"
+    },
+    {
+     "label": "MT teaming partner",
+     "owner": "Human"
+    }
+   ],
+   "stage": "HUNT"
+  },
+  {
+   "id": "s280",
+   "sol": "W912CH-26-R-A096",
+   "agency": "Army · ACC-Detroit Arsenal",
+   "title": "S-280C/G Vehicle Mounted Shelter — 5-Year IDIQ",
+   "due": "2026-10-09T15:30:00-04:00",
+   "dueLabel": "Oct 9 · 3:30 PM ET",
+   "tbd": false,
+   "flagship": true,
+   "setAside": "Total Small Business",
+   "tags": [
+    "FAB LANE",
+    "FLAGSHIP",
+    "5-year FFP IDIQ",
+    "4 variants",
+    "NAICS 332311"
+   ],
+   "poc": "nicholas.a.lang.civ@army.mil; daniel.j.gibson43.civ@army.mil",
+   "note": "<b>The manufacturing prize.</b> Five-year firm-fixed-price IDIQ to <i>manufacture and deliver</i> four variants of the S-280C/G tactical shelter — lightweight housings for sensitive electronics. Longest runway on the board (31 days). <b>Sober note:</b> flagged non-commercial, so expect a technical data package, first-article testing and source qualification. This is a build-the-company bet, not a quick quote.",
+   "link": "https://sam.gov/opp/af1a3491afbc488e971739d2fc889c0e/view",
+   "reqs": [
+    {
+     "label": "Pull full RFP + technical data package",
+     "owner": "Analyst"
+    },
+    {
+     "label": "Assess first-article/qualification burden",
+     "owner": "Analyst"
+    },
+    {
+     "label": "Add NAICS 332311 + size rep in SAM.gov",
+     "owner": "Human"
+    },
+    {
+     "label": "Fab shop: in-house capability vs. partner",
+     "owner": "Human"
+    },
+    {
+     "label": "Production plan + capacity narrative",
+     "owner": "Closer"
+    },
+    {
+     "label": "Submit the proposal",
+     "owner": "Human"
+    }
+   ],
+   "stage": "HUNT"
+  },
+  {
+   "id": "guardny",
+   "sol": "W50S8J26QA026",
+   "agency": "Air National Guard · 109 AW (NY)",
+   "title": "3′×6′ Guard Booth",
+   "due": "2026-09-14T12:00:00-04:00",
+   "dueLabel": "Sep 14 · 12:00 PM ET",
+   "tbd": false,
+   "flagship": false,
+   "setAside": "Total Small Business",
+   "tags": [
+    "FAB LANE",
+    "Small unit",
+    "NAICS 332311",
+    "Schenectady NY"
+   ],
+   "poc": "109.AW.FAL.MSC.Contracting@us.af.mil",
+   "note": "The simplest fabrication entry on the board — one small guard booth. Notice body is bare (\"see the solicitation attachment\"), so <b>everything hinges on the attachment</b>: pull it first and confirm whether ballistic rating is required, because that decides build-vs-buy.",
+   "link": "https://sam.gov/opp/1d2e202e358f4a54b244530d65692804/view",
+   "reqs": [
+    {
+     "label": "Pull the solicitation attachment — full spec",
+     "owner": "Analyst"
+    },
+    {
+     "label": "Confirm ballistic/ISC rating requirement",
+     "owner": "Analyst"
+    },
+    {
+     "label": "Build cost vs. distributor quote",
+     "owner": "Human"
+    },
+    {
+     "label": "Pricing + quote letter",
+     "owner": "Closer"
+    },
+    {
+     "label": "Submit the quote",
+     "owner": "Human"
+    }
+   ],
+   "stage": "HUNT"
+  },
+  {
+   "id": "guardtx",
+   "sol": "2023H2-26-Q-00056",
+   "agency": "IRS · Austin Campus (TX)",
+   "title": "2× Bullet-Resistant Guard Booths + Demo",
+   "due": "2026-09-18T10:00:00-04:00",
+   "dueLabel": "Sep 18 · 10:00 AM ET",
+   "tbd": false,
+   "flagship": false,
+   "setAside": "Total Small Business",
+   "tags": [
+    "FAB LANE",
+    "ISC Level IV",
+    "Durasteel",
+    "Includes demolition"
+   ],
+   "poc": "carolyn.d.bennett@irs.gov; katie.r.marrette@irs.gov",
+   "note": "Demolish the existing booths at Gates 2 & 3, then deliver and install two 4′×4′ Durasteel bullet-resistant booths at <b>ISC Level IV or higher</b>. That rating is a certified-product requirement — this is a buy-and-install from a qualified ballistic manufacturer, not a shop build. Scope also carries demolition and field verification.",
+   "link": "https://sam.gov/opp/0e2a305aa9d94ebd8d3c79263db914d1/view",
+   "reqs": [
+    {
+     "label": "Pull SOW + site map attachment",
+     "owner": "Analyst"
+    },
+    {
+     "label": "Confirm ISC Level IV certification evidence needed",
+     "owner": "Analyst"
+    },
+    {
+     "label": "Ballistic booth manufacturer quote",
+     "owner": "Human"
+    },
+    {
+     "label": "Demo + install sub quote (Austin)",
+     "owner": "Human"
+    },
+    {
+     "label": "Pricing + quote letter",
+     "owner": "Closer"
+    },
+    {
+     "label": "Submit the quote",
+     "owner": "Human"
+    }
+   ],
+   "stage": "HUNT"
+  },
+  {
+   "id": "conex24",
+   "sol": "70Z08426QDL940031",
+   "agency": "USCG · Operational Logistics Cmd",
+   "title": "Modified 24 ft Non-ISO Shipping Container",
+   "due": "2026-09-16T13:00:00-07:00",
+   "dueLabel": "Sep 16 · 1:00 PM PT",
+   "tbd": false,
+   "flagship": false,
+   "setAside": "Total Small Business",
+   "tags": [
+    "FAB LANE",
+    "Container modification",
+    "Simplified acq",
+    "San Pedro CA"
+   ],
+   "poc": "terry.e.craft@uscg.mil; yvett.r.garcia@uscg.mil",
+   "note": "Combined synopsis/solicitation — the only notice that will issue. A <b>modified</b> container is container fabrication: cut-ins, doors, ventilation, coatings to spec. Firm-fixed-price purchase order under simplified acquisition, so the paperwork is light relative to the revenue.",
+   "link": "https://sam.gov/opp/2edba3ef2aff4fafa66177951c5e366c/view",
+   "reqs": [
+    {
+     "label": "Pull modification spec from the notice",
+     "owner": "Analyst"
+    },
+    {
+     "label": "Container supplier + modification cost",
+     "owner": "Human"
+    },
+    {
+     "label": "Delivery to San Pedro CA",
+     "owner": "Human"
+    },
+    {
+     "label": "Pricing + quote letter",
+     "owner": "Closer"
+    },
+    {
+     "label": "Submit the quote",
+     "owner": "Human"
+    }
+   ],
+   "stage": "HUNT"
+  },
+  {
+   "id": "campsantiago",
+   "sol": "W912LR26QA042",
+   "agency": "PR Army National Guard · Camp Santiago",
+   "title": "Prefabricated Modular Office Units — Supply & Install",
+   "due": "2026-09-18T16:00:00-04:00",
+   "dueLabel": "Sep 18 · 4:00 PM ET",
+   "tbd": false,
+   "flagship": false,
+   "setAside": "Total Small Business",
+   "tags": [
+    "FAB LANE",
+    "Amend 0001",
+    "145-day schedule",
+    "Salinas PR"
+   ],
+   "poc": "argenies.e.gonzalezgarcia.mil@army.mil",
+   "note": "Amendment 0001 issued RFI answers, a revised SOW (27 Aug) and technical site exhibits, and reset delivery to a <b>145-day milestone schedule</b>. Read the revised SOW, not the original. Puerto Rico delivery means island freight — price it explicitly or lose money on it.",
+   "link": "https://sam.gov/opp/b513e57cd5dd4083a6ed654dfef5615f/view",
+   "reqs": [
+    {
+     "label": "Pull Amend 0001: revised SOW + site exhibits",
+     "owner": "Analyst"
+    },
+    {
+     "label": "Modular unit manufacturer quote",
+     "owner": "Human"
+    },
+    {
+     "label": "Island freight + install quote (PR)",
+     "owner": "Human"
+    },
+    {
+     "label": "145-day milestone delivery plan",
+     "owner": "Closer"
+    },
+    {
+     "label": "Submit the quote",
+     "owner": "Human"
+    }
+   ],
+   "stage": "HUNT"
+  },
+  {
+   "id": "gunnison",
+   "sol": "1240LP26Q0180",
+   "agency": "USDA Forest Service · Gunnison NF (CO)",
+   "title": "Prefabricated Double Vault Toilet Building",
+   "due": "2026-09-17T10:00:00-05:00",
+   "dueLabel": "Sep 17 · 10:00 AM CT",
+   "tbd": false,
+   "flagship": false,
+   "setAside": "Total Small Business",
+   "tags": [
+    "FAB LANE",
+    "Single unit",
+    "Delivery + placement",
+    "NAICS 327390"
+   ],
+   "poc": "sabrina.wilfong@usda.gov",
+   "note": "One prefabricated double-vault toilet, delivered, offloaded and placed — contractor supplies the lifting equipment. Precast concrete NAICS, so this is a buy-and-deliver from a vault-toilet maker (CXT, Romtec). Small, clean, and a Forest Service past-performance credential.",
+   "link": "https://sam.gov/opp/192159241796472aac787cdb4bcd140b/view",
+   "reqs": [
+    {
+     "label": "Pull Attachments 1 & 2 — model & site spec",
+     "owner": "Analyst"
+    },
+    {
+     "label": "Precast vault-toilet manufacturer quote",
+     "owner": "Human"
+    },
+    {
+     "label": "Crane/placement + haul to Gunnison",
+     "owner": "Human"
+    },
+    {
+     "label": "Pricing + quote letter",
+     "owner": "Closer"
+    },
+    {
+     "label": "Submit the quote",
+     "owner": "Human"
+    }
+   ],
+   "stage": "HUNT"
+  }
+ ]
+}
