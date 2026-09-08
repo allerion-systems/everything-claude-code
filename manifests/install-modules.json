@@ -270,9 +270,11 @@
       "paths": [
         "skills/article-writing",
         "skills/content-engine",
+        "skills/govcon-pipeline",
         "skills/investor-materials",
         "skills/investor-outreach",
-        "skills/market-research"
+        "skills/market-research",
+        "skills/sam-registration"
       ],
       "targets": [
         "claude",

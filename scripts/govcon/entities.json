@@ -1,0 +1,174 @@
+{
+  "$comment": "Entity profiles for the govcon watcher. One entry per company that pursues federal work. Fill in uei/cage as registrations activate. setAsideEligible uses SAM set-aside codes: '' (unrestricted), SBA (total small business), SBP (partial SB), SDVOSBC/SDVOSBS (SDVOSB set-aside/sole-source), VSA/VSS (VOSB), 8A/8AN, WOSB/WOSBSS, EDWOSB/EDWOSBSS, HZC/HZS (HUBZone).",
+  "entities": [
+    {
+      "id": "allerion-tech",
+      "name": "Allerion Technologies LLC",
+      "uei": "KHLLHCKASEH7",
+      "cage": "23WX9",
+      "samStatus": "active; CAGE 23WX9 approved 2026-08-21",
+      "socioeconomic": [
+        "small-business"
+      ],
+      "setAsideEligible": [
+        "",
+        "SBA",
+        "SBP"
+      ],
+      "preferSetAsides": [
+        "SBA"
+      ],
+      "naics": [
+        "541511",
+        "541512",
+        "541519",
+        "541690",
+        "518210"
+      ],
+      "keywords": [
+        "software development",
+        "artificial intelligence",
+        "data analytics",
+        "IT support services",
+        "laptops workstations",
+        "servers storage",
+        "network equipment",
+        "cloud migration"
+      ],
+      "exclude": [
+        "janitorial",
+        "office space",
+        "demolition"
+      ],
+      "notes": "Confirm exact IRS legal name before quoting. Product resale is in scope: on small-business set-asides for products the nonmanufacturer rule applies (supply a US small manufacturer's product or a waived class). Kentucky-based: price travel and per diem on any out-of-state place of performance.",
+      "popStates": [
+        "KY"
+      ]
+    },
+    {
+      "id": "allerion-llc",
+      "name": "Allerion LLC",
+      "uei": "Q8EBFAWWVAJ7",
+      "cage": "",
+      "samStatus": "processing; IRS TIN match passed 2026-08-11",
+      "socioeconomic": [
+        "small-business"
+      ],
+      "setAsideEligible": [
+        "",
+        "SBA",
+        "SBP"
+      ],
+      "preferSetAsides": [
+        "SBA"
+      ],
+      "naics": [
+        "561730",
+        "238910",
+        "115310",
+        "113310",
+        "237990"
+      ],
+      "keywords": [
+        "land clearing",
+        "grounds maintenance",
+        "mowing",
+        "brush removal",
+        "forestry mulching",
+        "fencing installation",
+        "erosion control",
+        "right-of-way clearing",
+        "grazing lease",
+        "timber"
+      ],
+      "exclude": [],
+      "notes": "Land-focused entity. PLACEHOLDER NAICS/keywords — tune to the actual acreage, equipment, and services offered.",
+      "popStates": [
+        "OK"
+      ]
+    },
+    {
+      "id": "hac",
+      "name": "HAC Contracting",
+      "uei": "",
+      "cage": "",
+      "samStatus": "unknown",
+      "socioeconomic": [
+        "small-business",
+        "sdvosb"
+      ],
+      "setAsideEligible": [
+        "",
+        "SBA",
+        "SBP",
+        "SDVOSBC",
+        "SDVOSBS",
+        "VSA",
+        "VSS"
+      ],
+      "preferSetAsides": [
+        "SDVOSBC",
+        "SDVOSBS",
+        "VSA",
+        "VSS"
+      ],
+      "naics": [
+        "236220",
+        "238160",
+        "238220",
+        "561210"
+      ],
+      "keywords": [
+        "SDVOSB",
+        "building repair",
+        "construction services",
+        "facility maintenance",
+        "renovation",
+        "roof repair",
+        "roof replacement",
+        "roofing"
+      ],
+      "exclude": [],
+      "notes": "SDVOSB. Fill in UEI/CAGE and confirm SBA VetCert is current before bidding SDVOSBC/SDVOSBS work. Real capabilities/NAICS still to be confirmed with owner (Wills).",
+      "popStates": [
+        "OK"
+      ]
+    },
+    {
+      "id": "brady-co",
+      "name": "Brady Betts company (name TBD)",
+      "uei": "",
+      "cage": "",
+      "samStatus": "not registered yet",
+      "socioeconomic": [
+        "small-business"
+      ],
+      "setAsideEligible": [
+        "",
+        "SBA",
+        "SBP"
+      ],
+      "preferSetAsides": [
+        "SBA"
+      ],
+      "naics": [
+        "238160",
+        "236118",
+        "238910"
+      ],
+      "keywords": [
+        "roofing",
+        "roof replacement",
+        "storm damage repair",
+        "siding",
+        "gutters",
+        "exterior repair"
+      ],
+      "exclude": [],
+      "popStates": [
+        "OK"
+      ],
+      "notes": "PLACEHOLDER: Brady Betts's company — legal name, EIN, capabilities TBD. Oklahoma sales focus. Register in SAM.gov before any offers (free — see skills/sam-registration)."
+    }
+  ]
+}
