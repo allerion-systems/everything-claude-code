@@ -91,6 +91,30 @@ function showView(name) {
   $$("main section[data-view]").forEach((s) => s.classList.toggle("on", s.dataset.view === name));
   if (name === "brief") renderBrief();
 }
+
+/* ── Backend detection ───────────────────────────────────────────────
+ * The AI endpoints only exist where the deployment runs functions with an
+ * OpenAI key. On plain static hosting they 404, so every AI affordance stays
+ * hidden and the board keeps working exactly as before. */
+let aiState = "unknown"; // unknown | ready | unconfigured | absent
+
+async function probeBackend() {
+  if (!navigator.onLine) { aiState = "absent"; return; }
+  try {
+    // An empty body is a deliberate 400 from a live endpoint — cheap liveness
+    // check that costs no tokens.
+    const res = await fetch("api/analyst", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: "{}",
+    });
+    if (res.status === 503) aiState = "unconfigured";
+    else if (res.status === 404) aiState = "absent";
+    else aiState = "ready";
+  } catch {
+    aiState = "absent";
+  }
+}
 $$(".navb").forEach((b) => b.addEventListener("click", () => showView(b.dataset.nav)));
 
 /* ── Tiles ───────────────────────────────────────────────────────── */
@@ -234,6 +258,15 @@ function openMission(id) {
         }).join("")}
       </div>
 
+      ${aiState === "ready" ? `
+      <div class="work">
+        <div class="work-h">
+          <h4>Solicitation Analyst</h4>
+          <button class="btn" id="run-analyst">▶ Run analyst on this bid</button>
+        </div>
+        <div class="work-out" id="work-out"></div>
+      </div>` : ""}
+
       <div class="dispatch">Dispatch the engineering team from a Claude Code session in the repo:
         <code>/govcon ${esc(p.sol)}</code> — hunts the documents, builds the compliance matrix,
         drafts the quote package.</div>
@@ -258,7 +291,186 @@ function openMission(id) {
       putState(id); renderAll();
     });
   });
+  const runBtn = $("#run-analyst", modal);
+  if (runBtn) runBtn.addEventListener("click", () => runAnalyst(p, runBtn));
   $(".x", modal).focus();
+}
+
+/* ── Analyst (streamed from the edge function) ───────────────────── */
+async function runAnalyst(p, btn) {
+  const out = $("#work-out");
+  if (!out) return;
+  btn.disabled = true;
+  out.textContent = "Analyst working…";
+  const st = ensureState(p);
+  try {
+    const res = await fetch("api/analyst", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        pursuit: {
+          title: p.title, sol: p.sol, agency: p.agency, setAside: p.setAside,
+          dueLabel: p.dueLabel,
+          daysOut: p.tbd ? null : daysLeft(p.due),
+          note: p.note,
+          reqs: p.reqs.map((r, i) => ({ label: r.label, owner: st.reqs[i].owner, status: st.reqs[i].status })),
+        },
+      }),
+    });
+    if (!res.ok || !res.body) {
+      const err = await res.json().catch(() => ({}));
+      out.textContent = err.message || "The analyst could not be reached.";
+      btn.disabled = false;
+      return;
+    }
+    out.textContent = "";
+    await readSse(res.body, {
+      delta: (d) => { out.textContent += d.text; },
+      error: (d) => { out.textContent = d.message || "The analyst run failed."; },
+    });
+    btn.textContent = "Re-run analyst";
+  } catch {
+    out.textContent = "The analyst could not be reached.";
+  }
+  btn.disabled = false;
+}
+
+async function readSse(body, handlers) {
+  const reader = body.getReader();
+  const decoder = new TextDecoder();
+  let buf = "";
+  for (;;) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    buf += decoder.decode(value, { stream: true });
+    const frames = buf.split("\n\n");
+    buf = frames.pop() ?? "";
+    for (const frame of frames) {
+      let event = "message", data = "";
+      for (const line of frame.split("\n")) {
+        if (line.startsWith("event: ")) event = line.slice(7).trim();
+        else if (line.startsWith("data: ")) data += line.slice(6);
+      }
+      if (!data) continue;
+      let parsed;
+      try { parsed = JSON.parse(data); } catch { continue; }
+      handlers[event]?.(parsed);
+    }
+  }
+}
+
+/* ── Discover — plain-English opportunity search ─────────────────── */
+function wireSearch() {
+  const form = $("#search-form");
+  if (!form) return;
+  const status = $("#search-status"), results = $("#search-results"), input = $("#search-q");
+
+  if (aiState !== "ready") {
+    status.classList.add("on");
+    status.textContent = aiState === "unconfigured"
+      ? "Search is unavailable: this deployment has no OPENAI_API_KEY set."
+      : "Search needs the deployed version with edge functions — it is unavailable offline "
+        + "and on plain static hosting.";
+    $("#search-go").disabled = true;
+    input.disabled = true;
+    return;
+  }
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const query = input.value.trim();
+    if (!query) return;
+    const btn = $("#search-go");
+    btn.disabled = true;
+    status.classList.add("on");
+    status.textContent = "Interpreting, then sweeping SAM.gov…";
+    results.innerHTML = "";
+    try {
+      const res = await fetch("api/search", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ query }),
+      });
+      const data = await res.json();
+      if (!res.ok) { status.textContent = data.message || "That search failed."; btn.disabled = false; return; }
+      renderSearch(data, status, results);
+    } catch {
+      status.textContent = "Could not reach the search endpoint.";
+    }
+    btn.disabled = false;
+  });
+}
+
+function renderSearch(data, status, results) {
+  const i = data.interpreted || {};
+  const chips = [
+    ...(i.naics || []).map((n) => `NAICS ${n}`),
+    ...(i.setAsides || []).map((s) => s || "Unrestricted"),
+    ...(i.states || []),
+  ];
+  status.innerHTML = `<b>Read as:</b> ${esc(i.intent || "—")}`
+    + (chips.length ? `<div class="tags">${chips.map((c) => `<span class="tag">${esc(c)}</span>`).join("")}</div>` : "")
+    + (data.note ? `<div class="grid-note">${esc(data.note)}</div>` : "");
+
+  if (!data.results || !data.results.length) {
+    results.innerHTML = '<p class="none">Nothing open matched. Try naming the work the way a '
+      + 'solicitation would title it.</p>';
+    return;
+  }
+  results.innerHTML = `<div class="results">${data.results.map((r) => `
+    <article class="hit ${r.eligible ? "" : "blocked"}">
+      <div class="hit-h">
+        <h4>${esc(r.title)}</h4>
+        <span class="cd ${r.daysOut !== null && r.daysOut < 5 ? "crit" : ""}">${
+          r.daysOut === null ? "no date" : `${r.daysOut}d`}</span>
+      </div>
+      <div class="row">
+        <span class="tag ${r.eligible ? "sa" : ""}">${esc(r.setAsideLabel)}</span>
+        ${r.naics ? `<span class="tag">NAICS ${esc(r.naics)}</span>` : ""}
+        ${r.placeOfPerformance ? `<span class="tag">${esc(r.placeOfPerformance)}</span>` : ""}
+        ${r.eligible ? "" : '<span class="tag ineligible">Certification not held</span>'}
+      </div>
+      <p class="hit-d">${esc(r.description.slice(0, 260))}${r.description.length > 260 ? "…" : ""}</p>
+      <div class="hit-f">
+        <span class="sol">${esc(r.solicitationNumber || "")}</span>
+        <a href="${esc(r.url)}" target="_blank" rel="noopener">Open on SAM.gov ↗</a>
+        ${r.eligible ? `<button class="btn ghost add-hit" data-hit='${esc(JSON.stringify({
+          title: r.title, sol: r.solicitationNumber, agency: r.placeOfPerformance || "—",
+          setAside: r.setAsideLabel, due: r.responseDeadline, url: r.url,
+        }))}'>+ Board</button>` : ""}
+      </div>
+    </article>`).join("")}</div>`;
+
+  $$(".add-hit", results).forEach((b) => b.addEventListener("click", () => addFromHit(JSON.parse(b.dataset.hit), b)));
+}
+
+async function addFromHit(hit, btn) {
+  const due = hit.due || "";
+  const p = {
+    id: "c" + Date.now().toString(36),
+    custom: true, tbd: !due,
+    title: hit.title, sol: hit.sol || "TBD", agency: hit.agency,
+    due,
+    dueLabel: due
+      ? new Date(due).toLocaleString(undefined, { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" })
+      : "No deadline posted",
+    setAside: hit.setAside, tags: ["From Discover"],
+    note: "Added from a Discover search — run the analyst or dispatch /govcon for intel.",
+    link: hit.url,
+    reqs: [
+      { label: "Pull solicitation & attachments", owner: "Analyst" },
+      { label: "Supplier quote", owner: "Human" },
+      { label: "Build pricing + quote letter", owner: "Closer" },
+      { label: "Submit the quote", owner: "Human" },
+    ],
+  };
+  pursuits.push(p);
+  ensureState(p);
+  await putCustom(p);
+  await putState(p.id);
+  btn.textContent = "On board ✓";
+  btn.disabled = true;
+  renderAll();
 }
 
 /* ── Add pursuit ─────────────────────────────────────────────────── */
@@ -429,6 +641,8 @@ async function loadPursuits() {
 
 async function boot() {
   idb = await openDb();
+  await probeBackend();
+  wireSearch();
   $("#storage-note").textContent = idb ? "" : "Storage unavailable — changes will not survive a reload.";
 
   let data;
@@ -453,7 +667,7 @@ async function boot() {
 
   renderAll();
   const view = new URLSearchParams(location.search).get("view");
-  if (["board", "intel", "brief"].includes(view)) showView(view);
+  if (["board", "discover", "intel", "brief"].includes(view)) showView(view);
 }
 
 /* ── Network state ───────────────────────────────────────────────── */

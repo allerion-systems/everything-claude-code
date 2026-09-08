@@ -40,7 +40,10 @@
         "office space",
         "demolition"
       ],
-      "notes": "Confirm exact IRS legal name before quoting. Product resale is in scope: on small-business set-asides for products the nonmanufacturer rule applies (supply a US small manufacturer's product or a waived class)."
+      "notes": "Confirm exact IRS legal name before quoting. Product resale is in scope: on small-business set-asides for products the nonmanufacturer rule applies (supply a US small manufacturer's product or a waived class). Kentucky-based: price travel and per diem on any out-of-state place of performance.",
+      "popStates": [
+        "KY"
+      ]
     },
     {
       "id": "allerion-llc",
@@ -79,7 +82,7 @@
         "timber"
       ],
       "exclude": [],
-      "notes": "Land-focused entity. PLACEHOLDER NAICS/keywords \u2014 tune to the actual acreage, equipment, and services offered.",
+      "notes": "Land-focused entity. PLACEHOLDER NAICS/keywords — tune to the actual acreage, equipment, and services offered.",
       "popStates": [
         "OK"
       ]
@@ -165,7 +168,7 @@
       "popStates": [
         "OK"
       ],
-      "notes": "PLACEHOLDER: Brady Betts's company \u2014 legal name, EIN, capabilities TBD. Oklahoma sales focus. Register in SAM.gov before any offers (free \u2014 see skills/sam-registration)."
+      "notes": "PLACEHOLDER: Brady Betts's company — legal name, EIN, capabilities TBD. Oklahoma sales focus. Register in SAM.gov before any offers (free — see skills/sam-registration)."
     }
   ]
 }

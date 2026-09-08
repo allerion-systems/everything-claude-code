@@ -76,11 +76,67 @@ overwrites work in progress.
 Bump `VERSION` in `sw.js` when shipping changed shell assets, so returning
 installs pick them up instead of serving a stale cache.
 
+## The AI layer (OpenAI SDK)
+
+Two edge functions run the OpenAI SDK server-side. The browser never sees a
+key, because a key shipped to a browser is a published key.
+
+| Route | Does |
+|---|---|
+| `POST /api/search` | **Discover** — plain English becomes SAM.gov search parameters via structured outputs, sweeps live notices, and marks anything needing a certification Allerion lacks as ineligible |
+| `POST /api/analyst` | Streams a GO / NO-BID win plan for one pursuit as Server-Sent Events |
+
+### Configuration
+
+| Variable | Required | Default |
+|---|---|---|
+| `OPENAI_API_KEY` | yes | — |
+| `ANALYST_MODEL` | no | `gpt-5.5` |
+| `EXTRACT_MODEL` | no | `gpt-5.4-mini` |
+| `OPENAI_BASE_URL` | no | OpenAI (set for Azure or a gateway) |
+
+```bash
+npx wrangler pages secret put OPENAI_API_KEY --project-name allerion-warboard
+```
+
+### Why the client can't send a prompt
+
+Every prompt is assembled in `server/openai.js` from structured fields. The
+client posts a pursuit object, never instructions. Without that, anyone who can
+reach the endpoint has a free, billable OpenAI proxy — and could also talk the
+model out of the entity's real posture. The entity facts (small business only,
+no SDVOSB/8(a)/HUBZone/WOSB, Kentucky-based, which NAICS are missing from SAM)
+live server-side for the same reason, so no caller can widen them.
+
+Requests are capped at 32 KB, individual fields are clamped, and the model is
+fixed server-side. `npm test` asserts all of this, including that an injected
+`instructions` field never reaches the model.
+
+### Degradation
+
+The app probes `POST /api/analyst` on boot. On plain static hosting it 404s, on
+a functions deployment without a key it 503s — either way the Discover tab
+explains itself, the analyst button never renders, and the board works exactly
+as it did before. Nothing about the offline experience depends on the AI layer.
+
+## Testing
+
+```bash
+npm test    # 8 tests, mock OpenAI + mock SAM.gov, no key and no tokens needed
+```
+
+The suite covers the request shape, structured-output parsing, SSE bridging,
+prompt-injection resistance, payload caps, and set-aside eligibility filtering.
+
+**Not covered:** calls against the real OpenAI API. Everything here was verified
+against a mock, so model output quality and live API behaviour are unverified
+until someone runs it with a real key.
+
 ## What it deliberately does not do
 
-- **No API credentials.** A key shipped to a browser is a published key, so
-  there is no live AI analyst here. The Brief tab computes its guidance from
-  board state instead. For a written go/no-go against the actual solicitation
-  documents, dispatch `/govcon <solicitation>` from Claude Code.
 - **No submissions.** Nothing here transmits to SAM.gov or a contracting
   officer. A human sends every quote.
+- **No document ingestion yet.** The analyst reasons from the board record and
+  says which attachment to pull rather than guessing at its contents. For
+  analysis of the actual solicitation documents, dispatch
+  `/govcon <solicitation>` from Claude Code.

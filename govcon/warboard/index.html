@@ -28,6 +28,7 @@
     </div>
     <nav aria-label="Views">
       <button class="navb on" data-nav="board">Board</button>
+      <button class="navb" data-nav="discover">Discover</button>
       <button class="navb" data-nav="intel">Intel</button>
       <button class="navb" data-nav="brief">Brief</button>
     </nav>
@@ -68,6 +69,22 @@
       Solicitation data: SAM.gov public records, pulled <span id="data-date">—</span>.
       Board state is stored on this device. <span id="storage-note"></span>
     </footer>
+  </section>
+
+  <section data-view="discover" aria-label="Opportunity discovery">
+    <div class="ask">
+      <h3>Describe what you're hunting</h3>
+      <p class="sub">Plain English. It becomes a SAM.gov sweep, and anything needing a certification
+        Allerion doesn't hold comes back marked ineligible.</p>
+      <form class="ask-row" id="search-form">
+        <input id="search-q" type="text" autocomplete="off"
+               placeholder="guard booths or modular buildings we can fabricate, small business set-aside"
+               aria-label="Describe the opportunities you want">
+        <button class="btn" id="search-go" type="submit">Search</button>
+      </form>
+      <div id="search-status" class="ask-out"></div>
+    </div>
+    <div id="search-results"></div>
   </section>
 
   <section data-view="intel" aria-label="Intelligence">

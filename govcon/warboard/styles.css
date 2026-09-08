@@ -208,6 +208,45 @@ select.status[data-v="In work"]{color:var(--warn); border-color:var(--warn)}
 .brief li b{color:var(--ink)}
 .brief .none{font-size:13px; color:var(--ink-3)}
 
+/* ── Discover ─── */
+.ask{background:var(--panel); border:1px solid var(--olive-deep); border-radius:4px; padding:16px 18px}
+.ask h3{font-size:16px; letter-spacing:.07em; text-transform:uppercase; margin-bottom:3px}
+.ask .sub{font-size:12px; color:var(--ink-3); margin:0 0 12px}
+.ask-row{display:flex; gap:8px}
+@media (max-width:560px){.ask-row{flex-direction:column}}
+.ask input{flex:1; background:var(--panel-2); border:1px solid var(--line); border-radius:3px;
+           color:var(--ink); font:inherit; padding:10px 12px; min-width:0}
+.ask input:disabled{opacity:.55}
+.ask-out{margin-top:12px; font-size:13px; color:var(--ink-2); border-top:1px dashed var(--line);
+         padding-top:10px; display:none}
+.ask-out.on{display:block}
+.ask-out b{color:var(--ink)}
+
+.results{display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:10px; margin-top:14px}
+.hit{background:var(--panel); border:1px solid var(--line); border-radius:4px; padding:12px 14px}
+.hit.blocked{opacity:.6; border-style:dashed}
+.hit-h{display:flex; align-items:flex-start; gap:10px}
+.hit-h h4{font-size:16px; font-weight:600; line-height:1.15; flex:1}
+.hit-h .cd{flex:none}
+.hit .row{margin-top:8px}
+.hit-d{font-size:12.5px; color:var(--ink-3); margin:9px 0 0; line-height:1.45}
+.hit-f{display:flex; align-items:center; gap:10px; margin-top:10px; padding-top:9px;
+       border-top:1px dashed var(--line); flex-wrap:wrap}
+.hit-f .sol{font-family:var(--mono); font-size:10.5px; color:var(--ink-3)}
+.hit-f a{font-size:12px; margin-left:auto}
+.hit-f .btn{padding:4px 10px; font-size:12px}
+.tag.ineligible{color:var(--warn); border-color:var(--warn); background:var(--warn-bg)}
+.none{font-size:13px; color:var(--ink-3); margin-top:14px}
+
+/* ── Analyst panel ─── */
+.work{margin-top:14px; border:1px solid var(--olive-deep); border-radius:4px; background:var(--panel-2)}
+.work-h{display:flex; align-items:center; gap:10px; padding:10px 12px; border-bottom:1px solid var(--line)}
+.work-h h4{font-size:14px; letter-spacing:.1em; text-transform:uppercase; color:var(--olive)}
+.work-h .btn{margin-left:auto}
+.work-out{padding:10px 12px; font-size:13px; color:var(--ink-2); white-space:pre-wrap;
+          max-height:340px; overflow:auto}
+.work-out:empty{display:none}
+
 .rules{margin-top:22px; border:1px solid var(--line); border-left:3px solid var(--olive-deep);
        background:var(--panel); border-radius:4px; padding:12px 16px; font-size:12.5px; color:var(--ink-2)}
 .rules b{color:var(--ink)}
