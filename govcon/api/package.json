@@ -1,0 +1,16 @@
+{
+  "name": "allerion-api",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Allerion federal contracting API — opportunity discovery and bid analysis.",
+  "scripts": {
+    "start": "node node-server.js",
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "test": "node --test test/*.test.mjs"
+  },
+  "dependencies": {
+    "openai": "^7.10.0"
+  }
+}

@@ -3,7 +3,7 @@
 // network. Pursuit data is network-first so a redeploy shows up immediately,
 // falling back to cache when offline.
 
-const VERSION = 'warboard-v1';
+const VERSION = 'warboard-v2';
 const SHELL = `${VERSION}-shell`;
 const RUNTIME = `${VERSION}-runtime`;
 
@@ -11,6 +11,7 @@ const SHELL_ASSETS = [
   './',
   './index.html',
   './styles.css',
+  './config.js',
   './app.js',
   './manifest.webmanifest',
   './icons/icon-192.png',

@@ -32,17 +32,20 @@ export function client(env) {
   return new OpenAI({ apiKey, baseURL });
 }
 
-export function json(body, status = 200) {
+export function json(body, status = 200, extraHeaders = {}) {
   return new Response(JSON.stringify(body), {
     status,
-    headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' },
+    headers: {
+      'content-type': 'application/json; charset=utf-8',
+      'cache-control': 'no-store',
+      ...extraHeaders,
+    },
   });
 }
 
 export const noKey = () => json({
-  error: 'analyst_unconfigured',
-  message: 'OPENAI_API_KEY is not set on this deployment. The board works without it; '
-    + 'the Brief tab falls back to computed triage.',
+  error: 'model_unconfigured',
+  message: 'OPENAI_API_KEY is not set on this deployment, so model-backed routes are unavailable.',
 }, 503);
 
 export async function readJson(request, limitBytes = 32_000) {

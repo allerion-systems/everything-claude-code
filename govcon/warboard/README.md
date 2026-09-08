@@ -16,7 +16,7 @@ no server.
 | Install prompt | `beforeinstallprompt` wired to the **Install** button in the app bar |
 | Update flow | New service worker surfaces a "Reload" toast rather than silently swapping |
 
-Verified in Chromium: service worker reaches `active`, shell cache holds 8
+Verified in Chromium: service worker reaches `active`, shell cache holds 9
 assets, and an offline reload still renders all pursuits with local edits intact.
 
 ## Running it locally
@@ -76,61 +76,34 @@ overwrites work in progress.
 Bump `VERSION` in `sw.js` when shipping changed shell assets, so returning
 installs pick them up instead of serving a stale cache.
 
-## The AI layer (OpenAI SDK)
+## The AI layer
 
-Two edge functions run the OpenAI SDK server-side. The browser never sees a
-key, because a key shipped to a browser is a published key.
+Discovery and bid analysis are served by the separate **[Allerion API](../api/)**,
+not by this app. Set `base` and `key` in `config.js` to enable them; leave `base`
+empty and the board runs exactly as it did before, offline included.
 
-| Route | Does |
-|---|---|
-| `POST /api/search` | **Discover** — plain English becomes SAM.gov search parameters via structured outputs, sweeps live notices, and marks anything needing a certification Allerion lacks as ineligible |
-| `POST /api/analyst` | Streams a GO / NO-BID win plan for one pursuit as Server-Sent Events |
-
-### Configuration
-
-| Variable | Required | Default |
-|---|---|---|
-| `OPENAI_API_KEY` | yes | — |
-| `ANALYST_MODEL` | no | `gpt-5.5` |
-| `EXTRACT_MODEL` | no | `gpt-5.4-mini` |
-| `OPENAI_BASE_URL` | no | OpenAI (set for Azure or a gateway) |
-
-```bash
-npx wrangler pages secret put OPENAI_API_KEY --project-name allerion-warboard
-```
-
-### Why the client can't send a prompt
-
-Every prompt is assembled in `server/openai.js` from structured fields. The
-client posts a pursuit object, never instructions. Without that, anyone who can
-reach the endpoint has a free, billable OpenAI proxy — and could also talk the
-model out of the entity's real posture. The entity facts (small business only,
-no SDVOSB/8(a)/HUBZone/WOSB, Kentucky-based, which NAICS are missing from SAM)
-live server-side for the same reason, so no caller can widen them.
-
-Requests are capped at 32 KB, individual fields are clamped, and the model is
-fixed server-side. `npm test` asserts all of this, including that an injected
-`instructions` field never reaches the model.
+Anything in `config.js` ships to the browser and is readable by anyone who can
+load the page. That is unavoidable for a static app calling an authenticated
+API, so the real control is putting the board behind Cloudflare Access and
+issuing it a separate, rate-limited, rotatable key. `config.js` says so at the
+top; read it before filling it in.
 
 ### Degradation
 
-The app probes `POST /api/analyst` on boot. On plain static hosting it 404s, on
-a functions deployment without a key it 503s — either way the Discover tab
-explains itself, the analyst button never renders, and the board works exactly
-as it did before. Nothing about the offline experience depends on the AI layer.
+The app probes the API on boot and tells you which state it is in: no API
+configured, unreachable, reachable but missing a model key, or key rejected. In
+every failing state the analyst button never renders, Discover explains itself,
+and offline behaviour is untouched.
 
 ## Testing
 
 ```bash
-npm test    # 8 tests, mock OpenAI + mock SAM.gov, no key and no tokens needed
+npm test    # in govcon/api — 15 tests covering the API contract
 ```
 
-The suite covers the request shape, structured-output parsing, SSE bridging,
-prompt-injection resistance, payload caps, and set-aside eligibility filtering.
-
-**Not covered:** calls against the real OpenAI API. Everything here was verified
-against a mock, so model output quality and live API behaviour are unverified
-until someone runs it with a real key.
+The PWA itself was verified in Chromium: service worker active, 9 shell assets
+cached, offline reload rendering all pursuits with local edits intact, and no
+horizontal overflow at mobile width.
 
 ## What it deliberately does not do
 

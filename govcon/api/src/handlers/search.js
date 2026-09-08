@@ -1,14 +1,14 @@
-// POST /api/search — plain-English opportunity discovery.
+// POST /v1/search — plain-English opportunity discovery.
 //
-// "roofing work in Oklahoma under a small business set-aside" becomes a
+// "guard booths we can fabricate, small business set-aside" becomes a
 // structured query, sweeps SAM.gov, and returns notices scored for whether
 // Allerion can actually bid them.
 //
 // Body: { query: string }
 // Response: { interpreted: {...}, results: [...], note: string }
 
-import { client, models, noKey, json, readJson, clamp, ENTITY } from '../../server/openai.js';
-import { search as samSearch, detail as samDetail, NOTICE_TYPES } from '../../server/sam.js';
+import { client, models, noKey, json, readJson, clamp, ENTITY } from '../openai.js';
+import { search as samSearch, detail as samDetail, NOTICE_TYPES } from '../sam.js';
 
 const QUERY_SCHEMA = {
   type: 'object',
@@ -40,7 +40,7 @@ const QUERY_SCHEMA = {
 
 const MAX_DETAILS = 18;
 
-export async function onRequestPost({ request, env }) {
+export async function handleSearch(request, env) {
   const openai = client(env);
   if (!openai) return noKey();
 

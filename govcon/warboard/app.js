@@ -98,18 +98,26 @@ function showView(name) {
  * hidden and the board keeps working exactly as before. */
 let aiState = "unknown"; // unknown | ready | unconfigured | absent
 
+const API = (window.ALLERION_API || { base: "", key: "" });
+const apiUrl = (path) => `${API.base.replace(/\/$/, "")}/${path}`;
+const apiHeaders = () => ({
+  "content-type": "application/json",
+  ...(API.key ? { authorization: `Bearer ${API.key}` } : {}),
+});
+
 async function probeBackend() {
+  if (!API.base) { aiState = "absent"; return; }
   if (!navigator.onLine) { aiState = "absent"; return; }
   try {
-    // An empty body is a deliberate 400 from a live endpoint — cheap liveness
-    // check that costs no tokens.
-    const res = await fetch("api/analyst", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: "{}",
+    const res = await fetch(apiUrl("health"), { headers: apiHeaders() });
+    if (!res.ok) { aiState = "absent"; return; }
+    // Health says the API is up; a keyless deployment still 503s the model
+    // routes, so ask one of them without spending a token.
+    const probe = await fetch(apiUrl("analyst"), {
+      method: "POST", headers: apiHeaders(), body: "{}",
     });
-    if (res.status === 503) aiState = "unconfigured";
-    else if (res.status === 404) aiState = "absent";
+    if (probe.status === 503) aiState = "unconfigured";
+    else if (probe.status === 401) aiState = "unauthorized";
     else aiState = "ready";
   } catch {
     aiState = "absent";
@@ -304,9 +312,9 @@ async function runAnalyst(p, btn) {
   out.textContent = "Analyst working…";
   const st = ensureState(p);
   try {
-    const res = await fetch("api/analyst", {
+    const res = await fetch(apiUrl("analyst"), {
       method: "POST",
-      headers: { "content-type": "application/json" },
+      headers: apiHeaders(),
       body: JSON.stringify({
         pursuit: {
           title: p.title, sol: p.sol, agency: p.agency, setAside: p.setAside,
@@ -368,9 +376,12 @@ function wireSearch() {
   if (aiState !== "ready") {
     status.classList.add("on");
     status.textContent = aiState === "unconfigured"
-      ? "Search is unavailable: this deployment has no OPENAI_API_KEY set."
-      : "Search needs the deployed version with edge functions — it is unavailable offline "
-        + "and on plain static hosting.";
+      ? "The API is reachable but has no model key configured."
+      : aiState === "unauthorized"
+        ? "The API rejected this board's key. Check `key` in config.js against API_KEYS."
+        : !API.base
+          ? "No API configured. Set `base` in config.js to enable discovery."
+          : "The API is unreachable — this is expected offline.";
     $("#search-go").disabled = true;
     input.disabled = true;
     return;
@@ -386,9 +397,9 @@ function wireSearch() {
     status.textContent = "Interpreting, then sweeping SAM.gov…";
     results.innerHTML = "";
     try {
-      const res = await fetch("api/search", {
+      const res = await fetch(apiUrl("search"), {
         method: "POST",
-        headers: { "content-type": "application/json" },
+        headers: apiHeaders(),
         body: JSON.stringify({ query }),
       });
       const data = await res.json();
