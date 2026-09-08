@@ -53,8 +53,8 @@ So pick one:
 
 ### Option A — move allerion.io to Cloudflare (free, best long-term)
 
-Point the nameservers at Cloudflare, then uncomment the `[[routes]]` block in
-`wrangler.toml` and deploy. Cloudflare issues the certificate and creates the
+Point the nameservers at Cloudflare, then uncomment the `routes` block in
+`wrangler.jsonc` and deploy. Cloudflare issues the certificate and creates the
 DNS record.
 
 **Before you do this:** Cloudflare's import scans existing records, but verify
@@ -66,7 +66,7 @@ zone, including the live site on `5.161.184.187`.
 
 ```bash
 cd govcon/api
-npx wrangler deploy                      # leave [[routes]] commented out
+npx wrangler deploy                      # leave `routes` commented out
 npx wrangler secret put OPENAI_API_KEY
 npx wrangler secret put API_KEYS
 ```
@@ -101,7 +101,9 @@ record.
 ## Testing
 
 ```bash
-npm test    # 15 tests
+npm test                    # 15 tests, mocked provider and SAM.gov
+npx wrangler dev --local    # run on the real workerd runtime
+npx wrangler deploy --dry-run   # validate the bundle without credentials
 ```
 
 Runs the real router against a mock OpenAI and a mock SAM.gov: auth (missing,
@@ -109,7 +111,11 @@ wrong, multiple valid keys, unconfigured), CORS allow/deny and preflight, rate
 limiting with `retry-after`, SSE streaming, prompt-injection and model-override
 resistance, payload caps, error redaction, and set-aside eligibility ranking.
 
-**Not covered:** any call against the live OpenAI API, and any deployed
-environment. Everything was verified locally against mocks — model output
-quality and real deployment behaviour are unverified until someone runs it with
-real credentials.
+Beyond the unit tests, the Worker was run on **workerd** — the same runtime
+Cloudflare runs in production — via `wrangler dev --local`, confirming health,
+401 on a missing key, 503 with no model key, and CORS denial for an unknown
+origin. `wrangler deploy --dry-run` bundles at 119.77 KiB gzipped.
+
+**Not covered:** any call against the live OpenAI API, and any real deployment.
+Model output quality and production behaviour are unverified until someone runs
+it with real credentials.

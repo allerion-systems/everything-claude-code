@@ -1,0 +1,30 @@
+{
+  "name": "allerion-api",
+  "main": "worker.js",
+  "compatibility_date": "2026-09-08",
+  // The OpenAI SDK reaches for Node built-ins; without this the bundle fails.
+  "compatibility_flags": ["nodejs_compat"],
+
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 1
+  },
+
+  "vars": {
+    "RATE_LIMIT_PER_MINUTE": "20",
+    "ALLOWED_ORIGINS": "https://warboard.allerion.io",
+    "ANALYST_MODEL": "gpt-5.5",
+    "EXTRACT_MODEL": "gpt-5.4-mini"
+  }
+
+  // api.allerion.io needs allerion.io to be an active zone in this Cloudflare
+  // account. It is currently on Squarespace nameservers, so this route cannot
+  // be created yet — see README, "Getting api.allerion.io to resolve". Deploy
+  // without it and the Worker is reachable at its workers.dev hostname.
+  //
+  // "routes": [{ "pattern": "api.allerion.io", "custom_domain": true }]
+
+  // Secrets are never set here — this file is committed. Use:
+  //   npx wrangler secret put OPENAI_API_KEY
+  //   npx wrangler secret put API_KEYS
+}

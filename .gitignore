@@ -94,3 +94,6 @@ assets/images/security/badrudi-exploit.mp4
 
 # GovCon pursuit workspaces (pricing strategy — never commit from a public repo)
 govcon/pursuits/
+
+# Wrangler local dev state (miniflare scratch)
+.wrangler/
