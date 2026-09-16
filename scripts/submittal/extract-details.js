@@ -194,9 +194,14 @@ function main() {
   }
 }
 
-try {
-  main();
-} catch (error) {
-  console.error(`error: ${error.message}`);
-  process.exitCode = 1;
+// Only run as a CLI; requiring the module exposes the pure helpers for tests.
+if (require.main === module) {
+  try {
+    main();
+  } catch (error) {
+    console.error(`error: ${error.message}`);
+    process.exitCode = 1;
+  }
 }
+
+module.exports = { escapeHtml, plateHtml, findChrome, cmdInit, cmdPlates };
