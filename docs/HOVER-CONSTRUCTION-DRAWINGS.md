@@ -132,3 +132,22 @@ because:
 
 The agent will never strip those notes — they're what makes the set credible
 to a plan reviewer.
+
+## Blender site model: towable shed, hitch, mower port
+
+`scripts/hover/blender-tow-shed.py` builds a Blender (bpy) model of a small
+mobile shed converted to a towable unit (PT skids, trailer axle behind the
+balance point, A-frame tongue, dual ball-coupler/clevis hitch head, tongue
+jack, drop-leg stabilizers), an open-front mower port that continues the shed
+ridge, and the fence outline, all placed on the real terrain grid from
+`site-scout.js`.
+
+```bash
+blender --background --python scripts/hover/blender-tow-shed.py -- \
+  --topo site-scout/<address>/site-topo.json --out site-scout/<address>/
+```
+
+Everything adjustable is in the `PARAMS` block at the top of the script
+(fence corners, gate gap, shed size, hitch geometry, port size). Blender is
+not required for the test suite; `tests/hover/blender-tow-shed.test.js`
+checks the PARAMS contract and Python syntax only.
